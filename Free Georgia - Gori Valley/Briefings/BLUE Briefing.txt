@@ -1,0 +1,113 @@
+*** BLUE FORCES BRIEFING ***
+*
+* 1. Primary Mission: Capture Russian helicopter FARP "Katilka" in the east near Kvemo-Artsevi. Land on the FARP.
+*
+* 2. Secondary Mission: Eliminate the Russian SAM batteries at Tskinvali.
+*
+* 3. Bonus Mission: Transport a very important package from our Heliport at Kvemo-Artsevi to our FARP at Gori.
+*
+****
+
+
+
+*** Belgian "Colt" Helicopter Squadron ***
+*
+* Type: Ka-50
+* FARP: Madrid near Kvarhiti / Frequency: 128.0
+*   Human: BE KA-50 - Ground Defense 1 / Callsign: Colt 1-1 / Frequency 128.0
+*   Human: BE KA-50 - Ground Defense 2 / Callsign: Colt 2-1 / Frequency 128.0
+*   Mission: Eliminate enemy SAM batteries near Tskinvali and capture the enemy FARPS.  Defend our helicopter airbases.
+*
+* Type: Ka-50
+* FARP: Rome near Kvarhiti / Frequency: 122.7
+*   AI: BE KA-50 - Ground Defense AI / Callsign: Colt 9-1 / Frequency 128.0
+*   Mission: Eliminate enemy AAA defenses near Tskinvali.  Defend our helicopter airbases.
+*
+* Type: Ka-50
+* FARP: Dublin near Gori / Frequency: 122.2
+*   Human: BE KA-50 - Ground Defense 3 / Callsign: Colt 3-1 / Frequency 128.0
+*   Artif: BE KA-50 - Ground Defense 3 / Callsign: Colt 3-2 / Frequency 128.0
+*
+* Type: Ka-50
+* FARP: Berlin near Gori / Frequency: 122.1
+*   Human: BE KA-50 - Ground Defense 4 / Callsign: Colt 4-1 / Frequency 128.0
+*   Artif: BE KA-50 - Ground Defense 4 / Callsign: Colt 4-2 / Frequency 128.0
+*   Mission: Eliminate enemy AAA defenses near Tskinvali and capture the enemy FARPS. Defend our helicopter airbases.
+*
+***
+
+*** USA "Pontiac" Helicopter Squadron ***
+*
+* Type: UH-1H
+* FARP: London near Kvarhiti / Frequency: 132.3
+*   Human: US UH-1H - Deploy Troops 1 / Callsign: Pontiac 1-1 / Frequency 251.3
+*   Human: US UH-1H - Deploy Troops 2 / Callsign: Pontiac 2-1 / Frequency 251.3
+*   Mission: Drop USA infantry at selected locations within the battlefield to support the defense.
+* 
+* Type: UH-1H
+* FARP: Paris near Kvarhiti / Frequency: 132.6
+*   Human: US UH-1H - Transport Package 1 / Callsign: Pontiac 3-1 / Frequency 251.3
+*   Human: US UH-1H - Transport Package 2 / Callsign: Pontiac 4-1 / Frequency 251.3
+*   Mission: Transport a very important package from our Heliport at Kvemo-Artsevi to our FARP at Gori.
+*
+***
+
+*** USA "Chevy" Helicopter Squadron ***
+*
+* Type: CH-47D
+* FARP: Perth near Gori, Frequency: 134.5
+*   Artif: US CH-47D - Troop Deployment 1 AI / Callsign: Chevy 8-1
+*   Artif: US CH-47D - Troop Deployment 2 AI / Callsign: Chevy 9-1
+*   Mission: Sling USA infantry units at random landing zones within the battlefield to support the defense.
+*
+***
+
+*** Belgium "Dodge" Air Support Squadron ***
+*
+* Type: F-16A
+* Base: Tbilisi-Lochni, Frequency: 138.0
+*   Artif: BE F-16A - CAP AI / Callsign: Dodge 9-1
+*   Mission: Control the northern and western airspace between Gori and Tbilisi and defend our air support units.
+*
+***
+
+*** USA "Enfield" Air Support Squadron ***
+*
+* Type: F-15C
+* Base: Tbilisi-Lochni, Frequency: 138.0
+*   Human: US F-15C - Air Defense 1 / Callsign: Entfield 1-1
+*   Human: US F-15C - Air Defense 2 / Callsign: Entfield 2-1
+*   Artif: US F-15C - Air Support AI / Callsign: Entfield 9-1
+*   Mission: Eliminate enemy all Russian intruders within Georgian airspace.
+*
+***
+
+*** USA "Springfield" Air Support Squadron ***
+*
+* Type: A-10A
+* Base: Soganlug, Frequency: 139.0
+*   Human: US A-10A - Ground Attack 1 / Callsign: Springfield 1-1
+*   Human: US A-10A - Ground Attack 2 / Callsign: Springfield 2-1
+*   Mission: Attack Russian SAM and ground units within Gori valley.
+*
+***
+
+*** USA & Belgium "Ford" Air Support Squadron ***
+*
+* Type: A-10C, F-16A
+* Base: Kutaisi, Frequency: 134.0
+*   Human: US A-10A - Ground Attack 1 / Callsign: Ford 3-1
+*   Human: US A-10A - Ground Attack 2 / Callsign: Ford 4-1
+*   Artif: US F-16A - Air Support / Callsign: Ford 9-1
+*   Mission: Attack Russian SAM and ground units within Gori valley.
+*
+***
+
+*** USA "Focus" AWACS Squadron ***
+*
+* Type: E-3E
+* Base: Tbilisi-Lochni, Frequency: 138.0
+*   Artif: US E-3A - AWACS AI #001 / Callsign: Focus 9-1
+*   Mission: AWACS in Georgian airspace.
+*
+***
