@@ -375,9 +375,9 @@ end
 -- CCCP COALITION UNITS
 
 -- Russian helicopters engaging the battle field in Gori Valley
-Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 4, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 4000 )
-Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 4, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
-Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 4, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 4000 )
+Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
 
 -- Russian helicopters deploying troops in the battle field in Gori Valley
 Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
@@ -390,11 +390,11 @@ Spawn_RU_MI26_West = SPAWN:New( 'RU MI-26@HOT-SAM Transport West' ):Limit( 2, 8 
 Spawn_RU_MI26_SAM_West = SPAWN:New( 'RU MI-26 SAM West' ):Limit( 8, 20 ):RandomizeTemplate( { "RU MI-26 SAM West 1", "RU MI-26 SAM West 2", "RU MI-26 SAM West 3" } ):RandomizeRoute( 1, 0, 2000 )
 
 -- Russian planes attacking ground units in Gori Valley and defending air space over the mountains.
-Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 4, 24 ):Schedule( 600, 0.25 ):RandomizeRoute( 1, 1, 200 )
+Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 4, 24 ):Schedule( 300, 0.25 ):RandomizeRoute( 1, 1, 200 )
 Spawn_RU_SU27 = SPAWN:New( 'RU SU-27@RAMP-Air Support East' ):Limit( 4, 24 ):Schedule( 600, 0.3 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 4, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_MIG31_Intercept = SPAWN:New( 'RU MIG-31@RAMP-Intercept' ):Limit( 4, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_SU24M_Bomb_Gori = SPAWN:New( 'RU SU-24M@RAMP-Bomb Gori' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
+Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
+Spawn_RU_MIG31_Intercept = SPAWN:New( 'RU MIG-31@RAMP-Intercept' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
+Spawn_RU_SU24M_Bomb_Gori = SPAWN:New( 'RU SU-24M@RAMP-Bomb Gori' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
 
 -- Russian planes escorting the SU25T attack forces
 Spawn_RU_Escort1 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 1' ):RandomizeRoute( 1, 1, 2000 ):Limit( 2, 12 )
@@ -417,21 +417,21 @@ Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Midd
 Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 2, 16 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
 Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 2, 16 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
 
-Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 8, 40 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
+Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 4, 40 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
 
 
 -- NATO helicopters engaging in the battle field.
-Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 4, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 2, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 )
 
 
-Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 4, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 2, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 )
 
 -- NATO planes attacking Russian ground units and defending airspace
-Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 4, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
-Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 4, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
-Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 4, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown()
-Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 )
-Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 4, 6 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
+Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 2, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
+Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 2, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
+Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 2, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown()
+Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 )
+Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 6 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
 
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
