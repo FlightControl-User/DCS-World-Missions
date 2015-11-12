@@ -1,0 +1,26 @@
+Hi Grimes and Co,
+
+You asked me to be more specific, well, find the following test results.
+
+I've made test cases with 3 helicopters, in 3 battle field scenarios, testing 3 different engagement types for each helicopter type.
+
+Helicopters:
+- KA-50
+- MI-24V
+- MI-28N
+
+Battle Scenarios:
+- Tanks Activated, SAMs not activated, Not moving.
+- Tanks Activated, SAMs activated, Not moving.
+- Tanks Activated, SAMs activated, moving.
+
+Engagement Types:
+- Weapons Free, Passive Defense
+- Weapons Free, Allow Abort Mission
+- Designated Only, Allow Abort Mission
+
+For each combination, find below the test results table. The results document:
+- Effectivity (+++ = very good, --- = very bad)
+- Missiles firec = How many missiles were fired in 10 minutes of flight
+- Time and Frequency = How long till firing first missile, and how frequent missiles were fired.
+- Notes = Explanation of a few more details.
