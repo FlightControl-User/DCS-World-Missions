@@ -18,7 +18,7 @@ Include.File( "CleanUp" )
 
 do -- USA destroy air defenses
 
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy SA-10', 'Primary', 'Destroy the enemy SA-10 batteries at Anapa airport. Once the SA-10 batteries are out, USA infantry forces can progress to Anapa from the north, and the airbase can be finally captured', 'NATO'  )
+	local Mission = MISSION:New( 'Destroy SA-10', 'Primary', 'Destroy the enemy SA-10 batteries at Anapa airport. Once the SA-10 batteries are out, USA infantry forces can progress to Anapa from the north, and the airbase can be finally captured', 'NATO'  )
 
 	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 2' ) )
@@ -31,11 +31,11 @@ do -- USA destroy air defenses
 	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 3' ) )
 	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 4' ) )
 
-	local DestroyGroupsTask = DESTROY_RADARS_TASK:New( { 'Russia SA-10 Battery Array' } ) 
+	local DestroyGroupsTask = DESTROYRADARSTASK:New( { 'Russia SA-10 Battery Array' } ) 
 	DestroyGroupsTask:SetGoalTotal( 2 )
 	Mission:AddTask( DestroyGroupsTask, 1 )
 
-
+	MISSIONSCHEDULER.AddMission( Mission )
 
 end
 
@@ -43,7 +43,7 @@ end
 
 do -- USA destroy Su-34 ship attack forces
 
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy Su-34 Ship Attack', 'Secondary', 'Su-34 planes are approaching from the east. They pose an enormous threat to our fleet. Destroy them before they engage anti-radar weapons to destroy our carrier and ships!', 'NATO'  )
+	local Mission = MISSION:New( 'Destroy Su-34 Ship Attack', 'Secondary', 'Su-34 planes are approaching from the east. They pose an enormous threat to our fleet. Destroy them before they engage anti-radar weapons to destroy our carrier and ships!', 'NATO'  )
 
 	Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 2' ) )
@@ -52,17 +52,19 @@ do -- USA destroy Su-34 ship attack forces
 	Mission:AddClient( CLIENT:New( 'TF2 US F-15C@AIR Destroy SU-34 5' ) )
 	Mission:AddClient( CLIENT:New( 'TF2 US F-15C@AIR Destroy SU-34 6' ) )
 
-	local DestroyGroupsTask = DESTROY_GROUPS_TASK:New( 'anti ship air defenses', 'Su-34 squadrons', { 
+	local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'anti ship air defenses', 'Su-34 squadrons', { 
 		'TF1 RU Su-34 Krymsk@AI - Attack Ships' } 
 	)
 
 	DestroyGroupsTask:SetGoalTotal( 5 )
 	Mission:AddTask( DestroyGroupsTask, 1 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
 
 end
 
 do -- NATO destroy SA-6 / SA-11 DEFENSES TO ANAPA
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy SAMs', 'Operational', 'Destroy the Russian mobile SAM sites between Gudauata and Anapa. Their elimination will ease our F-15C, A-10A and A-10C airstrikes and air attack from Gudauata.', 'NATO'  )
+	local Mission = MISSION:New( 'Destroy SAMs', 'Operational', 'Destroy the Russian mobile SAM sites between Gudauata and Anapa. Their elimination will ease our F-15C, A-10A and A-10C airstrikes and air attack from Gudauata.', 'NATO'  )
 
 	Mission:AddClient( CLIENT:New( 'TF3 US A-10A@HOT Destroy SA-6/11 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF3 US A-10A@HOT Destroy SA-6/11 2' ) )
@@ -79,10 +81,12 @@ do -- NATO destroy SA-6 / SA-11 DEFENSES TO ANAPA
 	Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@AIR Destroy SA-6/11 5' ) )
 	Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@AIR Destroy SA-6/11 6' ) )
 
-	local DestroyGroupRadarsTask = DESTROY_UNIT_TYPES_TASK:New( 'SAM sites', 'Kub 1S91 and Buk SR 9S18M1 search radars', { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' }, { 'Kub 1S91 str', 'SA-11 Buk SR 9S18M1' } )
+	local DestroyGroupRadarsTask = DESTROYUNITTYPESTASK:New( 'SAM sites', 'Kub 1S91 and Buk SR 9S18M1 search radars', { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' }, { 'Kub 1S91 str', 'SA-11 Buk SR 9S18M1' } )
 	
 	DestroyGroupRadarsTask:SetGoalTotal( 18 )
 	Mission:AddTask( DestroyGroupRadarsTask, 1 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
 	
 end
 
@@ -117,8 +121,8 @@ DefenseActivation = {
 		end
 	end
 	
-	local Mission = MISSIONSCHEDULER.AddMission( 'Activate Air Defenses', 'Operational', 'Transport troops from the "Gamma" control center to the battle zone.', 'NATO' )
-	Mission:AddGoal( ActivateDefenses )
+	local Mission = MISSION:New( 'Activate Air Defenses', 'Operational', 'Transport troops from the "Gamma" control center to the battle zone.', 'NATO' )
+	Mission:AddGoalFunction( ActivateDefenses )
 	
 	local Client
 	
@@ -138,23 +142,28 @@ DefenseActivation = {
 	Client:Transport()
 	Mission:AddClient( Client )
 
+	local EngineerNames = { "Charlie", "Fred", "Sven", "Prosper", "Godfried", "Adam", "Freddy", "Saskia", "Karolina", "Levente", "Urbanus", "Helena", "Teodora", "Timea", "John", "Ibrahim", "Christine", "Carl", "Monika" }
+
 	local CargoTable = {}
 	for CargoItem = 1, 8 do
-		Mission:AddCargo( 'Infantry ' .. CargoItem, _TransportType.INFANTRY, math.random( 70, 120 ) * 2, 'US Troop Barracks Gamma', 'US Invasion Infantry', 'US Troops Gamma' )
+		Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 2, 'US Troop Barracks Gamma', 'US Invasion Infantry', 'US Troops Gamma' )
 	end
 
 	-- Assign the Pickup Task
-	local PickupTask = PICKUPTASK:New( 'USA Troops Gamma pickup zone', _TransportType.INFANTRY, CLIENT.ONBOARDSIDE.RIGHT )
+	local PickupTask = PICKUPTASK:New( 'USA Troops Gamma pickup zone', CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.RIGHT )
 	PickupTask:AddSmokeRed( 'US Troop Barracks Gamma' )
 	Mission:AddTask( PickupTask, 1 )
 
 	local DeployZones = { "US Deployment Zone Alpha", "US Deployment Zone Beta", "US Deployment Zone Gamma" }
 	local DeployZonesSmokeUnits = { "US Deployment Zone Alpha Transport", "US Deployment Zone Beta Transport", "US Deployment Zone Gamma Transport" }	
 	-- Assign the Deploy Task
-	local DeployTask = DEPLOYTASK:New( DeployZones, _TransportType.INFANTRY )
+	local DeployTask = DEPLOYTASK:New( DeployZones, CARGO_TYPE.ENGINEERS )
 	DeployTask:AddSmokeRed( DeployZonesSmokeUnits )
 	DeployTask:SetGoalTotal( 3 )
 	Mission:AddTask( DeployTask, 2 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
+	
 end
 
 
@@ -166,21 +175,23 @@ do
 end
 
 do -- Russia destroy northern USA ship
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy Ships', 'Primary', 'A large infantry invasion is progressing to Anapa from the North. USA infantry is being deployed by USA Navy helicopters unloading the ships. Destroy the ships further to the North. Beware of mobile SAMs and the ship defenses. Fly low and slow!', 'Russia'  )
+	local Mission = MISSION:New( 'Destroy Ships', 'Primary', 'A large infantry invasion is progressing to Anapa from the North. USA infantry is being deployed by USA Navy helicopters unloading the ships. Destroy the ships further to the North. Beware of mobile SAMs and the ship defenses. Fly low and slow!', 'Russia'  )
 
 	Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@HOT Northern Ships 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@HOT Northern Ships 2' ) )
 	Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@RAMP Northern Ships 3' ) )
 	Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@RAMP Northern Ships 4' ) )
 
-	local DestroyGroupsTask = DESTROY_GROUPS_TASK:New( 'infantry deploying ships', 'destroyers', { 'US Ship North' } )
+	local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'infantry deploying ships', 'destroyers', { 'US Ship North' } )
 	DestroyGroupsTask:SetGoalTotal( 3 )
 	Mission:AddTask( DestroyGroupsTask, 1 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
 	
 end
 
 do -- Russia destroy USA helicopter infantry landing forces
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy CH-53E helicopters', 'Tactical', 'The USA is deploying infantry forces with CH-53E helicopters. Destroy the helicoptes to prevent further unloading of USA infantry forces from the ships.', 'Russia'  )
+	local Mission = MISSION:New( 'Destroy CH-53E helicopters', 'Tactical', 'The USA is deploying infantry forces with CH-53E helicopters. Destroy the helicoptes to prevent further unloading of USA infantry forces from the ships.', 'Russia'  )
 
 	Mission:AddClient( CLIENT:New( 'TF2 RU MIG-29S@HOT Helicopters 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF2 RU MIG-29S@HOT Helicopters 2' ) )
@@ -195,14 +206,15 @@ do -- Russia destroy USA helicopter infantry landing forces
 	Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@RAMP Helicopters 3' ) )
 	Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@RAMP Helicopters 4' ) )
 
-	local DestroyGroupsTask = DESTROY_GROUPS_TASK:New( 'USA transport helicopters', 'helicopters', { 'US CH-53E Air AI - Infantry Transport' } )
+	local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'USA transport helicopters', 'helicopters', { 'US CH-53E Air AI - Infantry Transport' } )
 	DestroyGroupsTask:SetGoalTotal( 9 )
 	Mission:AddTask( DestroyGroupsTask, 1 )
-
+	
+	MISSIONSCHEDULER.AddMission( Mission )
 end
 
 do -- Stop the upcoming infantry
-	local Mission = MISSIONSCHEDULER.AddMission( 'Destroy Infantry', 'Operational', 'The USA is deploying infantry forces with CH-53E helicopters, which are progressing to Anapa. Defend our airbase from the upcoming USA infantry!', 'Russia'  )
+	local Mission = MISSION:New( 'Destroy Infantry', 'Operational', 'The USA is deploying infantry forces with CH-53E helicopters, which are progressing to Anapa. Defend our airbase from the upcoming USA infantry!', 'Russia'  )
 
 	Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@HOT Infantry 1' ) )
 	Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@HOT Infantry 2' ) )
@@ -217,13 +229,16 @@ do -- Stop the upcoming infantry
 	Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@RAMP Infantry 3' ) )
 	Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@RAMP Infantry 4' ) )
 	
-	local DestroyGroupsTask = DESTROY_GROUPS_TASK:New( 'USA Infantry', 'infantry vehicles', { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right' } )
+	local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'USA Infantry', 'infantry vehicles', { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right' } )
 	DestroyGroupsTask:SetGoalTotal( 30 )
 	Mission:AddTask( DestroyGroupsTask, 1 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
+	
 end
 
 do -- Russia Rescue workers from oil platforms
-	local Mission = MISSIONSCHEDULER.AddMission( 'Rescue oil rig workers', 'Operational', 'Russian workers are still on the Oil Rigs in the sea. Fly to the west and rescue them. They will use a red smoke signal when you approach the oil rigs. Note that we are not sure in which oil rig exactly the workers are. Search for the red smoke, fly to the oil rig, and rescue the workers by landing on the oil rig. Fly back to Gelend and land in the zone indicated by a red smoke signal. Good luck!', 'Russia' )
+	local Mission = MISSION:New( 'Rescue oil rig workers', 'Operational', 'Russian workers are still on the Oil Rigs in the sea. Fly to the west and rescue them. They will use a red smoke signal when you approach the oil rigs. Note that we are not sure in which oil rig exactly the workers are. Search for the red smoke, fly to the oil rig, and rescue the workers by landing on the oil rig. Fly back to Gelend and land in the zone indicated by a red smoke signal. Good luck!', 'Russia' )
 --	Mission:AddGoal( MissionGoal )
 	
 	local Client
@@ -246,20 +261,22 @@ do -- Russia Rescue workers from oil platforms
 
 	local CargoTable = {}
 	for CargoItem = 1, 2 do
-		Mission:AddCargo( 'Oil workers ' .. CargoItem, _TransportType.INFANTRY, math.random( 70, 120 ) * 2, nil, 'RU Oil Rig Workers', 'Oil Rig Workers Deployment #011' )
+		Mission:AddCargo( 'Oil workers ' .. CargoItem, CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 2, nil, 'RU Oil Rig Workers', 'Oil Rig Workers Deployment #011' )
 	end
 
 	-- Assign the Pickup Task
-	local PickupTask = PICKUPTASK:New( 'Oil Rig #011', _TransportType.INFANTRY, CLIENT.ONBOARDSIDE.FRONT )
+	local PickupTask = PICKUPTASK:New( 'Oil Rig #011', CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.FRONT )
 	PickupTask:AddSmokeRed( 'RU Oil Rig #011', 50 )
 	Mission:AddTask( PickupTask, 1 )
 
 	-- Assign the Deploy Task
-	local DeployTask = DEPLOYTASK:New( 'RU Anapa Rescue Workers', _TransportType.INFANTRY )
+	local DeployTask = DEPLOYTASK:New( 'RU Anapa Rescue Workers', CARGO_TYPE.ENGINEERS )
 	DeployTask:AddSmokeRed( 'RU Workers Rescue Vehicle' )
 	DeployTask:SetGoalTotal( 1 )
 	Mission:AddTask( DeployTask, 2 )
 
+	MISSIONSCHEDULER.AddMission( Mission )
+	
 end
 
 
@@ -272,48 +289,44 @@ end
 --MusicRegister( 'REC1', 'Heroes.ogg', 3 * 60 + 37 )
 
 
-MISSIONSCHEDULER.Start()
-MISSIONSCHEDULER.ReportMenu()
-MISSIONSCHEDULER.ReportMissionsFlash( 10 )
-
 -- RU Su-30
-SpawnRU_SU30 = SPAWN:New( 'RU SU-30@AI Patrol SAM Area' ):Schedule( 3, 30, 900, 0.4 ):RandomizeRoute( 1, 1, 6000 )
+SpawnRU_SU30 = SPAWN:New( 'RU SU-30@AI Patrol SAM Area' ):Limit( 3, 30 ):Schedule( 900, 0.4 ):RandomizeRoute( 1, 1, 6000 )
 
 -- FR Mirage
-SpawnFR_MIRAGE = SPAWN:New( 'TF3 FR MIRAGE 2000-5@AI CAP' ):Schedule( 2, 30, 900, 0.4 ):RandomizeRoute( 3, 1, 3000 )
+SpawnFR_MIRAGE = SPAWN:New( 'TF3 FR MIRAGE 2000-5@AI CAP' ):Limit( 2, 30 ):Schedule( 900, 0.4 ):RandomizeRoute( 3, 1, 3000 )
 
 -- RU KA-50 Defense 1 AI #
-SpawnRU_KA50 = SPAWN:New( 'TF3 RU KA-50@AI Ground Defense' ):Schedule( 1, 10, 600, 0.4 ):RandomizeRoute( 1, 1, 3000 )
+SpawnRU_KA50 = SPAWN:New( 'TF3 RU KA-50@AI Ground Defense' ):Limit( 1, 10 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 3000 )
 
 -- RU MI-28N Defense 2 AI #
-SpawnRU_MI28N = SPAWN:New( 'TF3 RU MI-28N@AI Ground Defense' ):Schedule( 1, 20, 900, 0.4 ):RandomizeRoute( 1, 1, 3000 )
+SpawnRU_MI28N = SPAWN:New( 'TF3 RU MI-28N@AI Ground Defense' ):Limit( 1, 20 ):Schedule( 900, 0.4 ):RandomizeRoute( 1, 1, 3000 )
 
 -- RU Su-25T - AI Ground Defense
-SpawnRU_SU25T = SPAWN:New( 'TF3 RU SU-25T@AI Ground Defense' ):Schedule( 1, 5, 450, 0.4 ):RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
+SpawnRU_SU25T = SPAWN:New( 'TF3 RU SU-25T@AI Ground Defense' ):Limit( 1, 5 ):Schedule( 450, 0.4 ):RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
 
 -- US F-15C
-SpawnUS_F117A = SPAWN:New( 'TF2 US F-117A@AI PINPOINT' ):Schedule( 1, 5, 1200, 0.7 ):RandomizeRoute( 1, 1, 4000 )
+SpawnUS_F117A = SPAWN:New( 'TF2 US F-117A@AI PINPOINT' ):Limit( 1, 5 ):Schedule( 1200, 0.7 ):RandomizeRoute( 1, 1, 4000 )
 
 -- US FA-18C SEAD
-SpawnUS_FA18C_SEAD = SPAWN:New( 'TF1 US FA-18C@AI Destroy SA-10' ):Schedule( 1, 6, 900, 0.2 ):RandomizeRoute( 2, 1, 3000 )
+SpawnUS_FA18C_SEAD = SPAWN:New( 'TF1 US FA-18C@AI Destroy SA-10' ):Limit( 1, 6 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 1, 3000 )
 
 -- US FA-18C Air Defenses
-SpawnUS_FA18C_CAP = SPAWN:New( 'TF1 US FA-18C@AI Helicopter Escort' ):Schedule( 3, 16, 350, 0.2 ):RandomizeRoute( 2, 1, 3000 )
+SpawnUS_FA18C_CAP = SPAWN:New( 'TF1 US FA-18C@AI Helicopter Escort' ):Limit( 3, 16 ):Schedule( 350, 0.2 ):RandomizeRoute( 2, 1, 3000 )
 
 -- US A-10A
-SpawnUS_A10A = SPAWN:New( 'TF3 US A-10A@AI Destroy SA-6/11' ):Schedule( 2, 20, 600, 0.5 ):RandomizeRoute( 3, 1, 3000 )
+SpawnUS_A10A = SPAWN:New( 'TF3 US A-10A@AI Destroy SA-6/11' ):Limit( 2, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 3, 1, 3000 )
 
 -- GE SU-25T
-SpawnGE_SU25T = SPAWN:New( 'TF3 GE SU-25T@AI Destroy SA-6/11' ):Schedule( 1, 8, 30, 0.5 ):RandomizeRoute( 1, 1, 10000 )
+SpawnGE_SU25T = SPAWN:New( 'TF3 GE SU-25T@AI Destroy SA-6/11' ):Limit( 1, 8 ):Schedule( 30, 0.5 ):RandomizeRoute( 1, 1, 10000 )
 
 -- US AH-1W
-SpawnUS_AH1W = SPAWN:New( 'TF1 US AH-1W Farp AI - Attack Anapa' ):Schedule( 2, 20, 750, 0.3 ):RandomizeRoute( 2, 1, 6000 )
+SpawnUS_AH1W = SPAWN:New( 'TF1 US AH-1W Farp AI - Attack Anapa' ):Limit( 2, 20 ):Schedule( 750, 0.3 ):RandomizeRoute( 2, 1, 6000 )
 
 -- BE KA-50
-SpawnBE_KA50 = SPAWN:New( 'TF1 BE KA-50@AI Attack AA' ):Schedule( 2, 20, 900, 0.6 ):RandomizeRoute( 3, 1, 3000 )
+SpawnBE_KA50 = SPAWN:New( 'TF1 BE KA-50@AI Attack AA' ):Limit( 2, 20 ):Schedule( 900, 0.6 ):RandomizeRoute( 3, 1, 3000 )
 
 -- RU Su-34 - AI Ship Attack
-SpawnRU_SU34 = SPAWN:New( 'TF1 RU Su-34 Krymsk@AI - Attack Ships' ):Schedule( 2, 3, 1800, 0.4 ):SpawnUncontrolled():RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
+SpawnRU_SU34 = SPAWN:New( 'TF1 RU Su-34 Krymsk@AI - Attack Ships' ):Limit( 2, 3 ):Schedule( 1800, 0.4 ):SpawnUncontrolled():RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
 
 --- Infantry forces spawned from a Carrier
 SpawnCH53ELeft  = SPAWN:New( 'US CH-53E Infantry Left' ):RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } ):RandomizeRoute( 1, 3, 2000 )
@@ -335,5 +348,10 @@ SEAD_Ship_Defenses = SEAD:New( { 'US Ship North', 'US Ship West' } )
 
 MOVEMENT_CH53E = MOVEMENT:New( { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right', 'US CH-53E Infantry West' }, 20 )
 MOVEMENT_MI26 = MOVEMENT:New( { 'RU MI-26 Infantry' }, 10 )
+
+-- MISSION SCHEDULER STARTUP
+MISSIONSCHEDULER.Start()
+MISSIONSCHEDULER.ReportMenu()
+MISSIONSCHEDULER.ReportMissionsFlash( 120 )
 
 env.info( "Anapa Airbase.lua loaded." )
