@@ -402,9 +402,9 @@ Spawn_RU_Escort2 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 2' ):Randomiz
 
 -- Russian ground troops attacking Gori Valley
 Spawn_RU_Troops = { 'RU Attack Gori 1', 'RU Attack Gori 2', 'RU Attack Gori 3', 'RU Attack Gori 4', 'RU Attack Gori 5', 'RU Attack Gori 6', 'RU Attack Gori 7' }
-Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 16, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 4000 )
-Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 16, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
-Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 16, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
+Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 4000 )
+Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
+Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
 Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 30 )
@@ -439,9 +439,9 @@ Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):Ran
 
 -- NATO Tank Platoons invading Tskinvali
 Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
-Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' ):Limit( 16, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
-Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 16, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
-Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 16, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
