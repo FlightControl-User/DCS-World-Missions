@@ -407,7 +407,7 @@ Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 10, 150 ):S
 Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 30 )
+Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 20 )
 
 -- BLUE COALITION UNITS
 
@@ -431,7 +431,8 @@ Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 2, 20 
 Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 2, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
 Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 2, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown()
 Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 )
-Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 6 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
+Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
+Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 2, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
 
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
@@ -450,7 +451,7 @@ Spawn_US_Platoon_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):Sc
 Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 2000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 30 )
+Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 20 )
 
 
 
