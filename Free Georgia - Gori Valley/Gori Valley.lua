@@ -463,7 +463,7 @@ SEAD_Patriot_Defenses = SEAD:New( { 'US SAM Patriot', 'US Tank Platoon', 'US CH-
 
 
 --- Keep some airports clean
-'CLEANUP_Airports = CLEANUP:New( { 'CLEAN Tbilisi', 'CLEAN Vaziani', 'CLEAN Kutaisi', 'CLEAN Sloganlug', 'CLEAN Beslan', 'CLEAN Mozdok', 'CLEAN Nalchik' }, 0.5 )
+--CLEANUP_Airports = CLEANUP:New( { 'CLEAN Tbilisi', 'CLEAN Vaziani', 'CLEAN Kutaisi', 'CLEAN Sloganlug', 'CLEAN Beslan', 'CLEAN Mozdok', 'CLEAN Nalchik' }, 1 )
 
 
 -- MISSION SCHEDULER STARTUP
