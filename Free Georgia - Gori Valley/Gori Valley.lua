@@ -55,23 +55,23 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 		end
 	end
 
-	local Mission = MISSION:New( 'Russia Transport Troops SA-6', 'Operational', 'Transport troops from the control center to one of the SA-6 SAM sites to activate their operation.', 'Russia' )
-	Mission:AddGoalFunction( DeploySA6TroopsGoal )
+	local Mission_Red_SA6 = MISSION:New( 'Russia Transport Troops SA-6', 'Operational', 'Transport troops from the control center to one of the SA-6 SAM sites to activate their operation.', 'Russia' )
+	Mission_Red_SA6:AddGoalFunction( DeploySA6TroopsGoal )
 
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 1' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 3' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 2' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 4' ):Transport() )
+	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 1' ):Transport() )
+	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 3' ):Transport() )
+	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 2' ):Transport() )
+	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 4' ):Transport() )
 	
 	local EngineerNames = { "Абрам", "Адам", "Адриан", "Афанасий", "Афанасий", "Агафья", "Агата", "Аглая", "Агнесса", "Аграфена", "Акилина", "Аким", "Аксинья", "Акулина", "Альберт", "Альбина", "Александр", "Александра", "Александрина", "Алексей", "Александра", "Алексей", "Алиса", "Алла", "Аллочка", "Алёна", "Алёша", "Анастас", "Анастасия", "Анастасий", "Анастасия", "Анатолий", "Андрей", "Андрей", "Анфиса", "Ангела", "Ангелина", "Анисим", "Анна", "Аннушка", "Антон", "Антонина", "Анушка", "Аня", "Анжела", "Анжелина", "Аполлинария", "Арина", "Ариша", "Аристарх", "Аркадий", "Аркадий", "Аркадий", "Архип", "Арсений", "Арсений", "Артём", "Артемий", "Артур", "Артём", "Ася", "Авдотья", "Август", "Авксентий", "Бенедикт", "Богдан", "Богдана", "Болеслав", "Болеслава", "Борислав", "Борислава", "Бронислав", "Бронислава", "Давид", "Демьян", "Денис", "Диана", "Димитрий", "Дмитрий", "Дмитрий", "Дмитрий", "Дмитрий", "Доминика", "Дорофей", "Дорофей", "Дуня", "Дуняша", "Эдуард", "Екатерина", "Елизавета", "Ермолай", "Есфирь", "Ева", "Евдокия", "Евгений", "Евгений", "Евгения", "Евгений", "Евпраксия", "Фаддей", "Фаддей", "Фаина", "Федор", "Федора", "Федот", "Федя", "Феликс", "Феодор", "Феодора", "Феодосий", "Феофан", "Феофил", "Феофилакт", "Ферапонт", "Филат", "Филипп", "Филиппа", "Фима", "Фока", "Фома", "Фёдор", "Гала", "Галина", "Галя", "Гавриил", "Гавриила", "Геннадий", "Геннадий", "Геннадия", "Геннадий", "Геня", "Георгий", "Георгий", "Герасим", "Гермоген", "Григорий", "Григорий", "Григорий", "Гриша", "Груша", "Игнатий", "Игорь", "Иларий", "Илья", "Илларион", "Инга", "Инна", "Иннокентий", "Иннокентий", "Иосиф", "Ипатий", "Ипатий", "Ипполит", "Ираклий", "Ирина", "Ириней", "Ириней", "Иринушка", "Исаак", "Исай", "Исидор", "Исидора", "Иван", "Иванна", "Екатерина", "Карина", "Карп", "Катенька", "Катерина", "Катя", "Катя", "Казимир", "Харитон", "Кирилл", "Клара", "Клава", "Клавдия", "Клим", "Климент", "Коля", "Константин", "Кристина", "Ксения", "Кузьма", "Лана", "Лариса", "Лаврентий", "Лаврентий", "Лаврентий", "Лена", "Леонид", "Леонтий", "Леонтий", "Леонтий", "Лидия", "Лидочка", "Лилия", "Лилия", "Лилия", "Люба", "Лиза", "Лизавета", "Людмила", "Людмила", "Лука", "Лёша", "Лёв", "Люба", "Любочка", "Любовь", "Людмила", "Макар", "Макарий", "Макарий", "Макс", "Максим", "Максимильян", "Марфа", "Маргарита", "Марина", "Мария", "Марк", "Мартин", "Марья", "Марьяна", "Маша", "Матвей", "Матрона", "Матрёна", "Матвей", "Матвей", "Максим", "Мечислав", "Мефодий", "Мэлор", "Михаил", "Михаил", "Милан", "Милена", "Мирослав", "Мирослава", "Митрофан", "Митя", "Модест", "Моисей", "Мотя", "Мстислав", "Надежда", "Надежда", "Настасья", "Настасья", "Настя", "Ната", "Натали", "Наталия", "Наталья", "Наташа", "Наум", "Назар", "Назарий", "Нестор", "Никифор", "Никодим", "Николай", "Николай", "Никон", "Нинель", "Нонна", "Оксана", "Олег", "Ольга", "Оля", "Онисим", "Осип", "Оксана", "Панкратий", "Панкратий", "Патя", "Павел", "Пелагея", "Пелагия", "Петя", "Петя", "Платон", "Полина", "Прасковья", "Прасковья", "Прохор", "Прокопий", "Прокопий", "Пётр", "Рада", "Радимир", "Радомир", "Радослав", "Радослава", "Ренат", "Роберт", "Родион", "Родя", "Роксана", "Ролан", "Роман", "Ростислав", "Роза", "Розалия", "Рудольф", "Руфина", "Рюрик", "Руслан", "Сабина", "Самуил", "Саша", "Савелий", "Савелий", "Савелий", "Савва", "Селена", "Семён", "Семён", "Серафим", "Серафима", "Сергей", "Сергей", "Сергей", "Севастьян", "Севастьян", "Слава", "Снежана", "София", "Софья", "Соня", "Спартак", "Станимир", "Станислав", "Станислава", "Стася", "Степан", "Сусанна", "Света", "Светлана", "Святополк", "Святослав", "Сюзанна", "Таисия", "Тамара", "Таня", "Тарас", "Таша", "Татьяна", "Татьяна", "Терентий", "Терентий", "Тихон", "Тимофей", "Тимофей", "Тимур", "Тит", "Цецилия", "Ульяна", "Устинья", "Вадик", "Вадим", "Вадимир", "Валентин", "Валентина", "Валерий", "Валериан", "Валерий", "Валерия", "Валерий", "Ваня", "Варфоломей", "Варфоломей", "Варлаам", "Варлам", "Варнава", "Варвара", "Варя", "Василий", "Василиса", "Василий", "Василий", "Васька", "Василий", "Вася", "Венера", "Вениамин", "Вениамин", "Верочка", "Вероника", "Веруша", "Викентий", "Викентий", "Виктор", "Виктория", "Вилен", "Виолетта", "Виссарион", "Виталий", "Виталий", "Виталия", "Виталий", "Витя", "Влад", "Владилен", "Владимир", "Владислав", "Владислава", "Владлен", "Власий", "Власий", "Володя", "Воля", "Вова", "Всеволод", "Вячеслав", "Яким", "Яков", "Яна", "Ярослав", "Ярослава", "Яша", "Ефим", "Ефрем", "Егор", "Екатерина", "Елена", "Елизавета", "Емельян", "Ермолай", "Есфирь", "Ева", "Евдокия", "Евгений", "Евгений", "Евгения", "Евгений", "Евпраксия", "Юлия", "Юлиан", "Юлиана", "Юлианна", "Юлий", "Юлия", "Юра", "Юрий", "Юстина", "Захар", "Жанна", "Жанночка", "Женя", "Зина", "Зинаида", "Зиновий", "Зиновия", "Зоя" }
 
 	local CargoTable = {}
 	for CargoItem = 1, 5 do
-		Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Alpha Control Center', 'RU Infantry Alpha', 'Russia Alpha Pickup Zone' )
+		Mission_Red_SA6:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Alpha Control Center', 'RU Infantry Alpha', 'Russia Alpha Pickup Zone' )
 	end
 
 	for CargoItem = 1, 5 do
-		Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Beta Control Center', 'RU Infantry Beta', 'Russia Beta Pickup Zone' )
+		Mission_Red_SA6:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Beta Control Center', 'RU Infantry Beta', 'Russia Beta Pickup Zone' )
 	end
 
 	-- Assign the Pickup Task
@@ -80,7 +80,7 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	
 	local PickupTask = PICKUPTASK:New( PickupZones, CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.LEFT )
 	PickupTask:AddSmokeRed( PickupSignalUnits  )
-	Mission:AddTask( PickupTask, 1 )
+	Mission_Red_SA6:AddTask( PickupTask, 1 )
 
 	-- Assign the Deploy Task
 	local SA6ActivationZones = { "RU Activation SA-6 Moskva", "RU Activation SA-6 Niznij", "RU Activation SA-6 Yaroslavl" }
@@ -90,9 +90,9 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	DeployTask:AddSmokeRed( SA6ActivationZonesSmokeUnits )
 	DeployTask:SetGoalTotal( 3 )
 	DeployTask:SetGoalTotal( 3, "SA6 activated" )
-	Mission:AddTask( DeployTask, 2 )
+	Mission_Red_SA6:AddTask( DeployTask, 2 )
 	
-	MISSIONSCHEDULER.AddMission( Mission )
+	MISSIONSCHEDULER.AddMission( Mission_Red_SA6 )
 	
 end
 
@@ -375,26 +375,24 @@ end
 -- CCCP COALITION UNITS
 
 -- Russian helicopters engaging the battle field in Gori Valley
-Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 4000 )
-Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
-Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 2, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 4000 )
+Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
 
 -- Russian helicopters deploying troops in the battle field in Gori Valley
 Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
-Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 6, 20 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
+Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
 
-Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
-Spawn_RU_MI26_SAM_East = SPAWN:New( 'RU MI-26 SAM East' ):Limit( 8, 20 ):RandomizeTemplate( { "RU MI-26 SAM East 1", "RU MI-26 SAM East 2", "RU MI-26 SAM East 3" } ):RandomizeRoute( 1, 0, 2000 )
+Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
+Spawn_RU_MI26_SAM_East = SPAWN:New( 'RU MI-26 SAM East' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM East 1", "RU MI-26 SAM East 2", "RU MI-26 SAM East 3" } ):RandomizeRoute( 1, 0, 2000 )
 
-Spawn_RU_MI26_West = SPAWN:New( 'RU MI-26@HOT-SAM Transport West' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
-Spawn_RU_MI26_SAM_West = SPAWN:New( 'RU MI-26 SAM West' ):Limit( 8, 20 ):RandomizeTemplate( { "RU MI-26 SAM West 1", "RU MI-26 SAM West 2", "RU MI-26 SAM West 3" } ):RandomizeRoute( 1, 0, 2000 )
+Spawn_RU_MI26_West = SPAWN:New( 'RU MI-26@HOT-SAM Transport West' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
+Spawn_RU_MI26_SAM_West = SPAWN:New( 'RU MI-26 SAM West' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM West 1", "RU MI-26 SAM West 2", "RU MI-26 SAM West 3" } ):RandomizeRoute( 1, 0, 2000 )
 
 -- Russian planes attacking ground units in Gori Valley and defending air space over the mountains.
-Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 4, 24 ):Schedule( 300, 0.25 ):RandomizeRoute( 1, 1, 200 )
-Spawn_RU_SU27 = SPAWN:New( 'RU SU-27@RAMP-Air Support East' ):Limit( 4, 24 ):Schedule( 600, 0.3 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_MIG31_Intercept = SPAWN:New( 'RU MIG-31@RAMP-Intercept' ):Limit( 3, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_SU24M_Bomb_Gori = SPAWN:New( 'RU SU-24M@RAMP-Bomb Gori' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
+Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 3, 24 ):Schedule( 300, 0.25 ):RandomizeRoute( 1, 1, 200 )
+Spawn_RU_SU27 = SPAWN:New( 'RU SU-27@RAMP-Air Support East' ):Limit( 2, 24 ):Schedule( 600, 0.3 ):RandomizeRoute( 1, 1, 8000 )
+Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 8000 )
 
 -- Russian planes escorting the SU25T attack forces
 Spawn_RU_Escort1 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 1' ):RandomizeRoute( 1, 1, 2000 ):Limit( 2, 12 )
@@ -402,37 +400,37 @@ Spawn_RU_Escort2 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 2' ):Randomiz
 
 -- Russian ground troops attacking Gori Valley
 Spawn_RU_Troops = { 'RU Attack Gori 1', 'RU Attack Gori 2', 'RU Attack Gori 3', 'RU Attack Gori 4', 'RU Attack Gori 5', 'RU Attack Gori 6', 'RU Attack Gori 7' }
-Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 4000 )
-Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
-Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 10, 150 ):Schedule( 180, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
+Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 4, 150 ):Schedule( 300, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 4000 )
+Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 4, 150 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
+Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 4, 150 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 4000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 20 )
+Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 30 )
 
 -- BLUE COALITION UNITS
 
 
 
 -- NATO helicopters deploying troops within the battle field.
-Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 2, 16 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
-Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 2, 16 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
+Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
+Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8	 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
 
 Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 4, 40 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
 
 
 -- NATO helicopters engaging in the battle field.
-Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 2, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 1, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 )
 
 
-Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 2, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 1, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 )
 
 -- NATO planes attacking Russian ground units and defending airspace
 Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 2, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
-Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 2, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
+Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 1, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
 Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 2, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown()
-Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 )
-Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
-Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 2, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
+Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 1, 24 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 6000 )
+Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 1, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
+Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 1, 10 ):Schedule( 300, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
 
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
@@ -440,18 +438,18 @@ Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):Ran
 
 -- NATO Tank Platoons invading Tskinvali
 Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
-Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
-Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
-Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 10, 150 ):Schedule( 200, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' ):Limit( 4, 150 ):Schedule( 300, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 4, 150 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
+Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 4, 150 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1500 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
-Spawn_US_Platoon_Left = SPAWN:New( 'US Patriot Defenses 1' ):Limit( 4, 30 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 2000 )
-Spawn_US_Platoon_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 2000 )
-Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):Schedule( 250, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 2000 )
+Spawn_US_Platoon_Left = SPAWN:New( 'US Patriot Defenses 1' ):Limit( 1, 30 ):Schedule( 550, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 2000 )
+Spawn_US_Platoon_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 1, 30 ):Schedule( 500, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 2000 )
+Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 1, 30 ):Schedule( 550, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 2000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 20 )
+Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 30 )
 
 
 
