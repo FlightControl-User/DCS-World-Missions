@@ -400,9 +400,9 @@ Spawn_RU_Escort2 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 2' ):Randomiz
 
 -- Russian ground troops attacking Gori Valley
 Spawn_RU_Troops = { 'RU Attack Gori 1', 'RU Attack Gori 2', 'RU Attack Gori 3', 'RU Attack Gori 4', 'RU Attack Gori 5', 'RU Attack Gori 6', 'RU Attack Gori 7', 'RU Attack Gori 8', 'RU Attack Gori 9', 'RU Attack Gori 10' }
-Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 24, 150 ):Schedule( 150, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 1000 )
-Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 24, 150 ):Schedule( 180, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
-Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 24, 150 ):Schedule( 180, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
+Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 24, 150 ):Schedule( 300, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 1000 )
+Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 24, 150 ):Schedule( 250, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
+Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 24, 150 ):Schedule( 250, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
 Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 40 )
