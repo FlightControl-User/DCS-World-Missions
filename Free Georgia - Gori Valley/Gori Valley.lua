@@ -137,10 +137,10 @@ end
 do -- CCCP - The Rescue of the Russian General
 	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal behind Gori. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'Russia'  )
 
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 1' ) )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2' ) )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 3' ) )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 4' ) )
+	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 3' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 4' ):Transport() )
 
 	Mission:AddCargo( 'Russian General', CARGO_TYPE.INFANTRY, math.random( 70, 120 ), nil, 'Russian General', 'General Hiding Zone' )
 
@@ -166,15 +166,16 @@ end
 do -- CCCP - Deliver packages to secret agent
 	local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'Russia'  )
 
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):AddCargo( 'Secret Package 1', '', CARGO_TYPE.PACKAGE, math.random( 30, 50 ) ) )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):AddCargo( 'Secret Package 2', '', CARGO_TYPE.PACKAGE, math.random( 30, 50 ) ) )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):AddCargo( 'Secret Package 3', '', CARGO_TYPE.PACKAGE, math.random( 30, 50 ) ) )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):AddCargo( 'Secret Package 4', '', CARGO_TYPE.PACKAGE, math.random( 30, 50 ) ) )
-
 	Mission:AddCargo( 'Secret Package 1', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
 	Mission:AddCargo( 'Secret Package 2', CARGO_TYPE.PACKAGE, math.random( 100, 300 ), 'Russia Secret Agent', '', '' )
 	Mission:AddCargo( 'Secret Package 3', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
 	Mission:AddCargo( 'Secret Package 4', CARGO_TYPE.PACKAGE, math.random( 100, 300 ), 'Russia Secret Agent', '', '' )
+
+	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):InitCargo( 'Secret Package 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):InitCargo( 'Secret Package 2' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):InitCargo( 'Secret Package 3' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):InitCargo( 'Secret Package 4' ):Transport() )
+
 	
 	-- Assign the Deploy Tasks
 	local DeployTask = DEPLOYTASK:New( 'Russia Secret Drop Zone', CARGO_TYPE.PACKAGE )
@@ -340,10 +341,10 @@ end
 do -- NATO - Rescue secret agent from the woods
 	local Mission = MISSION:New( 'Rescue secret agent', 'Tactical', 'In order to be in full control of the situation, we need you to rescue a secret agent from the woods behind enemy lines. Avoid the Russian defenses and rescue the agent. Keep south until Khasuri, and keep your eyes open for any SAM presence. The agent is located at waypoint 4 on your kneeboard.', 'NATO'  )
 
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1' ) )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2' ) )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 3' ) )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 4' ) )
+	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 3' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 4' ):Transport() )
 
 	Mission:AddClient( CLIENT:New( 'DE KA-50*HOT-Air Support 1' ) )
 	Mission:AddClient( CLIENT:New( 'DE KA-50*HOT-Air Support 2' ) )
@@ -405,7 +406,7 @@ Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 24, 150 ):S
 Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 24, 150 ):Schedule( 250, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 40 )
+--Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 40 )
 
 -- BLUE COALITION UNITS
 
@@ -449,7 +450,7 @@ Spawn_US_Platoon_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):Sc
 Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):Schedule( 600, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 1000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
-Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 40 )
+--Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 40 )
 
 
 
