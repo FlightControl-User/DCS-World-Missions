@@ -141,11 +141,12 @@ do -- CCCP - The Rescue of the Russian General
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 3' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 4' ):Transport() )
-
-	Mission:AddCargo( 'Russian General', CARGO_TYPE.INFANTRY, math.random( 70, 120 ), nil, 'Russian General', 'General Hiding Zone' )
+	
+	Russian_General = CARGO:New( 'Russian General', CARGO_TYPE.INFANTRY, math.random( 70, 120 ), nil, 'Russian General', 'General Hiding Zone' )
 
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'General Hiding Zone', CARGO_TYPE.INFANTRY, CLIENT.ONBOARDSIDE.RIGHT )
+	PickupTask:InitCargos( Russian_General )
 	PickupTask:AddFlareWhite( 'Russian General' )
 	Mission:AddTask( PickupTask, 1 ) 
 
@@ -166,19 +167,20 @@ end
 do -- CCCP - Deliver packages to secret agent
 	local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'Russia'  )
 
-	Mission:AddCargo( 'Secret Package 1', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
-	Mission:AddCargo( 'Secret Package 2', CARGO_TYPE.PACKAGE, math.random( 100, 300 ), 'Russia Secret Agent', '', '' )
-	Mission:AddCargo( 'Secret Package 3', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
-	Mission:AddCargo( 'Secret Package 4', CARGO_TYPE.PACKAGE, math.random( 100, 300 ), 'Russia Secret Agent', '', '' )
+	CCCP_Secret_Package = CARGO:New( 'Secret Package', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
 
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):InitCargo( 'Secret Package 1' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):InitCargo( 'Secret Package 2' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):InitCargo( 'Secret Package 3' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):InitCargo( 'Secret Package 4' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):Transport() )
+	
+	Mission:AddCargo( CCCP_Secret_Package )
 
 	
 	-- Assign the Deploy Tasks
 	local DeployTask = DEPLOYTASK:New( 'Russia Secret Drop Zone', CARGO_TYPE.PACKAGE )
+	DeployTask:InitCargo( CCCP_Secret_Package )
+	DeployTask:LoadCargo( CCCP_Secret_Package )
 	DeployTask:AddSmokeWhite( 'Russia Secret Agent' )
 	DeployTask:SetGoalTotal( 1 )
 	Mission:AddTask( DeployTask, 1 )
