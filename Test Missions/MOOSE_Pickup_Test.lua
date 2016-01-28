@@ -69,7 +69,7 @@ do
 
 	Package_Pickup_Zone = CARGO_ZONE:New( 'Package Pickup Zone', 'DE Guard' ):GreenSmoke()
 
-	Cargo_Package = CARGO_PACKAGE:New( 'Letter', 'Letter to Command', 0.1 )
+	Cargo_Package = CARGO_PACKAGE:New( 'Letter', 'Letter to Command', 0.1, 'DE Guard' )
 	--Cargo_Goods = CARGO_STATIC:New( 'Goods', 20, 'Goods', 'Pickup Zone Goods', 'DE Collection Point' )
 	--Cargo_SlingLoad = CARGO_SLING:New( 'Basket', 40, 'Basket', 'Pickup Zone Sling Load', 'DE Cargo Guard' )
 
