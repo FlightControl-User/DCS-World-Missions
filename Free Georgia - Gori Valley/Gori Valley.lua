@@ -1,3 +1,21 @@
+
+--[[
+This is the Gori valley main mission lua file. 
+
+It contains:
+- the declaration of 8 missions, 4 for blue, 4 for red.
+- the declaration of the spawning units within the battle scene.
+- the declaration of SEAD defenses of the SAM units within the battle scene.
+- the declaration of movement monitoring to avoid a large CPU usage.
+
+Notes:
+- Due to several bugs related to CARGO, it is currently impossible to model correctly the sling-load logic.
+  I had to implement several workarounds to ensure that still a sling-load mission is possible to be working.
+  Problems that can occur are that sometimes the cargos will not be available, though they will be visible for the pilot...  
+
+--]]
+
+-- MOOSE include files.
 Include.File( "Mission" )
 Include.File( "Client" )
 Include.File( "DeployTask" )
@@ -13,19 +31,14 @@ Include.File( "Movement" )
 Include.File( "Sead" )
 Include.File( "CleanUp" )
 
-
--- Workaround due to CARGO bug introduced since DCS World 1.2.12...
--- Now we declare a structure gobally that is used in the state functions to check the cargo status...
-GE_CARGO = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-
--- CCCP MISSIONS
+-- MISSIONS PART:CCCP MISSIONS
 
 do -- CCCP Transport Mission to activate the SA-6 radar installations.
 
 	SA6Activation = { 
-		{ "RU SA-6 Kub Moskva", false },
-		{ "RU SA-6 Kub Niznij", false },
-		{ "RU SA-6 Kub Yaroslavl", false }
+		[ "RU Activation SA-6 Moskva" ] 	= { "RU SA-6 Kub Moskva", false },
+		[ "RU Activation SA-6 Niznij" ] 	= { "RU SA-6 Kub Niznij", false },
+		[ "RU Activation SA-6 Yaroslavl" ] 	= { "RU SA-6 Kub Yaroslavl", false }
 	}
 
 	function DeploySA6TroopsGoal( Mission, Client )
@@ -33,20 +46,22 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 
 
 		-- Check if the cargo is all deployed for mission success.
-		for CargoID, CargoData in pairs( Mission._Cargos ) do
-			trace.l( "", "DeploySA6TroopsGoal", CargoData.CargoGroupName )
-			if Group.getByName( CargoData.CargoGroupName ) then
+		for CargoID, CargoData in pairs( CARGOS ) do
+			if CargoData.CargoGroupName then
+				trace.l( "", "DeploySA6TroopsGoal", CargoData.CargoGroupName )
 				CargoGroup = Group.getByName( CargoData.CargoGroupName )
 				if CargoGroup then
 					-- Check if the group is ready to activate an SA-6.
-					local CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones ) -- The second task is the Deploytask to measure mission success upon
+					local CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones.LandingZoneNames ) -- The second task is the Deploytask to measure mission success upon
 					trace.l( "", "DeploySA6TroopsGoal", CurrentLandingZoneID )
 					if CurrentLandingZoneID then
 						if SA6Activation[CurrentLandingZoneID][2] == false then
 							trigger.action.setGroupAIOn( Group.getByName( SA6Activation[CurrentLandingZoneID][1] ) )
 							SA6Activation[CurrentLandingZoneID][2] = true
-							MessageToRed( "Mission Command: Message to all airborne units: we have another of our SA-6 air defense systems armed.", 60, "RED/SA6Defense" )
-							MessageToBlue( "Mission Command: Our satellite systems are detecting additional CCCP SA-6 air defense activities near Tskinvali. To all airborne units: Take care!!!", 60, "BLUE/SA6Defense" )
+							MESSAGE:New( "Message to all airborne units: we have another of our SA-6 air defense systems armed.", 
+										 "Mission Command:", 60, "RED/SA6Defense" ):ToRed()
+							MESSAGE:New( "Our satellite systems are detecting additional CCCP SA-6 air defense activities near Tskinvali. To all airborne units: Take care!!!", 
+							             "Mission Command:", 60, "BLUE/SA6Defense" ):ToBlue()
 							Mission:GetTask( 2 ):AddGoalCompletion( "SA6 activated", SA6Activation[CurrentLandingZoneID][1], 1 ) -- Register SA6 activation as part of mission goal.
 						end
 					end
@@ -55,7 +70,7 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 		end
 	end
 
-	local Mission_Red_SA6 = MISSION:New( 'Russia Transport Troops SA-6', 'Operational', 'Transport troops from the control center to one of the SA-6 SAM sites to activate their operation.', 'Russia' )
+	local Mission_Red_SA6 = MISSION:New( 'Russia Transport Troops SA-6', 'Operational', 'Transport troops from the control center to one of the SA-6 SAM sites to activate their operation.', 'CCCP' )
 	Mission_Red_SA6:AddGoalFunction( DeploySA6TroopsGoal )
 
 	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 1' ):Transport() )
@@ -63,31 +78,46 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Deploy Troops 2' ):Transport() )
 	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 4' ):Transport() )
 	
-	local EngineerNames = { "Абрам", "Адам", "Адриан", "Афанасий", "Афанасий", "Агафья", "Агата", "Аглая", "Агнесса", "Аграфена", "Акилина", "Аким", "Аксинья", "Акулина", "Альберт", "Альбина", "Александр", "Александра", "Александрина", "Алексей", "Александра", "Алексей", "Алиса", "Алла", "Аллочка", "Алёна", "Алёша", "Анастас", "Анастасия", "Анастасий", "Анастасия", "Анатолий", "Андрей", "Андрей", "Анфиса", "Ангела", "Ангелина", "Анисим", "Анна", "Аннушка", "Антон", "Антонина", "Анушка", "Аня", "Анжела", "Анжелина", "Аполлинария", "Арина", "Ариша", "Аристарх", "Аркадий", "Аркадий", "Аркадий", "Архип", "Арсений", "Арсений", "Артём", "Артемий", "Артур", "Артём", "Ася", "Авдотья", "Август", "Авксентий", "Бенедикт", "Богдан", "Богдана", "Болеслав", "Болеслава", "Борислав", "Борислава", "Бронислав", "Бронислава", "Давид", "Демьян", "Денис", "Диана", "Димитрий", "Дмитрий", "Дмитрий", "Дмитрий", "Дмитрий", "Доминика", "Дорофей", "Дорофей", "Дуня", "Дуняша", "Эдуард", "Екатерина", "Елизавета", "Ермолай", "Есфирь", "Ева", "Евдокия", "Евгений", "Евгений", "Евгения", "Евгений", "Евпраксия", "Фаддей", "Фаддей", "Фаина", "Федор", "Федора", "Федот", "Федя", "Феликс", "Феодор", "Феодора", "Феодосий", "Феофан", "Феофил", "Феофилакт", "Ферапонт", "Филат", "Филипп", "Филиппа", "Фима", "Фока", "Фома", "Фёдор", "Гала", "Галина", "Галя", "Гавриил", "Гавриила", "Геннадий", "Геннадий", "Геннадия", "Геннадий", "Геня", "Георгий", "Георгий", "Герасим", "Гермоген", "Григорий", "Григорий", "Григорий", "Гриша", "Груша", "Игнатий", "Игорь", "Иларий", "Илья", "Илларион", "Инга", "Инна", "Иннокентий", "Иннокентий", "Иосиф", "Ипатий", "Ипатий", "Ипполит", "Ираклий", "Ирина", "Ириней", "Ириней", "Иринушка", "Исаак", "Исай", "Исидор", "Исидора", "Иван", "Иванна", "Екатерина", "Карина", "Карп", "Катенька", "Катерина", "Катя", "Катя", "Казимир", "Харитон", "Кирилл", "Клара", "Клава", "Клавдия", "Клим", "Климент", "Коля", "Константин", "Кристина", "Ксения", "Кузьма", "Лана", "Лариса", "Лаврентий", "Лаврентий", "Лаврентий", "Лена", "Леонид", "Леонтий", "Леонтий", "Леонтий", "Лидия", "Лидочка", "Лилия", "Лилия", "Лилия", "Люба", "Лиза", "Лизавета", "Людмила", "Людмила", "Лука", "Лёша", "Лёв", "Люба", "Любочка", "Любовь", "Людмила", "Макар", "Макарий", "Макарий", "Макс", "Максим", "Максимильян", "Марфа", "Маргарита", "Марина", "Мария", "Марк", "Мартин", "Марья", "Марьяна", "Маша", "Матвей", "Матрона", "Матрёна", "Матвей", "Матвей", "Максим", "Мечислав", "Мефодий", "Мэлор", "Михаил", "Михаил", "Милан", "Милена", "Мирослав", "Мирослава", "Митрофан", "Митя", "Модест", "Моисей", "Мотя", "Мстислав", "Надежда", "Надежда", "Настасья", "Настасья", "Настя", "Ната", "Натали", "Наталия", "Наталья", "Наташа", "Наум", "Назар", "Назарий", "Нестор", "Никифор", "Никодим", "Николай", "Николай", "Никон", "Нинель", "Нонна", "Оксана", "Олег", "Ольга", "Оля", "Онисим", "Осип", "Оксана", "Панкратий", "Панкратий", "Патя", "Павел", "Пелагея", "Пелагия", "Петя", "Петя", "Платон", "Полина", "Прасковья", "Прасковья", "Прохор", "Прокопий", "Прокопий", "Пётр", "Рада", "Радимир", "Радомир", "Радослав", "Радослава", "Ренат", "Роберт", "Родион", "Родя", "Роксана", "Ролан", "Роман", "Ростислав", "Роза", "Розалия", "Рудольф", "Руфина", "Рюрик", "Руслан", "Сабина", "Самуил", "Саша", "Савелий", "Савелий", "Савелий", "Савва", "Селена", "Семён", "Семён", "Серафим", "Серафима", "Сергей", "Сергей", "Сергей", "Севастьян", "Севастьян", "Слава", "Снежана", "София", "Софья", "Соня", "Спартак", "Станимир", "Станислав", "Станислава", "Стася", "Степан", "Сусанна", "Света", "Светлана", "Святополк", "Святослав", "Сюзанна", "Таисия", "Тамара", "Таня", "Тарас", "Таша", "Татьяна", "Татьяна", "Терентий", "Терентий", "Тихон", "Тимофей", "Тимофей", "Тимур", "Тит", "Цецилия", "Ульяна", "Устинья", "Вадик", "Вадим", "Вадимир", "Валентин", "Валентина", "Валерий", "Валериан", "Валерий", "Валерия", "Валерий", "Ваня", "Варфоломей", "Варфоломей", "Варлаам", "Варлам", "Варнава", "Варвара", "Варя", "Василий", "Василиса", "Василий", "Василий", "Васька", "Василий", "Вася", "Венера", "Вениамин", "Вениамин", "Верочка", "Вероника", "Веруша", "Викентий", "Викентий", "Виктор", "Виктория", "Вилен", "Виолетта", "Виссарион", "Виталий", "Виталий", "Виталия", "Виталий", "Витя", "Влад", "Владилен", "Владимир", "Владислав", "Владислава", "Владлен", "Власий", "Власий", "Володя", "Воля", "Вова", "Всеволод", "Вячеслав", "Яким", "Яков", "Яна", "Ярослав", "Ярослава", "Яша", "Ефим", "Ефрем", "Егор", "Екатерина", "Елена", "Елизавета", "Емельян", "Ермолай", "Есфирь", "Ева", "Евдокия", "Евгений", "Евгений", "Евгения", "Евгений", "Евпраксия", "Юлия", "Юлиан", "Юлиана", "Юлианна", "Юлий", "Юлия", "Юра", "Юрий", "Юстина", "Захар", "Жанна", "Жанночка", "Женя", "Зина", "Зинаида", "Зиновий", "Зиновия", "Зоя" }
-
 	local CargoTable = {}
-	for CargoItem = 1, 5 do
-		Mission_Red_SA6:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Alpha Control Center', 'RU Infantry Alpha', 'Russia Alpha Pickup Zone' )
+	local EngineerNames = { "механика", "Электриков", "Программисты", "экспертов" }
+
+	Cargo_Pickup_Zone_Alpha = CARGO_ZONE:New( 'Russia Alpha Pickup Zone', 'Russia Alpha Control Center' ):BlueSmoke()
+    Cargo_Pickup_Zone_Beta = CARGO_ZONE:New( 'Russia Beta Pickup Zone', 'Russia Beta Control Center' ):RedSmoke()
+
+	for CargoItem = 1, 2 do
+		CargoTable[CargoItem] = CARGO_GROUP:New( 'Engineers', 'Team ' .. EngineerNames[CargoItem], 
+		                                          math.random( 70, 100 ) * 2, 
+												  'RU Infantry Alpha',  
+												  Cargo_Pickup_Zone_Alpha )
 	end
 
-	for CargoItem = 1, 5 do
-		Mission_Red_SA6:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'Russia Beta Control Center', 'RU Infantry Beta', 'Russia Beta Pickup Zone' )
+	for CargoItem = 3, 4 do
+		CargoTable[CargoItem] = CARGO_GROUP:New( 'Engineers', 'Team ' .. EngineerNames[CargoItem], 
+		                                          math.random( 70, 100 ) * 2, 
+												  'RU Infantry Beta',  
+												  Cargo_Pickup_Zone_Beta )
 	end
 
 	-- Assign the Pickup Task
-	PickupZones = { "Russia Alpha Pickup Zone", "Russia Beta Pickup Zone" }
-	PickupSignalUnits = { "Russia Alpha Control Center", "Russia Beta Control Center" }
 	
-	local PickupTask = PICKUPTASK:New( PickupZones, CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.LEFT )
-	PickupTask:AddSmokeRed( PickupSignalUnits  )
+	local PickupTask = PICKUPTASK:New( 'Engineers', CLIENT.ONBOARDSIDE.LEFT )
+	PickupTask:FromZone( Cargo_Pickup_Zone_Alpha )
+	PickupTask:FromZone( Cargo_Pickup_Zone_Beta )
+	PickupTask:InitCargo( CargoTable )
 	Mission_Red_SA6:AddTask( PickupTask, 1 )
 
+	RU_Activation_SA6_Moskva = CARGO_ZONE:New( "RU Activation SA-6 Moskva", "RU SA-6 Transport Moskva" ):RedFlare()
+	RU_Activation_SA6_Niznij = CARGO_ZONE:New( "RU Activation SA-6 Niznij", "RU SA-6 Transport Niznij" ):WhiteFlare()
+	RU_Activation_SA6_Yaroslavl = CARGO_ZONE:New( "RU Activation SA-6 Yaroslavl", "RU SA-6 Transport Yaroslavl" ):YellowFlare()
+	
 	-- Assign the Deploy Task
 	local SA6ActivationZones = { "RU Activation SA-6 Moskva", "RU Activation SA-6 Niznij", "RU Activation SA-6 Yaroslavl" }
 	local SA6ActivationZonesSmokeUnits = { "RU SA-6 Transport Moskva", "RU SA-6 Transport Niznij", "RU SA-6 Transport Yaroslavl" }
 	
-	local DeployTask = DEPLOYTASK:New( SA6ActivationZones, CARGO_TYPE.ENGINEERS )
-	DeployTask:AddSmokeRed( SA6ActivationZonesSmokeUnits )
+	local DeployTask = DEPLOYTASK:New( 'Engineers' )
+	DeployTask:ToZone( RU_Activation_SA6_Moskva )
+	DeployTask:ToZone( RU_Activation_SA6_Niznij )
+	DeployTask:ToZone( RU_Activation_SA6_Yaroslavl )
 	DeployTask:SetGoalTotal( 3 )
 	DeployTask:SetGoalTotal( 3, "SA6 activated" )
 	Mission_Red_SA6:AddTask( DeployTask, 2 )
@@ -97,7 +127,7 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 end
 
 do -- CCCP - Destroy Patriots
-	local Mission = MISSION:New( 'Patriots', 'Primary', 'Our intelligence reports that 3 Patriot SAM defense batteries are located near Ruisi, Kvarhiti and Gori.', 'Russia'  )
+	local Mission = MISSION:New( 'Patriots', 'Primary', 'Our intelligence reports that 3 Patriot SAM defense batteries are located near Ruisi, Kvarhiti and Gori.', 'CCCP'  )
 
 	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Patriot Attack 1', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging." ) )
 	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Patriot Attack 2', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging.") )
@@ -135,24 +165,27 @@ do -- CCCP - Destroy Patriots
 end
 
 do -- CCCP - The Rescue of the Russian General
-	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal behind Gori. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'Russia'  )
+	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal behind Gori. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'CCCP'  )
 
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 1' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 3' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 4' ):Transport() )
 	
-	Russian_General = CARGO:New( 'Russian General', CARGO_TYPE.INFANTRY, math.random( 70, 120 ), nil, 'Russian General', 'General Hiding Zone' )
-
+	Russian_General_Hiding_Zone = CARGO_ZONE:New( 'General Hiding Zone', 'General Hiding House' ):GreenFlare()
+	Russian_General = CARGO_GROUP:New( 'Russian General', 'Никола́й Его́рович Мака́ров', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
+	
 	-- Assign the Pickup Task
-	local PickupTask = PICKUPTASK:New( 'General Hiding Zone', CARGO_TYPE.INFANTRY, CLIENT.ONBOARDSIDE.RIGHT )
-	PickupTask:InitCargos( Russian_General )
-	PickupTask:AddFlareWhite( 'Russian General' )
+	local PickupTask = PICKUPTASK:New( 'Russian General', CLIENT.ONBOARDSIDE.FRONT )
+	PickupTask:FromZone( Russian_General_Hiding_Zone )
+	PickupTask:InitCargo( Russian_General )
 	Mission:AddTask( PickupTask, 1 ) 
 
+	Tskinvali_Headquarters = CARGO_ZONE:New( 'Tskinvali Headquarters', 'Russia Command Center' ):RedSmoke()
+
 		-- Assign the Deploy Tasks
-	local DeployTask = DEPLOYTASK:New( 'Tskinvali Headquarters', CARGO_TYPE.INFANTRY )
-	DeployTask:AddSmokeWhite( 'Russia Command Center' )
+	local DeployTask = DEPLOYTASK:New( 'Russian General' )
+	DeployTask:ToZone( Tskinvali_Headquarters )
 	DeployTask:SetGoalTotal( 1 )
 	Mission:AddTask( DeployTask, 2 )
 
@@ -165,25 +198,21 @@ do -- CCCP - The Rescue of the Russian General
 end
 
 do -- CCCP - Deliver packages to secret agent
-	local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'Russia'  )
-
-	CCCP_Secret_Package = CARGO:New( 'Secret Package', CARGO_TYPE.PACKAGE, math.random( 560, 800 ), 'Russia Secret Agent', '', '' )
+	local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'CCCP'  )
 
 	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):Transport() )
 	
-	Mission:AddCargo( CCCP_Secret_Package )
+	CCCP_Package_Delivery_Zone = CARGO_ZONE:New( 'Russia Secret Drop Zone', 'Secret Agent Armed House' ):RedSmoke()
 
-	
-	-- Assign the Deploy Tasks
-	local DeployTask = DEPLOYTASK:New( 'Russia Secret Drop Zone', CARGO_TYPE.PACKAGE )
-	DeployTask:InitCargo( CCCP_Secret_Package )
-	DeployTask:LoadCargo( CCCP_Secret_Package )
-	DeployTask:AddSmokeWhite( 'Russia Secret Agent' )
+	Cargo_Package = CARGO_PACKAGE:New( 'Map', 'Secret Map to Infiltrate Defenses', 0.1, 'Russia Secret Agent' )
+
+	local DeployTask = DEPLOYTASK:New( 'Map' )
+	DeployTask:ToZone( CCCP_Package_Delivery_Zone )
 	DeployTask:SetGoalTotal( 1 )
-	Mission:AddTask( DeployTask, 1 )
+	Mission:AddTask( DeployTask, 2 )
 
 	-- Assign the GoHome Task
 	local GoHomeTask = GOHOMETASK:New( 'Russia Alpha' )
@@ -197,28 +226,30 @@ end
 do -- NATO - Transport Mission to activate the NATO Patriot Defenses
 
 	PatriotActivation = { 
-		{ "US SAM Patriot Zerti", false },
-		{ "US SAM Patriot Zegduleti", false },
-		{ "US SAM Patriot Gvleti", false }
+		[ "US Patriot Battery 1 Activation" ] = { "US SAM Patriot Zerti", false },
+		[ "US Patriot Battery 2 Activation" ] = { "US SAM Patriot Zegduleti", false },
+		[ "US Patriot Battery 3 Activation" ] = { "US SAM Patriot Gvleti", false }
 	}
 
 	function DeployPatriotTroopsGoal( Mission, Client )
 
 
 		-- Check if the cargo is all deployed for mission success.
-		for CargoID, CargoData in pairs( Mission._Cargos ) do
-			if Group.getByName( CargoData.CargoGroupName ) then
+		for CargoID, CargoData in pairs( CARGOS ) do
+			if CargoData.CargoGroupName then
 				CargoGroup = Group.getByName( CargoData.CargoGroupName )
 				if CargoGroup then
 					-- Check if the cargo is ready to activate
-					CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones ) -- The second task is the Deploytask to measure mission success upon
+					CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones.LandingZoneNames ) -- The second task is the Deploytask to measure mission success upon
 					if CurrentLandingZoneID then
 						if PatriotActivation[CurrentLandingZoneID][2] == false then
 							-- Now check if this is a new Mission Task to be completed...
 							trigger.action.setGroupAIOn( Group.getByName( PatriotActivation[CurrentLandingZoneID][1] ) )
 							PatriotActivation[CurrentLandingZoneID][2] = true
-							MessageToBlue( "Mission Command: Message to all airborne units! The " .. PatriotActivation[CurrentLandingZoneID][1] .. " is armed. Our air defenses are now stronger.", 60, "BLUE/PatriotDefense" )
-							MessageToRed( "Mission Command: Our satellite systems are detecting additional NATO air defenses. To all airborne units: Take care!!!", 60, "RED/PatriotDefense" )
+							MESSAGE:New( "Message to all airborne units! The " .. PatriotActivation[CurrentLandingZoneID][1] .. " is armed. Our air defenses are now stronger.", 
+							             "Mission Command:", 60, "BLUE/PatriotDefense" ):ToBlue()
+							MESSAGE:New( "Our satellite systems are detecting additional NATO air defenses. To all airborne units: Take care!!!", 
+										 "Mission Command:", 60, "RED/PatriotDefense" ):ToRed()
 							Mission:GetTask( 2 ):AddGoalCompletion( "Patriots activated", PatriotActivation[CurrentLandingZoneID][1], 1 ) -- Register Patriot activation as part of mission goal.
 						end
 					end
@@ -236,38 +267,43 @@ do -- NATO - Transport Mission to activate the NATO Patriot Defenses
 	Mission:AddClient( CLIENT:New( 'US UH-1H*RAMP-Deploy Troops 4', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
 
 	local CargoTable = {}
+	local EngineerNames = { "Controller", "Expert", "Radar", "Electrician" }
 
-	local EngineerNames = { "Charlie", "Fred", "Sven", "Prosper", "Godfried", "Adam", "Freddy", "Saskia", "Karolina", "Levente", "Urbanus", "Helena", "Teodora", "Timea", "John", "Ibrahim", "Christine", "Carl", "Monika" }
-	
-	for CargoItem = 1, 5 do
-		Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'NATO Gold Coordination Center', 'US Infantry Gold', 'NATO Gold Pickup Zone' )
+	NATO_Gold_Pickup_Zone = CARGO_ZONE:New( 'NATO Gold Pickup Zone', 'NATO Gold Coordination Center' ):BlueSmoke()
+    NATO_Titan_Pickup_Zone = CARGO_ZONE:New( 'NATO Titan Pickup Zone', 'NATO Titan Coordination Center' ):RedSmoke()
+
+	for CargoItem = 1, 2 do
+		CargoTable[CargoItem] = CARGO_GROUP:New( 'NATO Engineers', 'Engineering Team ' .. EngineerNames[CargoItem], 
+		                                          math.random( 70, 100 ) * 2, 
+												  'US Infantry Gold',  
+												  NATO_Gold_Pickup_Zone )
 	end
 
-	for CargoItem = 1, 5 do
-		Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 6, 'NATO Titan Coordination Center', 'US Infantry Titan', 'NATO Titan Pickup Zone' )
+	for CargoItem = 3, 4 do
+		CargoTable[CargoItem] = CARGO_GROUP:New( 'NATO Engineers', 'Engineering Team ' .. EngineerNames[CargoItem], 
+		                                          math.random( 70, 100 ) * 2, 
+												  'US Infantry Titan',  
+												  NATO_Titan_Pickup_Zone )
 	end
 
-	PickupZones = { "NATO Gold Pickup Zone", "NATO Titan Pickup Zone" }
-	PickupSignalUnits = { "NATO Gold Coordination Center", "NATO Titan Coordination Center" }
-
-	-- Assign the Pickup Task
-	local PickupTask = PICKUPTASK:New( PickupZones, CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.LEFT )
-	PickupTask:AddSmokeBlue( PickupSignalUnits  )
-	PickupTask:SetGoalTotal( 3 )
+	local PickupTask = PICKUPTASK:New( 'NATO Engineers', CLIENT.ONBOARDSIDE.RIGHT )
+	PickupTask:FromZone( NATO_Gold_Pickup_Zone )
+	PickupTask:FromZone( NATO_Titan_Pickup_Zone )
+	PickupTask:InitCargo( CargoTable )
 	Mission:AddTask( PickupTask, 1 )
 
-	-- Assign the Deploy Task
-	-- Assign the Deploy Task
-	local PatriotActivationZones = { "US Patriot Battery 1 Activation", "US Patriot Battery 2 Activation", "US Patriot Battery 3 Activation" }
-	local PatriotActivationZonesSmokeUnits = { "US SAM Patriot - Battery 1 Control", "US SAM Patriot - Battery 2 Control", "US SAM Patriot - Battery 3 Control" }
-
-	local DeployTask = DEPLOYTASK:New( PatriotActivationZones, CARGO_TYPE.ENGINEERS )
-	--DeployTask:SetCargoTargetZoneName( 'US Troops Attack ' .. math.random(2) )
-	DeployTask:AddSmokeBlue( PatriotActivationZonesSmokeUnits )
+	US_Patriot_Battery_1_Activation = CARGO_ZONE:New( "US Patriot Battery 1 Activation", "US SAM Patriot - Battery 1 Control" ):WhiteFlare()
+	US_Patriot_Battery_2_Activation = CARGO_ZONE:New( "US Patriot Battery 2 Activation", "US SAM Patriot - Battery 2 Control" ):WhiteFlare()
+	US_Patriot_Battery_3_Activation = CARGO_ZONE:New( "US Patriot Battery 3 Activation", "US SAM Patriot - Battery 3 Control" ):WhiteFlare()
+	
+	local DeployTask = DEPLOYTASK:New( 'NATO Engineers' )
+	DeployTask:ToZone( US_Patriot_Battery_1_Activation )
+	DeployTask:ToZone( US_Patriot_Battery_2_Activation )
+	DeployTask:ToZone( US_Patriot_Battery_3_Activation )
 	DeployTask:SetGoalTotal( 3 )
 	DeployTask:SetGoalTotal( 3, "Patriots activated" )
 	Mission:AddTask( DeployTask, 2 )
-	
+
 	MISSIONSCHEDULER.AddMission( Mission )
 end
 
@@ -322,20 +358,21 @@ do -- NATO "Fury" Sling Load Mission
 	Mission:AddClient( CLIENT:New( 'DE KA-50*HOT-Air Support 1', 'Provide air support.' ) )
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 3', 'Provide air support.' ) )
 	
-	
-	
-	-- Route to the pickup zones and Hook the Slingload Cargo
-	local SLINGLOADHOOKTASK = SLINGLOADHOOKTASK:New( { 'Cargo 1 - Pick-Up', 'Cargo 2 - Pick-Up' }, { 'GE Cargo #001', 'GE Cargo #002', 'GE Cargo #003', 'GE Cargo #004', 'GE Cargo #005',
-                                                                                                       'GE Cargo #006', 'GE Cargo #007', 'GE Cargo #008', 'GE Cargo #009', 'GE Cargo #010'	} )
-	SLINGLOADHOOKTASK:AddSmokeBlue( { 'GE Cargo - Guard #001', 'GE Cargo - Guard #002' } )
-	Mission:AddTask( SLINGLOADHOOKTASK, 1 )
+	NATO_Sling_Load_Pickup_Zone = CARGO_ZONE:New( 'NATO Sling Load Pickup Zone', 'Georgia Cargo Pickup Guard' ):BlueSmoke()
+	NATO_Sling_Load = CARGO_SLINGLOAD:New( 'Ammunition', 'Ammunition Boxes', 400, 'NATO Sling Load Pickup Zone', 'Georgia Cargo Guard', country.id.GEORGIA )
 
-		-- Route to the pickup zone
-	local SlingLoadUnhookTask = SLINGLOADUNHOOKTASK:New( { 'Cargo 1 - Arrival', 'Cargo 2 - Arrival' }, { 'GE Cargo #001', 'GE Cargo #002', 'GE Cargo #003', 'GE Cargo #004', 'GE Cargo #005',
-                                                                                                           'GE Cargo #006', 'GE Cargo #007', 'GE Cargo #008', 'GE Cargo #009', 'GE Cargo #010'	} )
-	SlingLoadUnhookTask:AddSmokeGreen( { 'GE Cargo - Arrival #001', 'GE Cargo - Arrival #002' } )
-	SlingLoadUnhookTask:SetGoalTotal( 1, "Cargo sling load" )
-	Mission:AddTask( SlingLoadUnhookTask, 2 )
+	
+	local PickupTask = PICKUPTASK:New( 'Ammunition', CLIENT.ONBOARDSIDE.FRONT )
+	PickupTask:FromZone( NATO_Sling_Load_Pickup_Zone  )
+	PickupTask:InitCargo( { NATO_Sling_Load } )
+	Mission:AddTask( PickupTask, 1 )
+
+	NATO_Sling_Load_Deploy_Zone = CARGO_ZONE:New( 'NATO Sling Load Deploy Zone', 'Georgia Cargo Deploy Guard' ):BlueSmoke()
+	
+	local DeployTask = DEPLOYTASK:New( 'Ammunition' )
+	DeployTask:ToZone( NATO_Sling_Load_Deploy_Zone  )
+	DeployTask:SetGoalTotal( 1 )
+	Mission:AddTask( DeployTask, 2 )
 
 	MISSIONSCHEDULER.AddMission( Mission )
 end
@@ -353,17 +390,21 @@ do -- NATO - Rescue secret agent from the woods
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 3' ) )
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 4' ) )
 
-	Mission:AddCargo( 'Secret Agent', CARGO_TYPE.INFANTRY, math.random( 70, 120 ), nil, 'GE Secret Agent', 'NATO secret agent hiding zone' )
-
+	NATO_Secret_Agent_Hiding_Zone = CARGO_ZONE:New( 'NATO secret agent hiding zone', 'Isolated Watch Tower' ):BlueSmoke()
+	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Jerzy Kukliński', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
+	
 	-- Assign the Pickup Task
-	local PickupTask = PICKUPTASK:New( 'NATO secret agent hiding zone', CARGO_TYPE.INFANTRY, CLIENT.ONBOARDSIDE.FRONT )
-	PickupTask:AddFlareWhite( 'GE Secret Agent' )
+	local PickupTask = PICKUPTASK:New( 'Secret Agent', CLIENT.ONBOARDSIDE.FRONT )
+	PickupTask:FromZone( NATO_Secret_Agent_Hiding_Zone )
+	PickupTask:InitCargo( NATO_Secret_Agent )
 	Mission:AddTask( PickupTask, 1 ) 
 
+	Gori_Headquarters = CARGO_ZONE:New( 'Gori Headquarters Drop Zone', 'Gori Headquarters' ):RedSmoke()
+
 		-- Assign the Deploy Tasks
-	local DeployTask = DEPLOYTASK:New( 'Gori Headquarters Drop Zone', CARGO_TYPE.INFANTRY )
-	DeployTask:AddSmokeWhite( 'Gori Headquarters' )
-	DeployTask:SetGoalTotal( 1 ) -- Once this is achieved, the goal is reached.
+	local DeployTask = DEPLOYTASK:New( 'Secret Agent' )
+	DeployTask:ToZone( Gori_Headquarters )
+	DeployTask:SetGoalTotal( 1 )
 	Mission:AddTask( DeployTask, 2 )
 
 	-- Assign the GoHome Task
@@ -455,7 +496,6 @@ Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):Sch
 Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 40 )
 
 
-
 -- SEAD DEFENSES
 
 --- CCCP SEAD Defenses
@@ -463,6 +503,7 @@ SEAD_RU_SAM_Defenses = SEAD:New( { 'RU SA-6 Kub', 'RU SA-6 Defenses', 'RU MI-26 
 
 --- NATO SEAD Defenses
 SEAD_Patriot_Defenses = SEAD:New( { 'US SAM Patriot', 'US Tank Platoon', 'US CH-47D Troops' } )
+
 
 
 --- Keep some airports clean
@@ -473,6 +514,7 @@ SEAD_Patriot_Defenses = SEAD:New( { 'US SAM Patriot', 'US Tank Platoon', 'US CH-
 MISSIONSCHEDULER.Start()
 MISSIONSCHEDULER.ReportMenu()
 MISSIONSCHEDULER.ReportMissionsFlash( 120 )
+MISSIONSCHEDULER.ReportMissionsHide()
 
 env.info( "Gori Valley.lua loaded" )
 

@@ -66,6 +66,8 @@ do
 
 	Mission:AddClient( CLIENT:New( 'BE Package Test 1' ):Transport() )
 	Mission:AddClient( CLIENT:New( 'BE Package Test 2' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'DE Pickup Test 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'DE Pickup Test 2' ):Transport() )
 
 	Package_Pickup_Zone = CARGO_ZONE:New( 'Package Pickup Zone', 'DE Guard' ):GreenSmoke()
 
@@ -93,10 +95,34 @@ do
 	MISSIONSCHEDULER.AddMission( Mission )
 end
 
+do
+	local Mission = MISSION:New( 'Sling load Cargo', 'Operational', 'Sling Load Cargo to Deploy Zone.', 'NATO' )
+
+	Mission:AddClient( CLIENT:New( 'Sling Load Test Client 1' ):Transport() )
+	Mission:AddClient( CLIENT:New( 'Sling Load Test Client 2' ):Transport() )
+
+	Sling_Load_Pickup_Zone = CARGO_ZONE:New( 'Sling Load Pickup Zone', 'Sling Load Guard' ):RedSmoke()
+
+	Cargo_Sling_Load = CARGO_SLINGLOAD:New( 'Sling', 'Food Boxes', 200, 'Sling Load Pickup Zone', 'Sling Load Guard', country.id.USA )
+	--Cargo_Goods = CARGO_STATIC:New( 'Goods', 20, 'Goods', 'Pickup Zone Goods', 'DE Collection Point' )
+	--Cargo_SlingLoad = CARGO_SLING:New( 'Basket', 40, 'Basket', 'Pickup Zone Sling Load', 'DE Cargo Guard' )
+
+					
+	-- Assign the Pickup Task
+	local PickupTask = PICKUPTASK:New( 'Sling', CLIENT.ONBOARDSIDE.FRONT )
+	PickupTask:FromZone( Sling_Load_Pickup_Zone  )
+	PickupTask:InitCargo( { Cargo_Sling_Load } )
+	PickupTask:SetGoalTotal( 1 )
+	Mission:AddTask( PickupTask, 1 )
+	
+	MISSIONSCHEDULER.AddMission( Mission )
+end
+
+
 
 -- MISSION SCHEDULER STARTUP
 MISSIONSCHEDULER.Start()
 MISSIONSCHEDULER.ReportMenu()
-MISSIONSCHEDULER.ReportMissionsFlash( 120 )
+MISSIONSCHEDULER.ReportMissionsHide()
 
 env.info( "Test Mission loaded" )
