@@ -425,7 +425,7 @@ Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 1, 24 ):Sched
 
 -- Russian helicopters deploying troops in the battle field in Gori Valley
 Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
-Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
+Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
 
 Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
 Spawn_RU_MI26_SAM_East = SPAWN:New( 'RU MI-26 SAM East' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM East 1", "RU MI-26 SAM East 2", "RU MI-26 SAM East 3" } ):RandomizeRoute( 1, 0, 2000 )
@@ -459,7 +459,7 @@ Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Midd
 Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
 Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
 
-Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 4, 40 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
+Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
 
 
 -- NATO helicopters engaging in the battle field.
