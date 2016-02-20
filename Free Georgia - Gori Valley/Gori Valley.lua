@@ -157,6 +157,11 @@ do -- CCCP - Destroy Patriots
 	Mission:AddClient( CLIENT:New( 'RU Su-27*RAMP-Air Support East 4', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
 							  "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
 
+	Mission:AddClient( CLIENT:New( 'RU MIG-21@HOT-Air Patrol 1', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+							  "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+	Mission:AddClient( CLIENT:New( 'RU MIG-21@HOT-Air Patrol 2', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+							  "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+
 	local DESTROYGROUPSTASK = DESTROYGROUPSTASK:New( 'Patriots', 'Patriot Batteries', { 'US SAM Patriot' }, 75  ) -- 75% of a patriot battery needs to be destroyed to achieve mission success...
 	DESTROYGROUPSTASK:SetGoalTotal( 3 )
 	Mission:AddTask( DESTROYGROUPSTASK, 1 )
@@ -335,6 +340,15 @@ do -- NATO Destroy Mission SA-6 Batteries
 	Mission:AddClient( CLIENT:New( 'US F-15C*RAMP-Air Defense 3', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
 	Mission:AddClient( CLIENT:New( 'US F-15C*RAMP-Air Defense 4', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
 
+	Mission:AddClient( CLIENT:New( 'FR MIRAGE-2000@HOT-Air Support 1', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+	Mission:AddClient( CLIENT:New( 'FR MIRAGE-2000@HOT-Air Support 2', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+	Mission:AddClient( CLIENT:New( 'FR MIRAGE-2000@RAMP-Air Support 3', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+	Mission:AddClient( CLIENT:New( 'FR MIRAGE-2000@RAMP-Air Support 4', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+
+	
+	Mission:AddClient( CLIENT:New( 'FR C-101CC@HOT-Ground Attack 1', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+	Mission:AddClient( CLIENT:New( 'FR C-101CC@HOT-Ground Attack 2', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Tbilisi." ) )
+	
 	local DESTROYGROUPSTASK = DESTROYGROUPSTASK:New( 'SA-6 SAMs', 'SA-6 SAM Batteries', { 'RU SA-6 Kub' } )
 	DESTROYGROUPSTASK:SetGoalTotal( 3 )
 	Mission:AddTask( DESTROYGROUPSTASK, 1 )
