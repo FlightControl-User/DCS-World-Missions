@@ -181,7 +181,7 @@ do -- CCCP - The Rescue of the Russian General
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Russian General', CLIENT.ONBOARDSIDE.FRONT )
 	PickupTask:FromZone( Russian_General_Hiding_Zone )
-	PickupTask:InitCargo( Russian_General )
+	PickupTask:InitCargo( { Russian_General } )
 	Mission:AddTask( PickupTask, 1 ) 
 
 	Tskinvali_Headquarters = CARGO_ZONE:New( 'Tskinvali Headquarters', 'Russia Command Center' ):RedSmoke()
@@ -203,19 +203,25 @@ end
 do -- CCCP - Deliver packages to secret agent
 	local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'CCCP'  )
 
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):Transport() )
+	local KA50Client1 = CLIENT:New( 'RU KA-50*HOT-Package Delivery 1' ):Transport()
+	local KA50Client2 = CLIENT:New( 'RU KA-50*HOT-Package Delivery 2' ):Transport()
+	local KA50Client3 = CLIENT:New( 'RU KA-50*RAMP-Package Delivery 3' ):Transport()
+	local KA50Client4 = CLIENT:New( 'RU KA-50*RAMP-Package Delivery 4' ):Transport()
+	
+	Mission:AddClient( KA50Client1 )
+	Mission:AddClient( KA50Client2 )
+	Mission:AddClient( KA50Client3 )
+	Mission:AddClient( KA50Client4 )
 	
 	CCCP_Package_Delivery_Zone = CARGO_ZONE:New( 'Russia Secret Drop Zone', 'Secret Agent Armed House' ):RedSmoke()
 
-	Cargo_Package = CARGO_PACKAGE:New( 'Map', 'Secret Map to Infiltrate Defenses', 0.1, 'Russia Secret Agent' )
+	Cargo_Package = CARGO_PACKAGE:New( 'Map', 'Secret Map to Infiltrate Defenses', 0.1, KA50Client1 )
 
 	local DeployTask = DEPLOYTASK:New( 'Map' )
 	DeployTask:ToZone( CCCP_Package_Delivery_Zone )
+	DeployTask:InitCargo( { Cargo_Package } )
 	DeployTask:SetGoalTotal( 1 )
-	Mission:AddTask( DeployTask, 2 )
+	Mission:AddTask( DeployTask, 1 )
 
 	-- Assign the GoHome Task
 	local GoHomeTask = GOHOMETASK:New( 'Russia Alpha' )
@@ -408,7 +414,7 @@ do -- NATO - Rescue secret agent from the woods
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Secret Agent', CLIENT.ONBOARDSIDE.FRONT )
 	PickupTask:FromZone( NATO_Secret_Agent_Hiding_Zone )
-	PickupTask:InitCargo( NATO_Secret_Agent )
+	PickupTask:InitCargo( { NATO_Secret_Agent } )
 	Mission:AddTask( PickupTask, 1 ) 
 
 	Gori_Headquarters = CARGO_ZONE:New( 'Gori Headquarters Drop Zone', 'Gori Headquarters' ):RedSmoke()
@@ -431,24 +437,24 @@ end
 -- CCCP COALITION UNITS
 
 -- Russian helicopters engaging the battle field in Gori Valley
-Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 8000 )
-Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
-Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_RU_KA50 = SPAWN:New( 'RU KA-50@HOT-Patriot Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 8000 ):CleanUp( 180 )
+Spawn_RU_MI28N = SPAWN:New( 'RU MI-28N@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 ):CleanUp( 180 )
+Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 1, 24 ):Schedule( 600, 0.2 ):RandomizeRoute( 1, 1, 2000 ):CleanUp( 180 )
 
 -- Russian helicopters deploying troops in the battle field in Gori Valley
-Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
+Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 ):CleanUp( 180 )
 Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
 
-Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
+Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 ):CleanUp( 180 )
 Spawn_RU_MI26_SAM_East = SPAWN:New( 'RU MI-26 SAM East' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM East 1", "RU MI-26 SAM East 2", "RU MI-26 SAM East 3" } ):RandomizeRoute( 1, 0, 2000 )
 
-Spawn_RU_MI26_West = SPAWN:New( 'RU MI-26@HOT-SAM Transport West' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 )
+Spawn_RU_MI26_West = SPAWN:New( 'RU MI-26@HOT-SAM Transport West' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 2, 200 ):CleanUp( 180 )
 Spawn_RU_MI26_SAM_West = SPAWN:New( 'RU MI-26 SAM West' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM West 1", "RU MI-26 SAM West 2", "RU MI-26 SAM West 3" } ):RandomizeRoute( 1, 0, 2000 )
 
 -- Russian planes attacking ground units in Gori Valley and defending air space over the mountains.
-Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 3, 24 ):Schedule( 300, 0.25 ):RandomizeRoute( 1, 1, 200 )
-Spawn_RU_SU27 = SPAWN:New( 'RU SU-27@RAMP-Air Support East' ):Limit( 3, 24 ):Schedule( 300, 0.3 ):RandomizeRoute( 1, 1, 4000 )
-Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 3, 24 ):Schedule( 450, 0.4 ):RandomizeRoute( 1, 1, 4000 )
+Spawn_RU_SU25T = SPAWN:New( 'RU SU-25T@RAMP-Patriot Attack' ):Limit( 3, 24 ):Schedule( 300, 0.25 ):RandomizeRoute( 1, 1, 200 ):CleanUp( 180 )
+Spawn_RU_SU27 = SPAWN:New( 'RU SU-27@RAMP-Air Support East' ):Limit( 3, 24 ):Schedule( 300, 0.3 ):RandomizeRoute( 1, 1, 4000 ):CleanUp( 180 )
+Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 3, 24 ):Schedule( 450, 0.4 ):RandomizeRoute( 1, 1, 4000 ):CleanUp( 180 )
 
 -- Russian planes escorting the SU25T attack forces
 Spawn_RU_Escort1 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 1' ):RandomizeRoute( 1, 1, 2000 ):Limit( 2, 12 )
@@ -468,25 +474,25 @@ Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Midd
 
 
 -- NATO helicopters deploying troops within the battle field.
-Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
-Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 )
+Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 )
+Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8 ):Schedule( 900, 0.2 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 )
 
 Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
 
 
 -- NATO helicopters engaging in the battle field.
-Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 1, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_BE_KA50 = SPAWN:New( 'BE KA-50@RAMP-Ground Defense' ):Limit( 1, 24 ):Schedule( 600, 0.5 ):RandomizeRoute( 1, 1, 2000 ):CleanUp( 180 )
 
 
-Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 1, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 )
+Spawn_US_AH64D = SPAWN:New( 'US AH-64D@RAMP-Ground Recon' ):Limit( 1, 20 ):Schedule( 900, 0.5 ):RandomizeRoute( 1, 1, 2000 ):CleanUp( 180 )
 
 -- NATO planes attacking Russian ground units and defending airspace
-Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 2, 20 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
-Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 1, 20 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown()
-Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 2, 24 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown()
-Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 6000 )
-Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
-Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown()
+Spawn_BE_F16A = SPAWN:New( 'BE F-16A@RAMP-Air Support Mountains' ):Limit( 2, 20 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown():CleanUp( 180 )
+Spawn_US_F16C = SPAWN:New( 'US F-16C@RAMP-Sead Gori' ):Limit( 1, 20 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 6000 ):RepeatOnEngineShutDown():CleanUp( 180 )
+Spawn_US_F15C = SPAWN:New( 'US F-15C@RAMP-Air Support Mountains' ):Limit( 2, 24 ):Schedule( 1200, 0.5 ):RandomizeRoute( 1, 1, 5000 ):RepeatOnEngineShutDown():CleanUp( 180 )
+Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 6000 ):CleanUp( 180 )
+Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown():CleanUp( 180 )
+Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown():CleanUp( 180 )
 
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
