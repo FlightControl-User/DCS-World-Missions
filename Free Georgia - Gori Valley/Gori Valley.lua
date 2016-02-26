@@ -398,10 +398,11 @@ end
 do -- NATO - Rescue secret agent from the woods
 	local Mission = MISSION:New( 'Rescue secret agent', 'Tactical', 'In order to be in full control of the situation, we need you to rescue a secret agent from the woods behind enemy lines. Avoid the Russian defenses and rescue the agent. Keep south until Khasuri, and keep your eyes open for any SAM presence. The agent is located at waypoint 4 on your kneeboard.', 'NATO'  )
 
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 3' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'DE MI-8MTV2*RAMP-Rescue Agent 4' ):Transport() )
+	NATO_Rescue_Secret_Agent_1 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1', "Two KA-50 helicopters will lead the best route to the rescue place. Join-Up above the Gori and follow the group. Beyond waypoint 3 they will attack any russian air defenses to ensure a safe rescue behind enemy lines." ):Transport()
+	NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2', "Two KA-50 helicopters will lead the best route to the rescue place. Join-Up above the Gori and follow the group. Beyond waypoint 3 they will attack any russian air defenses to ensure a safe rescue behind enemy lines." ):Transport()
+	
+	Mission:AddClient( NATO_Rescue_Secret_Agent_1 )
+	Mission:AddClient( NATO_Rescue_Secret_Agent_2 )
 
 	Mission:AddClient( CLIENT:New( 'DE KA-50*HOT-Air Support 1' ) )
 	Mission:AddClient( CLIENT:New( 'DE KA-50*HOT-Air Support 2' ) )
@@ -496,7 +497,7 @@ Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West'
 
 
 -- NATO Helicopters escorting rescue mission.
-Spawn_NL_AH64A_Escort = SPAWN:New( 'NL AH-64A@HOT-Escort Rescue Agent' ):RandomizeRoute( 1, 1, 500 )
+Spawn_NL_AH64A_Escort = SPAWN:New( 'NL AH-64A@HOT-Escort Rescue Agent' ):RandomizeRoute( 2, 1, 500 )
 
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
