@@ -494,6 +494,10 @@ Spawn_US_F14A_Intercept = SPAWN:New( 'US F-14A@RAMP-Intercept' ):Limit( 2, 24 ):
 Spawn_US_A10C_Ground_Defense = SPAWN:New( 'US A-10C*HOT-Ground Defense' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown():CleanUp( 180 )
 Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West' ):Limit( 2, 10 ):Schedule( 1200, 0.4 ):RandomizeRoute( 1, 1, 2000 ):RepeatOnEngineShutDown():CleanUp( 180 )
 
+
+-- NATO Helicopters escorting rescue mission.
+Spawn_NL_AH64A_Escort = SPAWN:New( 'NL AH-64A@HOT-Escort Rescue Agent' ):RandomizeRoute( 1, 1, 500 )
+
 -- NATO planes escorting the A-10Cs
 Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
 Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):RandomizeRoute( 1, 1, 5000 )
