@@ -28,6 +28,10 @@ Include.File( "Spawn" )
 Include.File( "Movement" )
 Include.File( "Sead" )
 Include.File( "CleanUp" )
+Include.File( "Group" )
+Include.File( "Unit" )
+Include.File( "Zone" )
+
 
 -- MISSIONS PART:CCCP MISSIONS
 
