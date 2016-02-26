@@ -400,10 +400,21 @@ do -- NATO "Fury" Sling Load Mission
 end
 
 do -- NATO - Rescue secret agent from the woods
-	local Mission = MISSION:New( 'Rescue secret agent', 'Tactical', 'In order to be in full control of the situation, we need you to rescue a secret agent from the woods behind enemy lines. Avoid the Russian defenses and rescue the agent. Keep south until Khasuri, and keep your eyes open for any SAM presence. The agent is located at waypoint 4 on your kneeboard.', 'NATO'  )
+	local Mission = MISSION:New( 'Rescue secret agent', 'Tactical', 
+	                             "In order to be in full control of the situation, we need you to rescue a secret agent behind enemy lines. " .. 
+	                             "Avoid the Russian defenses and rescue the agent. Keep south until Khasuri, and keep your eyes open for any SAM presence. " .. 
+								 "The agent is located at waypoint 4 on your kneeboard.", 'NATO'  )
 
-	NATO_Rescue_Secret_Agent_1 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1', "Two KA-50 helicopters will lead the best route to the rescue place. Join-Up above the Gori and follow the group. Beyond waypoint 3 they will attack any russian air defenses to ensure a safe rescue behind enemy lines." ):Transport()
-	NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2', "Two KA-50 helicopters will lead the best route to the rescue place. Join-Up above the Gori and follow the group. Beyond waypoint 3 they will attack any russian air defenses to ensure a safe rescue behind enemy lines." ):Transport()
+	NATO_Rescue_Secret_Agent_1 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 1', 
+	                                         "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place. " .. 
+	                                         "Join-Up above Gori (fly near 300 meters from Pontiac 9-1) and follow the attack helicopters. " .. 
+	                                         "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
+											 "Pontiac 9-1 communication is on VHF 124 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
+	NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2', 
+	                                         "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place. " .. 
+	                                         "Join-Up above Gori (fly near 300 meters from Pontiac 9-1) and follow the attack helicopters. " .. 
+	                                         "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
+											 "Pontiac 9-1 communication is on VHF 124 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
 	
 	Mission:AddClient( NATO_Rescue_Secret_Agent_1 )
 	Mission:AddClient( NATO_Rescue_Secret_Agent_2 )
