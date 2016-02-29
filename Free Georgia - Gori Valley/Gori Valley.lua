@@ -172,12 +172,22 @@ do -- CCCP - Destroy Patriots
 end
 
 do -- CCCP - The Rescue of the Russian General
-	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal behind Gori. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'CCCP'  )
+	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'CCCP'  )
 
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 1' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 3' ):Transport() )
-	Mission:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Rescue General 4' ):Transport() )
+	Russia_Rescue_General_1 = CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 1', 
+	                                      "Two MI-28N helicopters (Callsign 206) will lead the best route to the rescue place. " .. 
+	                                      "Join-Up above Tskinvali (fly near 500 meters from 206) and follow the attack helicopters. " .. 
+	                                      "Beyond waypoint 3 they will scan and attack any NATO air defenses on the route, to ensure a safe rescue behind enemy lines. " ..
+										  "206 communication is on VHF 136.2 AM Mhz. Configure your R-863 radio to match the frequency in the MI-8 to have situational awareness." ):Transport()
+	
+	Russia_Rescue_General_2 = CLIENT:New( 'RU MI-8MTV2*HOT-Rescue General 2', 
+	                                      "Two MI-28N helicopters (Callsign 206) will lead the best route to the rescue place. " .. 
+	                                      "Join-Up above Tskinvali (fly near 500 meters from 206) and follow the attack helicopters. " .. 
+	                                      "Beyond waypoint 3 they will scan and attack any NATO air defenses on the route, to ensure a safe rescue behind enemy lines. " ..
+										  "206 communication is on VHF 136.2 AM Mhz. Configure your R-863 radio to match the frequency in the MI-8 to have situational awareness." ):Transport()											 
+	
+	Mission:AddClient( Russia_Rescue_General_1 )
+	Mission:AddClient( Russia_Rescue_General_2 )
 	
 	Russian_General_Hiding_Zone = CARGO_ZONE:New( 'General Hiding Zone', 'General Hiding House' ):GreenFlare()
 	Russian_General = CARGO_GROUP:New( 'Russian General', 'Никола́й Его́рович Мака́ров', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
@@ -409,12 +419,12 @@ do -- NATO - Rescue secret agent from the woods
 	                                         "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place. " .. 
 	                                         "Join-Up above Gori (fly near 300 meters from Pontiac 9-1) and follow the attack helicopters. " .. 
 	                                         "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
-											 "Pontiac 9-1 communication is on VHF 124 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
+											 "Pontiac 9-1 communication is on VHF 132.4 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
 	NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'DE MI-8MTV2*HOT-Rescue Agent 2', 
 	                                         "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place. " .. 
 	                                         "Join-Up above Gori (fly near 300 meters from Pontiac 9-1) and follow the attack helicopters. " .. 
 	                                         "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
-											 "Pontiac 9-1 communication is on VHF 124 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
+											 "Pontiac 9-1 communication is on VHF 132.4 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport()
 	
 	Mission:AddClient( NATO_Rescue_Secret_Agent_1 )
 	Mission:AddClient( NATO_Rescue_Secret_Agent_2 )
@@ -476,11 +486,21 @@ Spawn_RU_MIG29S = SPAWN:New( 'RU MIG-29S@RAMP-Air Defense West' ):Limit( 3, 24 )
 Spawn_RU_Escort1 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 1' ):RandomizeRoute( 1, 1, 2000 ):Limit( 2, 12 )
 Spawn_RU_Escort2 = SPAWN:New( 'RU SU-30@RAMP-Patriot Attack Escort 2' ):RandomizeRoute( 1, 1, 2000 ):Limit( 2, 12 )
 
+-- Russian helicopters escorting general rescue mission.
+Spawn_RU_MI28N_Escort = SPAWN:New( 'RU MI-28N*HOT-Rescue General Escort' ):RandomizeRoute( 3, 1, 500 )
+
 -- Russian ground troops attacking Gori Valley
 Spawn_RU_Troops = { 'RU Attack Gori 1', 'RU Attack Gori 2', 'RU Attack Gori 3', 'RU Attack Gori 4', 'RU Attack Gori 5', 'RU Attack Gori 6', 'RU Attack Gori 7', 'RU Attack Gori 8', 'RU Attack Gori 9', 'RU Attack Gori 10' }
 Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' ):Limit( 16, 150 ):Schedule( 300, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 2, 1000 )
 Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' ):Limit( 16, 150 ):Schedule( 250, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
 Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' ):Limit( 16, 150 ):Schedule( 250, 0.5 ):RandomizeTemplate( Spawn_RU_Troops ):RandomizeRoute( 3, 3, 1000 )
+
+-- Russian low altitude SA systems defending the mountains.
+Spawn_RU_Defend_Mountains_A = SPAWN:New( 'RU Defend Mountains A' ):Limit( 2, 4 ):Schedule( 180, 0.5 ):RandomizeRoute( 0, 0, 5000 )
+Spawn_RU_Defend_Mountains_B = SPAWN:New( 'RU Defend Mountains B' ):Limit( 2, 4 ):Schedule( 180, 0.5 ):RandomizeRoute( 0, 0, 5000 )
+Spawn_RU_Defend_Mountains_C = SPAWN:New( 'RU Defend Mountains C' ):Limit( 2, 4 ):Schedule( 180, 0.5 ):RandomizeRoute( 0, 0, 5000 )
+
+
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
 Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Middle', 'RU Attack Gori Right', 'RU MI-26 Troops' }, 40 )
@@ -529,6 +549,11 @@ Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank 
 Spawn_US_Platoon_Left = SPAWN:New( 'US Patriot Defenses 1' ):Limit( 4, 30 ):Schedule( 600, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 )
 Spawn_US_Platoon_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):Schedule( 600, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 )
 Spawn_US_Platoon_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):Schedule( 600, 0.4 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 1000 )
+
+-- NATO low air defenses in the mountains
+US_Defend_Mountains_A = SPAWN:New( 'US Defend Mountains A' ):Limit( 2, 10 ):Schedule( 180, 0.5 ):RandomizeRoute( 1, 0, 5000 )
+US_Defend_Mountains_B = SPAWN:New( 'US Defend Mountains B' ):Limit( 2, 10 ):Schedule( 180, 0.5 ):RandomizeRoute( 1, 0, 5000 )
+US_Defend_Mountains_C = SPAWN:New( 'US Defend Mountains C' ):Limit( 2, 10 ):Schedule( 180, 0.5 ):RandomizeRoute( 1, 0, 5000 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
 Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 40 )
