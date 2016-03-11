@@ -510,7 +510,7 @@ Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Midd
 
 
 -- NATO helicopters deploying troops within the battle field.
-Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 )RandomizeRoute( 1, 0, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
+Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
 Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
 
 Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
@@ -542,18 +542,18 @@ Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):Ran
 Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
 Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' ):Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1000 ):SpawnArray( 90, 15, 10, 30 ):SpawnScheduled( 300, 0.4 )
 Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1000 ):SpawnArray( 90, 15, 10, 30 ):SpawnScheduled( 250, 0.4 )
-Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1000 ):SpawnArray( 90, 15, 10, 30 ):SpawnScheduled( 250, 0.4 )
+Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' ):Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon ):RandomizeRoute( 3, 3, 1000 ):SpawnArray( 85, 15, 10, 30 ):SpawnScheduled( 250, 0.4 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
-Spawn_US_Defense_Left = SPAWN:New( 'US Patriot Defenses 1' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 600, 0.4 )
-Spawn_US_Defense_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 600, 0.4 )
-Spawn_US_Defense_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 2, 0, 1000 ):SpawnScheduled( 600, 0.4 )
+Spawn_US_Defense_Left = SPAWN:New( 'US Patriot Defenses 1' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 ):SpawnArray( 3, 15, 10, 30 ):SpawnScheduled( 600, 0.4 )
+Spawn_US_Defense_Middle = SPAWN:New( 'US Patriot Defenses 2' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 ):SpawnArray( 3, 15, 10, 30 ):SpawnScheduled( 600, 0.4 )
+Spawn_US_Defense_Right = SPAWN:New( 'US Patriot Defenses 3' ):Limit( 4, 30 ):RandomizeTemplate( Spawn_US_Patriot_Defense ):RandomizeRoute( 3, 0, 1000 ):SpawnArray( 3, 15, 10, 30 ):SpawnScheduled( 600, 0.4 )
 
 -- NATO low air defenses in the mountains
-US_Defend_Mountains_A = SPAWN:New( 'US Defend Mountains A' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnScheduled( 180, 0.5 )
-US_Defend_Mountains_B = SPAWN:New( 'US Defend Mountains B' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnScheduled( 180, 0.5 )
-US_Defend_Mountains_C = SPAWN:New( 'US Defend Mountains C' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnScheduled( 180, 0.5 )
+US_Defend_Mountains_A = SPAWN:New( 'US Defend Mountains A' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnArray( 90, 5, 10, 20 ):SpawnScheduled( 180, 0.5 )
+US_Defend_Mountains_B = SPAWN:New( 'US Defend Mountains B' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnArray( 90, 5, 10, 20 ):SpawnScheduled( 180, 0.5 )
+US_Defend_Mountains_C = SPAWN:New( 'US Defend Mountains C' ):Limit( 2, 10 ):RandomizeRoute( 1, 0, 5000 ):SpawnArray( 90, 5, 10, 20 ):SpawnScheduled( 180, 0.5 )
 
 -- Limit the amount of simultaneous moving units on the ground to prevent lag.
 Movement_US_Platoons = MOVEMENT:New( { 'US Tank Platoon Left', 'US Tank Platoon Middle', 'US Tank Platoon Right', 'US CH-47D Troops' }, 40 )
