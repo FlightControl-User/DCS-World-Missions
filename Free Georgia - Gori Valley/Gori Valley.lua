@@ -562,22 +562,25 @@ Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):Ran
 Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
 
 Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' )
-                             :Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon )
+                             :Limit( 20, 150 )
+                             :RandomizeTemplate( Spawn_US_Platoon )
                              :RandomizeRoute( 2, 1, 2000 )
                              :Array( 76, 30, 15, 35 )
-                             :SpawnScheduled( 300, 0.4 )
+                             :SpawnScheduled( 200, 0.5 )
                              
-Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' ):Limit( 16, 150 )
+Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' )
+                               :Limit( 20, 150 )
                                :RandomizeTemplate( Spawn_US_Platoon )
                                :RandomizeRoute( 2, 1, 2000 )
                                :Array( 340, 50, 15, 35 )
-                               :SpawnScheduled( 250, 0.4 )
+                               :SpawnScheduled( 200, 0.5 )
                                
 Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' )
-                              :Limit( 16, 150 ):RandomizeTemplate( Spawn_US_Platoon )
+                              :Limit( 20, 150 )
+                              :RandomizeTemplate( Spawn_US_Platoon )
                               :RandomizeRoute( 2, 1, 2000 )
                               :Array( 90, 50, 15, 35 )
-                              :SpawnScheduled( 250, 0.4 )
+                              :SpawnScheduled( 200, 0.5 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
