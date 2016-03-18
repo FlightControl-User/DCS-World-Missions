@@ -85,7 +85,7 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 4' ):Transport() )
 	
 	local CargoTable = {}
-	local EngineerNames = { "Ð¼ÐµÑ…Ð°Ð½Ð¸ÐºÐ°", "Ð­Ð»ÐµÐºÑ‚Ñ€Ð¸ÐºÐ¾Ð²", "ÐŸÑ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð¸Ñ�Ñ‚Ñ‹", "Ñ�ÐºÑ�Ð¿ÐµÑ€Ñ‚Ð¾Ð²" }
+	local EngineerNames = { "Оператора РЛС", "Тактические координатора", "Группа ремонта", "Группа экспертов" }
 
 	Cargo_Pickup_Zone_Alpha = CARGO_ZONE:New( 'Russia Alpha Pickup Zone', 'Russia Alpha Control Center' ):BlueSmoke()
     Cargo_Pickup_Zone_Beta = CARGO_ZONE:New( 'Russia Beta Pickup Zone', 'Russia Beta Control Center' ):RedSmoke()
@@ -194,7 +194,7 @@ do -- CCCP - The Rescue of the Russian General
 	Mission:AddClient( Russia_Rescue_General_2 )
 	
 	Russian_General_Hiding_Zone = CARGO_ZONE:New( 'General Hiding Zone', 'General Hiding House' ):GreenFlare()
-	Russian_General = CARGO_GROUP:New( 'Russian General', 'Ð�Ð¸ÐºÐ¾Ð»Ð°Ì�Ð¹ Ð•Ð³Ð¾Ì�Ñ€Ð¾Ð²Ð¸Ñ‡ ÐœÐ°ÐºÐ°Ì�Ñ€Ð¾Ð²', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
+	Russian_General = CARGO_GROUP:New( 'Russian General', 'Владимир Болдырев', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
 	
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Russian General', CLIENT.ONBOARDSIDE.FRONT )
@@ -439,7 +439,7 @@ do -- NATO - Rescue secret agent from the woods
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 4' ) )
 
 	NATO_Secret_Agent_Hiding_Zone = CARGO_ZONE:New( 'NATO secret agent hiding zone', 'Isolated Watch Tower' ):BlueSmoke()
-	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Jerzy KukliÅ„ski', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
+	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Jerzy KukliÃ…â€žski', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
 	
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Secret Agent', CLIENT.ONBOARDSIDE.FRONT )
@@ -473,7 +473,7 @@ Spawn_RU_MI24V = SPAWN:New( 'RU MI-24V@HOT-Ground Attack' ):Limit( 1, 24 ):Rando
 
 -- Russian helicopters deploying troops in the battle field in Gori Valley
 Spawn_RU_MI26_Infantry = SPAWN:New( 'RU MI-26@HOT-Transport Infantry' ):Limit( 2, 8 ):RandomizeRoute( 2, 2, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
-Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
+Spawn_RU_MI26_Troops = SPAWN:New( 'RU MI-26 Troops' ):Limit( 8, 80 ):RandomizeTemplate( { "RU MI-26 Infantry Alpha", "RU MI-26 Infantry Beta", "RU MI-26 Infantry Gamma" } ):RandomizeRoute( 1, 0, 5000 )
 
 Spawn_RU_MI26_East = SPAWN:New( 'RU MI-26@HOT-SAM Transport East' ):Limit( 1, 8 ):RandomizeRoute( 2, 2, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
 Spawn_RU_MI26_SAM_East = SPAWN:New( 'RU MI-26 SAM East' ):Limit( 4, 20 ):RandomizeTemplate( { "RU MI-26 SAM East 1", "RU MI-26 SAM East 2", "RU MI-26 SAM East 3" } ):RandomizeRoute( 1, 0, 2000 )
@@ -500,21 +500,21 @@ Spawn_RU_Troops_Left = SPAWN:New( 'RU Attack Gori Left' )
                             :RandomizeTemplate( Spawn_RU_Troops )
                             :RandomizeRoute( 1, 1, 2000 )
                             :Array( 349, 30, 20, 20 )
-                            :SpawnScheduled( 90, 0.5 )
+                            :SpawnScheduled( 90, 1 )
                             
 Spawn_RU_Troops_Middle = SPAWN:New( 'RU Attack Gori Middle' )
                               :Limit( 20, 150 )
                               :RandomizeTemplate( Spawn_RU_Troops )
                               :RandomizeRoute( 1, 1, 2000 )
                               :Array( 260, 50, 20, 25 )
-                              :SpawnScheduled( 90, 0.5 )
+                              :SpawnScheduled( 90, 1 )
                               
 Spawn_RU_Troops_Right = SPAWN:New( 'RU Attack Gori Right' )
                              :Limit( 20, 150 )
                              :RandomizeTemplate( Spawn_RU_Troops )
                              :RandomizeRoute( 1, 1, 2000 )
                              :Array( 238, 50, 20, 25 )
-                             :SpawnScheduled( 90, 0.5 )
+                             :SpawnScheduled( 90, 1 )
 
 -- Russian low altitude SA systems defending the mountains.
 Spawn_RU_Defend_Mountains_A = SPAWN:New( 'RU Defend Mountains A' ):Limit( 2, 4 ):RandomizeRoute( 0, 0, 5000 ):Array( 90, 2, 10, 10 ):SpawnScheduled( 180, 0.5 )
@@ -534,7 +534,7 @@ Movement_RU_Troops = MOVEMENT:New( { 'RU Attack Gori Left', 'RU Attack Gori Midd
 Spawn_US_CH47D1 = SPAWN:New( 'US CH-47D@RAMP Troop Deployment 1' ):Limit( 1, 8 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
 Spawn_US_CH47D2 = SPAWN:New( 'US CH-47D@RAMP-Troop Deployment 2' ):Limit( 1, 8 ):RandomizeRoute( 1, 0, 200 ):CleanUp( 180 ):SpawnScheduled( 900, 0.2 )
 
-Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 20, 80 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
+Spawn_US_CH47Troops = SPAWN:New( 'US CH-47D Troops' ):Limit( 8, 80 ):RandomizeTemplate( { "US Infantry Defenses A", "US Infantry Defenses B", "US Infantry Defenses C", "DE Infantry Defenses D", "DE Infantry Defenses E" } ):RandomizeRoute( 1, 0, 4000 )
 
 
 -- NATO helicopters engaging in the battle field.
@@ -564,23 +564,23 @@ Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 
 Spawn_US_Platoon_Left = SPAWN:New( 'US Tank Platoon Left' )
                              :Limit( 20, 150 )
                              :RandomizeTemplate( Spawn_US_Platoon )
-                             :RandomizeRoute( 1, 1, 2000 )
+                             :RandomizeRoute( 3, 1, 2000 )
                              :Array( 76, 30, 15, 35 )
-                             :SpawnScheduled( 90, 0.5 )
+                             :SpawnScheduled( 90, 1 )
                              
 Spawn_US_Platoon_Middle = SPAWN:New( 'US Tank Platoon Middle' )
                                :Limit( 20, 150 )
                                :RandomizeTemplate( Spawn_US_Platoon )
-                               :RandomizeRoute( 1, 1, 2000 )
+                               :RandomizeRoute( 3, 1, 2000 )
                                :Array( 160, 30, 15, 35 )
-                               :SpawnScheduled( 90, 0.5 )
+                               :SpawnScheduled( 90, 1 )
                                
 Spawn_US_Platoon_Right = SPAWN:New( 'US Tank Platoon Right' )
                               :Limit( 20, 150 )
                               :RandomizeTemplate( Spawn_US_Platoon )
                               :RandomizeRoute( 1, 1, 2000 )
                               :Array( 90, 50, 15, 35 )
-                              :SpawnScheduled( 90, 0.5 )
+                              :SpawnScheduled( 90, 1 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
