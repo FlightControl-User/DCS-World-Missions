@@ -439,7 +439,7 @@ do -- NATO - Rescue secret agent from the woods
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 4' ) )
 
 	NATO_Secret_Agent_Hiding_Zone = CARGO_ZONE:New( 'NATO secret agent hiding zone', 'Isolated Watch Tower' ):BlueSmoke()
-	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Jerzy KukliÃ…â€žski', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
+	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Kukliński', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
 	
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Secret Agent', CLIENT.ONBOARDSIDE.FRONT )
