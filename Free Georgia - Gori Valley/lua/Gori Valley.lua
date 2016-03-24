@@ -35,9 +35,10 @@ Include.File( "CleanUp" )
 Include.File( "Group" )
 Include.File( "Unit" )
 Include.File( "Zone" )
+Include.File( "Escort" )
 
 
--- MISSIONS PART:CCCP MISSIONS
+-- MISSIONS PART:CCCP MISSION
 
 do -- CCCP Transport Mission to activate the SA-6 radar installations.
 
@@ -381,7 +382,7 @@ end
 do -- NATO "Fury" Sling Load Mission
 
 	function DeployCargoGoal( Mission, Client )
-		if routines.IsUnitInZones( Client:ClientGroup():getUnit(1), 'Cargo 1 - Arrival' ) ~= nil then
+		if routines.IsUnitInZones( Client:GetDCSGroup():getUnit(1), 'Cargo 1 - Arrival' ) ~= nil then
 			Mission:GetTask( 2 ):AddGoalCompletion( "Cargo sling load", "Cargo", 1 ) 
 		end
 	end
