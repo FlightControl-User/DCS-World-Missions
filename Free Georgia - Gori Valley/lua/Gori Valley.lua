@@ -326,7 +326,7 @@ do -- CCCP - The Rescue of the Russian General
 
   local function EventAliveEscort( Client )
     local EscortGroupHelicopter = Spawn_RU_MI28N_Escort:Spawn()
-    local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort Air Support (MI-28N)" )
+    local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort and Air Support (MI-28N)" )
   end
 
 	local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'CCCP'  )
@@ -570,7 +570,7 @@ do -- NATO - Rescue secret agent from the woods
 
   local function EventAliveEscort( Client )
     local EscortGroupHelicopter = Spawn_NL_AH64A_Escort:Spawn()
-    local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Air Support (AH-64A)" )
+    local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort and Air Support (AH-64A)" )
   end
 
 
