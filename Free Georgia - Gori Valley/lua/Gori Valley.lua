@@ -129,8 +129,7 @@ Spawn_US_A10C_Ground_Attack_West = SPAWN:New( 'US A-10C*RAMP-Ground Attack West'
 Spawn_NL_AH64A_Escort = SPAWN:New( 'NL AH-64A@HOT-Escort Rescue Agent' ):RandomizeRoute( 2, 1, 500 )
 
 -- NATO planes escorting the A-10Cs
-Spawn_US_F16C_Escort1 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 1' ):RandomizeRoute( 1, 1, 5000 )
-Spawn_US_F16C_Escort2 = SPAWN:New( 'BE F-16A@HOT - Ground Attack Escort 2' ):RandomizeRoute( 1, 1, 5000 )
+Spawn_US_F16A_Escort = SPAWN:New( 'BE F-16A@HOT-Ground Attack Escort' ):RandomizeRoute( 1, 1, 5000 )
 
 -- NATO Tank Platoons invading Tskinvali
 Spawn_US_Platoon = { 'US Tank Platoon 1', 'US Tank Platoon 2', 'US Tank Platoon 3', 'US Tank Platoon 4', 'US Tank Platoon 5', 'US Tank Platoon 6', 'US Tank Platoon 7', 'US Tank Platoon 8', 'US Tank Platoon 9', 'US Tank Platoon 10', 'US Tank Platoon 11', 'US Tank Platoon 12', 'US Tank Platoon 13' }
@@ -232,7 +231,7 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	Mission_Red_SA6:AddClient( CLIENT:New( 'RU MI-8MTV2*RAMP-Deploy Troops 4' ):Transport() )
 	
 	local CargoTable = {}
-	local EngineerNames = { "Оператора РЛС", "Тактические координатора", "Группа ремонта", "Группа экспертов" }
+	local EngineerNames = { "ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° Ð Ð›Ð¡", "Ð¢Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑ�ÐºÐ¸Ðµ ÐºÐ¾Ð¾Ñ€Ð´Ð¸Ð½Ð°Ñ‚Ð¾Ñ€Ð°", "Ð“Ñ€ÑƒÐ¿Ð¿Ð° Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ð°", "Ð“Ñ€ÑƒÐ¿Ð¿Ð° Ñ�ÐºÑ�Ð¿ÐµÑ€Ñ‚Ð¾Ð²" }
 
 	Cargo_Pickup_Zone_Alpha = CARGO_ZONE:New( 'Russia Alpha Pickup Zone', 'Russia Alpha Control Center' ):BlueSmoke()
     Cargo_Pickup_Zone_Beta = CARGO_ZONE:New( 'Russia Beta Pickup Zone', 'Russia Beta Control Center' ):RedSmoke()
@@ -347,7 +346,7 @@ do -- CCCP - The Rescue of the Russian General
 	Mission:AddClient( Russia_Rescue_General_2 )
 	
 	Russian_General_Hiding_Zone = CARGO_ZONE:New( 'General Hiding Zone', 'General Hiding House' ):GreenFlare()
-	Russian_General = CARGO_GROUP:New( 'Russian General', 'Владимир Болдырев', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
+	Russian_General = CARGO_GROUP:New( 'Russian General', 'Ð’Ð»Ð°Ð´Ð¸Ð¼Ð¸Ñ€ Ð‘Ð¾Ð»Ð´Ñ‹Ñ€ÐµÐ²', math.random( 70, 100 ), 'Russian General',  Russian_General_Hiding_Zone )
 	
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Russian General', CLIENT.ONBOARDSIDE.FRONT )
@@ -490,6 +489,11 @@ end
 do -- NATO Destroy Mission SA-6 Batteries
 	local Mission = MISSION:New( 'SA-6 SAMs', 'Primary', 'Our intelligence reports that 3 SA-6 SAM defense batteries are located near Didmukha, Khetagurov and Berula. Eliminate the Russian SAMs.', 'NATO'  )
 
+  local function EventAliveA10C( Client )
+    local EscortGroup = Spawn_US_F16A_Escort:Spawn()
+    local Escort = ESCORT:New( Client, EscortGroup, "Escort and Air Support (F-16A)" )
+  end
+
 	Mission:AddClient( CLIENT:New( 'BE KA-50*HOT-Ground Defense 1', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
 	Mission:AddClient( CLIENT:New( 'BE KA-50*HOT-Ground Defense 2', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
 	Mission:AddClient( CLIENT:New( 'BE KA-50*RAMP-Ground Defense 3', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
@@ -505,10 +509,10 @@ do -- NATO Destroy Mission SA-6 Batteries
 	Mission:AddClient( CLIENT:New( 'GE SU-25T*RAMP-SA-6 Attack 3', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
 	Mission:AddClient( CLIENT:New( 'GE SU-25T*RAMP-SA-6 Attack 4', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
 
-	Mission:AddClient( CLIENT:New( 'US A-10C*HOT-Ground Defense 1', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-	Mission:AddClient( CLIENT:New( 'US A-10C*HOT-Ground Defense 2', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-	Mission:AddClient( CLIENT:New( 'US A-10C*RAMP-Ground Defense 3', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-	Mission:AddClient( CLIENT:New( 'US A-10C*RAMP*Ground Defense 4', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+	Mission:AddClient( CLIENT:New( 'US A-10C*HOT-Ground Defense 1', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ):Alive(EventAliveA10C) )
+	Mission:AddClient( CLIENT:New( 'US A-10C*HOT-Ground Defense 2', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ):Alive(EventAliveA10C) )
+	Mission:AddClient( CLIENT:New( 'US A-10C*RAMP-Ground Defense 3', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ):Alive(EventAliveA10C) )
+	Mission:AddClient( CLIENT:New( 'US A-10C*RAMP*Ground Defense 4', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ):Alive(EventAliveA10C) )
 
 	Mission:AddClient( CLIENT:New( 'US F-15C*HOT-Air Defense 1', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
 	Mission:AddClient( CLIENT:New( 'US F-15C*HOT-Air Defense 2', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
@@ -600,7 +604,7 @@ do -- NATO - Rescue secret agent from the woods
 	Mission:AddClient( CLIENT:New( 'DE KA-50*RAMP-Air Support 4' ) )
 
 	NATO_Secret_Agent_Hiding_Zone = CARGO_ZONE:New( 'NATO secret agent hiding zone', 'Isolated Watch Tower' ):BlueSmoke()
-	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard Kukliński', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
+	NATO_Secret_Agent = CARGO_GROUP:New( 'Secret Agent', 'Ryszard KukliÅ„ski', math.random( 70, 100 ), 'NATO Secret Agent',  NATO_Secret_Agent_Hiding_Zone )
 	
 	-- Assign the Pickup Task
 	local PickupTask = PICKUPTASK:New( 'Secret Agent', CLIENT.ONBOARDSIDE.FRONT )
