@@ -281,7 +281,7 @@ do -- CCCP - Destroy Patriots
 	local Mission = MISSION:New( 'Patriots', 'Primary', 'Our intelligence reports that 3 Patriot SAM defense batteries are located near Ruisi, Kvarhiti and Gori.', 'CCCP'  )
 
   local function Escort_SU25T_Beslan( Client )
-    local EscortGroup = Spawn_RU_Escort_SU25T_Beslan:Spawn()
+    local EscortGroup = Spawn_RU_Escort_SU25T_Beslan:ReSpawn(1)
     local Escort = ESCORT:New( Client, EscortGroup, "Escort железо (SU-30)" )
   end
   
@@ -332,7 +332,7 @@ end
 do -- CCCP - The Rescue of the Russian General
 
   local function EventAliveEscort( Client )
-    local EscortGroupHelicopter = Spawn_RU_MI28N_Escort:Spawn()
+    local EscortGroupHelicopter = Spawn_RU_MI28N_Escort:ReSpawn(1)
     local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort спасение (MI-28N)" )
   end
 
@@ -498,7 +498,7 @@ do -- NATO Destroy Mission SA-6 Batteries
 	local Mission = MISSION:New( 'SA-6 SAMs', 'Primary', 'Our intelligence reports that 3 SA-6 SAM defense batteries are located near Didmukha, Khetagurov and Berula. Eliminate the Russian SAMs.', 'NATO'  )
 
   local function Escort_A10C_Kutaisi( Client )
-    local EscortGroup = Spawn_US_F16A_Escort_A10C_Kutaisi:Spawn()
+    local EscortGroup = Spawn_US_F16A_Escort_A10C_Kutaisi:ReSpawn(1)
     local Escort = ESCORT:New( Client, EscortGroup, "Escort Air Defenses (F-16A)" )
   end
 
@@ -585,7 +585,7 @@ end
 do -- NATO - Rescue secret agent from the woods
 
   local function EventAliveEscort( Client )
-    local EscortGroupHelicopter = Spawn_NL_AH64A_Escort:Spawn()
+    local EscortGroupHelicopter = Spawn_NL_AH64A_Escort:ReSpawn(1)
     local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort Rescue (AH-64A)" )
   end
 
