@@ -193,18 +193,15 @@ do -- CCCP Transport Mission to activate the SA-6 radar installations.
 	}
 
 	function DeploySA6TroopsGoal( Mission, Client )
-	trace.l( "", "DeploySA6TroopsGoal" )
 
 
 		-- Check if the cargo is all deployed for mission success.
 		for CargoID, CargoData in pairs( CARGOS ) do
 			if CargoData.CargoGroupName then
-				trace.l( "", "DeploySA6TroopsGoal", CargoData.CargoGroupName )
 				CargoGroup = Group.getByName( CargoData.CargoGroupName )
 				if CargoGroup then
 					-- Check if the group is ready to activate an SA-6.
 					local CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones.LandingZoneNames ) -- The second task is the Deploytask to measure mission success upon
-					trace.l( "", "DeploySA6TroopsGoal", CurrentLandingZoneID )
 					if CurrentLandingZoneID then
 						if SA6Activation[CurrentLandingZoneID][2] == false then
 							trigger.action.setGroupAIOn( Group.getByName( SA6Activation[CurrentLandingZoneID][1] ) )
