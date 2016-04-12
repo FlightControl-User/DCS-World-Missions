@@ -40,64 +40,65 @@ Include.File( "Escort" )
 
 -- CCCP COALITION UNITS
 
-local function Transport_TakeOff( HeliGroup, CountryPrefix )
+
+function Transport_TakeOff( HeliGroup, CountryPrefix )
+
   if CountryPrefix == 'RU' then
-    HeliGroup:MessageToRed( 'Reloading.', 15 )
+    HeliGroup:MessageToRed( 'Reporting ... Initiating infantry deployment.', 15 )
   else
-    HeliGroup:MessageToBlue( 'Reloading.', 15 )
+    HeliGroup:MessageToBlue( 'Reporting ... Initiating infantry deployment.', 15 )
   end
-  local LandingZone = ZONE:New( 'RU Reload Mi-26 Transport 1' )
-  local DCSTaskLand = HeliGroup:TaskLandAtZone( LandingZone, 60, true )
-  HeliGroup:PushTask( DCSTaskLand )
 end
 
-local function Transport_Reloaded( HeliGroup, CountryPrefix )
+function Transport_Reload( HeliGroup, CountryPrefix, LandingZoneName )
+
+  HeliGroup:MessageToRed( "Reloading infantry.", 15 )
+
+  local LandingZone = ZONE:New( CountryPrefix .. " " .. LandingZoneName )
+  HeliGroup:PushTask( HeliGroup:TaskLandAtZone( LandingZone, 30 ) )
+  
+end
+
+function Transport_Reloaded( HeliGroup, CountryPrefix )
 
   if CountryPrefix == 'RU' then
-    HeliGroup:MessageToRed( 'Taking-off carrying infantry to support the attack. Will contact coalition when initiating deployment.', 15 )
+    HeliGroup:MessageToRed( 'Infantry loaded, flying to the landing zone. Will contact coalition when initiating deployment.', 15 )
   else
-    HeliGroup:MessageToBlue( 'Taking-off carrying infantry to support the attack. Will contact coalition when initiating deployment.', 15 )
+    HeliGroup:MessageToBlue( 'Infantry loaded, flying to the landing zone. Will contact coalition when initiating deployment.', 15 )
   end
 end
 
 --- @param Group#GROUP HeliGroup
-local function Transport_LandAndDeploy( HeliGroup, CountryPrefix, LandingZoneName, SpawnInfantry, TargetZoneName )
+function Transport_Land( HeliGroup, CountryPrefix, LandingZoneName )
 
-  
   if CountryPrefix == 'RU' then
     HeliGroup:MessageToRed( "Flying to " .. LandingZoneName .. " for infantry deployment.", 15 )
   else
-    HeliGroup:MessageToBlue( "Flying to " .. LandingZoneName .. " for infrantry deployment.", 15 )
+    HeliGroup:MessageToBlue( "Flying to " .. LandingZoneName .. " for infantry deployment.", 15 )
   end
   
   local LandingZone = ZONE:New( CountryPrefix .. " " .. LandingZoneName )
-  local DCSTaskLand = HeliGroup:TaskLandAtZone( LandingZone, 60 )
+  local DCSTaskLand = HeliGroup:TaskLandAtZone( LandingZone, 30, true )
   HeliGroup:PushTask( DCSTaskLand )
+ 
+end
+
+function Transport_Deploy( HeliGroup, CountryPrefix, SpawnInfantry, TargetZoneName )
   
-  local DCSTaskSpawn = {}
   local HeliUnit = HeliGroup:GetUnit(1)
   local GroupInfantry = SpawnInfantry:SpawnFromUnit( HeliUnit, 50, 10 )
   if GroupInfantry then
     GroupInfantry:TaskRouteToZone( ZONE:New( CountryPrefix .. ' ' .. TargetZoneName ), true, 60, 'Cone' )
     if CountryPrefix == 'RU' then
       GroupInfantry:MessageToRed( 'Reporting... We are on our way!', 15 )
-      HeliGroup:MessageToRed( 'The infantry is deployed within '  .. LandingZoneName .. '. Flying back to base for a reload.', 15 )
+      HeliGroup:MessageToRed( 'The infantry is deployed. Flying back to base for a reload.', 15 )
     else
       GroupInfantry:MessageToBlue( 'Reporting... We are on our way!', 15 )
-      HeliGroup:MessageToBlue( 'The infantry is deployed within ' .. LandingZoneName .. '. Flying back to base for a reload.', 15 )
+      HeliGroup:MessageToBlue( 'The infantry is deployed. Flying back to base for a reload.', 15 )
     end
   end
-
 end
 
-local function Transport_Reload( HeliGroup, CountryPrefix, LandingZoneName )
-
-  HeliGroup:MessageToRed( "Reloading troops.", 15 )
-
-  local LandingZone = ZONE:New( CountryPrefix .. " " .. LandingZoneName )
-  HeliGroup:PushTask( HeliGroup:TaskLandAtZone( LandingZone, 30 ) )
-  
-end
   
 -- Russian helicopters engaging the battle field in Gori Valley
 Spawn_RU_KA50 = SPAWN
@@ -135,9 +136,11 @@ Spawn_RU_MI26_Infantry = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, Transport_TakeOff, 'RU' )
-        :WayPointFunction( 3, 1, Transport_LandAndDeploy, 'RU', 'Landing Zone ' .. math.random( 1, 7 ), Spawn_RU_MI26_Troops, 'Troops Attack '.. math.random( 1, 5 ) )
-        :WayPointFunction( 5, 1, Transport_Reload, 'RU', 'Reload Mi-26 Transport 1' )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'RU'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'RU'", "'Reload Mi-26 Transport 1'" )
+        :WayPointFunction( 2, 2, "Transport_Reloaded", "'RU'" )
+        :WayPointFunction( 3, 1, "Transport_Land", "'RU'", "'Landing Zone ' .. math.random( 1, 7 )" )
+        :WayPointFunction( 3, 2, "Transport_Deploy", "'RU'", "Spawn_RU_MI26_Troops", "'Troops Attack '.. math.random( 1, 5 )" )
         :WayPointExecute( 1, 2 )
     end
   )
@@ -160,10 +163,11 @@ Spawn_RU_MI26_East = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, Transport_TakeOff, 'RU' )
-        :WayPointFunction( 1, 2, Transport_Reloaded, 'RU' )
-        :WayPointFunction( 16, 1, Transport_LandAndDeploy, 'RU', 'SAM Landing Zone ' .. math.random( 1, 2 ), Spawn_RU_MI26_SAM_East, 'SAM East '.. math.random( 1, 3 ) )
-        :WayPointFunction( 29, 1, Transport_Reload, 'RU', 'Reload Mi-26 Transport 2' )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'RU'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'RU'", "'Reload Mi-26 Transport 2'" )
+        :WayPointFunction( 2, 2, "Transport_Reloaded", "'RU'" )
+        :WayPointFunction( 15, 1, "Transport_Land", "'RU'", "'SAM Landing Zone ' .. math.random( 1, 2 )" )
+        :WayPointFunction( 15, 2, "Transport_Deploy", "'RU'", "Spawn_RU_MI26_SAM_East", "'SAM East '.. math.random( 1, 3 )" )
         :WayPointExecute( 1, 2 )
     end
   )
@@ -184,9 +188,11 @@ Spawn_RU_MI26_West = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, Transport_TakeOff, 'RU' )
-        :WayPointFunction( 6, 1, Transport_LandAndDeploy, 'RU', 'SAM Landing Zone 3', Spawn_RU_MI26_SAM_West, 'SAM West '.. math.random( 1, 2 ) )
-        :WayPointFunction( 10, 1, Transport_Reload, 'RU', 'Reload Mi-26 Transport 2' )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'RU'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'RU'", "'Reload Mi-26 Transport 2'" )
+        :WayPointFunction( 2, 2, "Transport_Reloaded", "'RU'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'RU'", "'SAM Landing Zone 3'" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'RU'", "Spawn_RU_MI26_SAM_West", "'SAM West '.. math.random( 1, 2 )" )
         :WayPointExecute( 1, 2 )
     end
   )
@@ -313,9 +319,11 @@ Spawn_US_CH47D1 = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, Transport_TakeOff, 'US' )
-        :WayPointFunction( 2, 1, Transport_LandAndDeploy, 'US', 'Troops Landing Zone ' .. math.random( 4 ), Spawn_US_CH47Troops, 'Troops Attack ' .. math.random(3) )
-        :WayPointFunction( 4, 1, Transport_Reload, 'US', 'Reload Troops' )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'US'", "'Reload Troops'" )
+        :WayPointFunction( 2, 2, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 3, 1, "Transport_Land", "'US'", "'Troops Landing Zone ' .. math.random( 1, 6 )" )
+        :WayPointFunction( 3, 2, "Transport_Deploy", "'US'", "Spawn_US_CH47Troops", "'Troops Attack ' .. math.random( 3 )" )
         :WayPointExecute( 1, 2 )
     end
   )
@@ -330,9 +338,11 @@ Spawn_US_CH47D2 = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, Transport_TakeOff, 'US' )
-        :WayPointFunction( 3, 1, Transport_LandAndDeploy, 'US', 'Troops Landing Zone ' .. math.random( 4 ), Spawn_US_CH47Troops, 'Troops Attack ' .. math.random(3) )
-        :WayPointFunction( 5, 1, Transport_Reload, 'US', 'Reload Troops' )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'US'", "'Reload Troops'" )
+        :WayPointFunction( 2, 2, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 3, 1, "Transport_Land", "'US'", "'Troops Landing Zone ' .. math.random( 7, 9 )" )
+        :WayPointFunction( 3, 2, "Transport_Deploy", "'US'", "Spawn_US_CH47Troops", "'Troops Attack ' .. math.random( 3 )" )
         :WayPointExecute( 1, 2 )
     end
   )
