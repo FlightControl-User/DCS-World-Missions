@@ -40,7 +40,7 @@ Include.File( "Escort" )
 
 -- CCCP COALITION UNITS
 
-
+--- TODO: Need to fix problem with CountryPrefix
 function Transport_TakeOff( HeliGroup, CountryPrefix )
 
   if CountryPrefix == 'RU' then
@@ -52,7 +52,12 @@ end
 
 function Transport_Reload( HeliGroup, CountryPrefix, LandingZoneName )
 
-  HeliGroup:MessageToRed( "Reloading infantry.", 15 )
+
+  if CountryPrefix == 'RU' then
+    HeliGroup:MessageToRed( "Reloading infantry.", 15 )
+  else
+    HeliGroup:MessageToBlue( "Reloading infantry.", 15 )
+  end
 
   local LandingZone = ZONE:New( CountryPrefix .. " " .. LandingZoneName )
   HeliGroup:PushTask( HeliGroup:TaskLandAtZone( LandingZone, 30 ) )
@@ -987,6 +992,7 @@ do -- NATO - Rescue secret agent from the woods
 	                                         "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " .. 
 	                                         "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
 											                     "Radio Communication with the two AH-64A helicopters is on VHF 132.4 AM Mhz. Configure your R-863 radio to match the frequency." ):Transport():Alive( EventAliveEscort )
+
 	NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'Tactical: Rescue Secret Agent (DE MI-8MTV2-2@HOT)', 
 	                                         "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place and are available for Air Support. " .. 
 	                                         "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " .. 
