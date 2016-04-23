@@ -111,19 +111,19 @@ Spawn_RU_KA50 = SPAWN
   :Limit( 1, 24 )
   :RandomizeRoute( 1, 1, 8000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 600, 0.2 )
+  :SpawnScheduled( 1200, 0.2 )
 Spawn_RU_MI28N = SPAWN
   :New( 'RU MI-28N@HOT-Ground Attack' )
   :Limit( 1, 24 )
   :RandomizeRoute( 1, 1, 2000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 600, 0.2 )
+  :SpawnScheduled( 1200, 0.2 )
 Spawn_RU_MI24V = SPAWN
   :New( 'RU MI-24V@HOT-Ground Attack' )
   :Limit( 1, 24 )
   :RandomizeRoute( 1, 1, 2000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 600, 0.2 )
+  :SpawnScheduled( 1200, 0.2 )
 
 Spawn_RU_MI26_Troops = SPAWN
   :New( 'RU MI-26 Troops' )
@@ -206,10 +206,10 @@ Spawn_RU_MI26_West = SPAWN
 -- Russian planes attacking ground units in Gori Valley and defending air space over the mountains.
 Spawn_RU_SU25T = SPAWN
   :New( 'RU SU-25T@RAMP-Patriot Attack' )
-  :Limit( 3, 24 )
+  :Limit( 1, 24 )
   :RandomizeRoute( 1, 1, 200 )
   :CleanUp( 180 )
-  :SpawnScheduled( 300, 0.25 )
+  :SpawnScheduled( 1800, 0.25 )
 Spawn_RU_SU27 = SPAWN
   :New( 'RU SU-27@RAMP-Air Support East' )
   :Limit( 3, 24 )
@@ -221,7 +221,7 @@ Spawn_RU_MIG29S = SPAWN
   :Limit( 3, 24 )
   :RandomizeRoute( 1, 1, 4000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 450, 0.4 )
+  :SpawnScheduled( 300, 0.4 )
 
 -- Russian planes escorting the SU25T attack forces
 Spawn_RU_Escort_SU25T_Beslan = SPAWN
@@ -362,14 +362,14 @@ Spawn_BE_KA50 = SPAWN
   :Limit( 1, 24 )
   :RandomizeRoute( 1, 1, 2000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 600, 0.5 )
+  :SpawnScheduled( 1200, 0.5 )
 
 Spawn_US_AH64D = SPAWN
   :New( 'US AH-64D@RAMP-Ground Recon' )
   :Limit( 1, 20 )
   :RandomizeRoute( 1, 1, 2000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 900, 0.5 )
+  :SpawnScheduled( 1200, 0.5 )
 
 -- NATO planes attacking Russian ground units and defending airspace
 Spawn_BE_F16A = SPAWN
@@ -378,7 +378,7 @@ Spawn_BE_F16A = SPAWN
   :RandomizeRoute( 1, 1, 6000 )
   :RepeatOnEngineShutDown()
   :CleanUp( 180 )
-  :SpawnScheduled( 1200, 0.5 )
+  :SpawnScheduled( 300, 0.5 )
 
 Spawn_US_F16C = SPAWN
   :New( 'US F-16C@RAMP-Sead Gori' )
@@ -386,7 +386,7 @@ Spawn_US_F16C = SPAWN
   :RandomizeRoute( 1, 1, 6000 )
   :RepeatOnEngineShutDown()
   :CleanUp( 180 )
-  :SpawnScheduled( 1200, 0.5 )
+  :SpawnScheduled( 1800, 0.5 )
 
 Spawn_US_F15C = SPAWN
   :New( 'US F-15C@RAMP-Air Support Mountains' )
@@ -394,18 +394,18 @@ Spawn_US_F15C = SPAWN
   :RandomizeRoute( 1, 1, 5000 )
   :RepeatOnEngineShutDown()
   :CleanUp( 180 )
-  :SpawnScheduled( 1200, 0.5 )
+  :SpawnScheduled( 600, 0.5 )
 
 Spawn_US_F14A_Intercept = SPAWN
   :New( 'US F-14A@RAMP-Intercept' )
   :Limit( 2, 24 )
   :RandomizeRoute( 1, 1, 6000 )
   :CleanUp( 180 )
-  :SpawnScheduled( 1200, 0.4 )
+  :SpawnScheduled( 600, 0.4 )
 
 Spawn_US_A10C_Ground_Defense = SPAWN
   :New( 'US A-10C*HOT-Ground Defense' )
-  :Limit( 2, 10 )
+  :Limit( 1, 10 )
   :RandomizeRoute( 1, 1, 2000 )
   :RepeatOnEngineShutDown()
   :CleanUp( 180 )
@@ -413,7 +413,7 @@ Spawn_US_A10C_Ground_Defense = SPAWN
 
 Spawn_US_A10C_Ground_Attack_West = SPAWN
   :New( 'US A-10C*RAMP-Ground Attack West' )
-  :Limit( 2, 10 )
+  :Limit( 1, 10 )
   :RandomizeRoute( 1, 1, 2000 )
   :RepeatOnEngineShutDown()
   :CleanUp( 180 )
@@ -571,7 +571,7 @@ CLEANUP_Airports = CLEANUP
       'CLEAN Beslan',
       'CLEAN Mozdok',
       'CLEAN Nalchik'
-    }, 10
+    }, 3600
   )
 
 
