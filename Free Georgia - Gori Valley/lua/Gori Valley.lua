@@ -229,7 +229,7 @@ Spawn_RU_Escort_SU25T_Beslan = SPAWN
   :RandomizeRoute( 1, 1, 2000 )
 
 -- Russian helicopters escorting general rescue mission.
-Spawn_RU_MI28N_Escort = SPAWN
+Spawn_RU_MI28N_Escorting = SPAWN
   :New( 'RU MI-28N*HOT-Rescue General Escort' )
   :RandomizeRoute( 3, 1, 500 )
 
@@ -571,7 +571,7 @@ CLEANUP_Airports = CLEANUP
       'CLEAN Beslan',
       'CLEAN Mozdok',
       'CLEAN Nalchik'
-    }, 10
+    }, 180
   )
 
 
@@ -723,7 +723,7 @@ end
 do -- CCCP - The Rescue of the Russian General
 
   local function EventAliveEscort( Client )
-    local EscortGroupHelicopter = Spawn_RU_MI28N_Escort:ReSpawn(1)
+    local EscortGroupHelicopter = Spawn_RU_MI28N_Escorting:ReSpawn(1)
     local EscortHelicopters = ESCORT:New( Client, EscortGroupHelicopter, "Escort спасение (MI-28N)" )
   end
 
