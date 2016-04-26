@@ -36,6 +36,7 @@ Include.File( "Group" )
 Include.File( "Unit" )
 Include.File( "Zone" )
 Include.File( "Escort" )
+Include.File( "Scoring" )
 
 
 -- CCCP COALITION UNITS
@@ -1078,6 +1079,7 @@ end
 
 
 -- MISSION SCHEDULER STARTUP
+MISSIONSCHEDULER:Scoring( SCORING:New( "Gori Valley" ):OpenCSV( "Player_Scores" ) )
 MISSIONSCHEDULER.Start()
 MISSIONSCHEDULER.ReportMenu()
 MISSIONSCHEDULER.ReportMissionsFlash( 120 )
