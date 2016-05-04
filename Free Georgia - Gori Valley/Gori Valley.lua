@@ -1,4 +1,3 @@
-
 --- Gori Valley Mission
 --
 -- This is the Gori valley main mission lua file.
@@ -252,27 +251,27 @@ Spawn_RU_Troops =
 
 Spawn_RU_Troops_Left = SPAWN
   :New( 'RU Attack Gori Left' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_RU_Troops )
   :RandomizeRoute( 1, 1, 2000 )
   :Array( 349, 30, 20, 20 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 Spawn_RU_Troops_Middle = SPAWN
   :New( 'RU Attack Gori Middle' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_RU_Troops )
   :RandomizeRoute( 1, 1, 2000 )
   :Array( 260, 50, 20, 25 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 Spawn_RU_Troops_Right = SPAWN
   :New( 'RU Attack Gori Right' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_RU_Troops )
   :RandomizeRoute( 1, 1, 2000 )
   :Array( 238, 50, 20, 25 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 -- Russian low altitude SA systems defending the mountains.
 Spawn_RU_Defend_Mountains_A = SPAWN
@@ -379,7 +378,7 @@ Spawn_BE_F16A = SPAWN
   :New( 'BE F-16A@RAMP-Air Support Mountains' )
   :Limit( 2, 20 )
   :RandomizeRoute( 1, 1, 6000 )
-  :RepeatOnEngineShutDown()
+  :InitRepeatOnEngineShutDown()
   :CleanUp( 180 )
   :SpawnScheduled( 300, 0.5 )
 
@@ -387,7 +386,7 @@ Spawn_US_F16C = SPAWN
   :New( 'US F-16C@RAMP-Sead Gori' )
   :Limit( 1, 20 )
   :RandomizeRoute( 1, 1, 6000 )
-  :RepeatOnEngineShutDown()
+  :InitRepeatOnEngineShutDown()
   :CleanUp( 180 )
   :SpawnScheduled( 1800, 0.5 )
 
@@ -395,7 +394,7 @@ Spawn_US_F15C = SPAWN
   :New( 'US F-15C@RAMP-Air Support Mountains' )
   :Limit( 2, 24 )
   :RandomizeRoute( 1, 1, 5000 )
-  :RepeatOnEngineShutDown()
+  :InitRepeatOnEngineShutDown()
   :CleanUp( 180 )
   :SpawnScheduled( 600, 0.5 )
 
@@ -410,7 +409,7 @@ Spawn_US_A10C_Ground_Defense = SPAWN
   :New( 'US A-10C*HOT-Ground Defense' )
   :Limit( 1, 10 )
   :RandomizeRoute( 1, 1, 2000 )
-  :RepeatOnEngineShutDown()
+  :InitRepeatOnEngineShutDown()
   :CleanUp( 180 )
   :SpawnScheduled( 1200, 0.4 )
 
@@ -418,7 +417,7 @@ Spawn_US_A10C_Ground_Attack_West = SPAWN
   :New( 'US A-10C*RAMP-Ground Attack West' )
   :Limit( 1, 10 )
   :RandomizeRoute( 1, 1, 2000 )
-  :RepeatOnEngineShutDown()
+  :InitRepeatOnEngineShutDown()
   :CleanUp( 180 )
   :SpawnScheduled( 1200, 0.4 )
 
@@ -456,27 +455,27 @@ Spawn_US_Platoon =
 
 Spawn_US_Platoon_Left = SPAWN
   :New( 'US Tank Platoon Left' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_US_Platoon )
   :RandomizeRoute( 3, 1, 2000 )
   :Array( 76, 30, 15, 35 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 Spawn_US_Platoon_Middle = SPAWN
   :New( 'US Tank Platoon Middle' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_US_Platoon )
   :RandomizeRoute( 3, 1, 2000 )
   :Array( 160, 30, 15, 35 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 Spawn_US_Platoon_Right = SPAWN
   :New( 'US Tank Platoon Right' )
-  :Limit( 20, 150 )
+  :Limit( 40, 150 )
   :RandomizeTemplate( Spawn_US_Platoon )
   :RandomizeRoute( 1, 1, 2000 )
   :Array( 90, 50, 15, 35 )
-  :SpawnScheduled( 90, 1 )
+  :SpawnScheduled( 30, 1 )
 
 -- NATO Tank Platoons defending the Patriot Batteries
 Spawn_US_Patriot_Defense =
