@@ -1,9 +1,25 @@
+--- Anapa Airbase Mission
+--
+-- This is the Anapa Airbase main mission lua file.
+-- It contains:
+--
+-- * the declaration of 8 missions, 4 for blue, 4 for red.
+-- * the declaration of the spawning units within the battle scene.
+-- * the declaration of SEAD defenses of the SAM units within the battle scene.
+-- * certain human player groups are escorted by other AI groups.
+--
+-- Notes:
+-- * Due to several bugs related to CARGO, it is currently impossible to model correctly the sling-load logic.
+--  I had to implement several workarounds to ensure that still a sling-load mission is possible to be working.
+--  Problems that can occur are that sometimes the cargos will not be available, though they will be visible for the pilot...
+--
+--  @module Gori_Valley
+--  @author FlightControl
+--  
 Include.File( "Mission" )
 Include.File( "Client" )
 Include.File( "DeployTask" )
 Include.File( "PickupTask" )
-Include.File( "SlingLoadHookTask" )
-Include.File( "SlingLoadUnHookTask" )
 Include.File( "DestroyGroupsTask" )
 Include.File( "DestroyRadarsTask" )
 Include.File( "DestroyUnitTypesTask" )
@@ -14,28 +30,241 @@ Include.File( "Sead" )
 Include.File( "CleanUp" )
 
 
+--- TODO: Need to fix problem with CountryPrefix
+function Transport_TakeOff( HeliGroup, CountryPrefix )
+
+  if CountryPrefix == 'RU' then
+    HeliGroup:MessageToRed( 'Reporting ... Initiating infantry deployment.', 15 )
+  else
+    HeliGroup:MessageToBlue( 'Reporting ... Initiating infantry deployment.', 15 )
+  end
+end
+
+function Transport_Reload( HeliGroup, CountryPrefix )
+
+
+  if CountryPrefix == 'RU' then
+    HeliGroup:MessageToRed( "Reloading infantry.", 15 )
+  else
+    HeliGroup:MessageToBlue( "Reloading infantry.", 15 )
+  end
+end
+
+function Transport_Reloaded( HeliGroup, CountryPrefix )
+
+  if CountryPrefix == 'RU' then
+    HeliGroup:MessageToRed( 'Troops loaded, flying to the deployment zone. Will contact coalition when initiating deployment.', 15 )
+  else
+    HeliGroup:MessageToBlue( 'Troops loaded, flying to the deployment zone. Will contact coalition when initiating deployment.', 15 )
+  end
+end
+
+--- @param Group#GROUP HeliGroup
+function Transport_Land( HeliGroup, CountryPrefix, LandingZoneName )
+
+  if CountryPrefix == 'RU' then
+    HeliGroup:MessageToRed( "Flying to " .. LandingZoneName .. " for troops deployment.", 15 )
+  else
+    HeliGroup:MessageToBlue( "Flying to " .. LandingZoneName .. " for troops deployment.", 15 )
+  end
+
+  local LandingZone = ZONE:New( CountryPrefix .. " " .. LandingZoneName )
+  local DCSTaskLand = HeliGroup:TaskLandAtZone( LandingZone, 30, true )
+  HeliGroup:PushTask( DCSTaskLand )
+
+end
+
+function Transport_Deploy( HeliGroup, CountryPrefix, SpawnInfantry )
+
+  local HeliUnit = HeliGroup:GetUnit(1)
+  local GroupInfantry = SpawnInfantry:SpawnFromUnit( HeliUnit, 50, 10 )
+  if GroupInfantry then
+    if CountryPrefix == 'RU' then
+      GroupInfantry:MessageToRed( 'Reporting... We are on our way!', 15 )
+      HeliGroup:MessageToRed( 'The infantry is deployed. Flying back to base for a reload.', 15 )
+    else
+      GroupInfantry:MessageToBlue( 'Reporting... We are on our way!', 15 )
+      HeliGroup:MessageToBlue( 'The infantry is deployed. Flying back to base for a reload.', 15 )
+    end
+  end
+end
+
+
+SpawnRU_SU30 = SPAWN
+  :New( 'RU SU-30@AI Patrol SAM Area' )
+  :Limit( 3, 30 )
+  :RandomizeRoute( 1, 1, 6000 )
+  :SpawnScheduled( 900, 0.4 )
+
+SpawnFR_MIRAGE = SPAWN
+  :New( 'TF3 FR MIRAGE 2000-5@AI CAP' )
+  :Limit( 2, 30 )
+  :RandomizeRoute( 3, 1, 3000 )
+  :SpawnScheduled( 900, 0.4 )
+
+SpawnRU_KA50 = SPAWN
+  :New( 'TF3 RU KA-50@AI Ground Defense' )
+  :Limit( 1, 10 )
+  :RandomizeRoute( 1, 1, 3000 )
+  :SpawnScheduled( 600, 0.4 )
+
+SpawnRU_MI28N = SPAWN
+  :New( 'TF3 RU MI-28N@AI Ground Defense' )
+  :Limit( 1, 20 )
+  :RandomizeRoute( 1, 1, 3000 )
+  :SpawnScheduled( 900, 0.4 )
+
+SpawnRU_SU25T = SPAWN
+  :New( 'TF3 RU SU-25T@AI Ground Defense' )
+  :Limit( 1, 5 )
+  :RandomizeRoute( 1, 1, 3000 )
+  :InitRepeatOnEngineShutDown()
+  :SpawnScheduled( 450, 0.4 )
+
+SpawnUS_F117A = SPAWN
+  :New( 'TF2 US F-117A@AI PINPOINT' )
+  :Limit( 1, 5 )
+  :RandomizeRoute( 1, 1, 4000 )
+  :SpawnScheduled( 1200, 0.7 )
+
+SpawnUS_FA18C_SEAD = SPAWN
+  :New( 'TF1 US FA-18C@AI Destroy SA-10' )
+  :Limit( 1, 6 )
+  :RandomizeRoute( 2, 1, 3000 )
+  :SpawnScheduled( 900, 0.2 )
+
+SpawnUS_FA18C_CAP = SPAWN
+  :New( 'TF1 US FA-18C@AI Helicopter Escort' )
+  :Limit( 3, 16 )
+  :RandomizeRoute( 2, 1, 3000 )
+  :SpawnScheduled( 350, 0.2 )
+
+SpawnUS_A10A = SPAWN
+  :New( 'TF3 US A-10A@AI Destroy SA-6/11' )
+  :Limit( 2, 20 )
+  :RandomizeRoute( 3, 1, 3000 )
+  :SpawnScheduled( 600, 0.5 )
+
+SpawnGE_SU25T = SPAWN
+  :New( 'TF3 GE SU-25T@AI Destroy SA-6/11' )
+  :Limit( 1, 8 )
+  :RandomizeRoute( 1, 1, 10000 )
+  :SpawnScheduled( 30, 0.5 )
+
+SpawnUS_AH1W = SPAWN
+  :New( 'TF1 US AH-1W Farp AI - Attack Anapa' )
+  :Limit( 2, 20 )
+  :RandomizeRoute( 2, 1, 6000 )
+  :SpawnScheduled( 750, 0.3 )
+
+SpawnBE_KA50 = SPAWN
+  :New( 'TF1 BE KA-50@AI Attack AA' )
+  :Limit( 2, 20 )
+  :RandomizeRoute( 3, 1, 3000 )
+  :SpawnScheduled( 900, 0.6 )
+
+SpawnRU_SU34 = SPAWN
+  :New( 'TF1 RU Su-34 Krymsk@AI - Attack Ships' )
+  :Limit( 2, 3 )
+  --:SpawnUncontrolled()
+  :RandomizeRoute( 1, 1, 3000 )
+  :InitRepeatOnEngineShutDown()
+  :SpawnScheduled( 1800, 0.4 )
+
+Spawn_CH53E_Left = SPAWN
+  :New( "US Troops Deployment Left@AIR/CH-53E" )
+  :Limit( 3, 3 )
+  :RandomizeRoute( 6, 1, 3000 )
+  :CleanUp( 180 )
+  :SpawnFunction(
+    function( SpawnGroup )
+      SpawnGroup
+        :WayPointInitialize()
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'" )
+        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Zone ' .. math.random( 1, 3 )" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "Spawn_CH53E_Left_Troops" )
+        :WayPointExecute( 1, 2 )
+    end
+  )
+  :SpawnScheduled( 60, 0 )
+
+
+Spawn_CH53E_Left_Troops  = SPAWN
+  :New( 'US CH-53E Infantry Left' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 1, 3, 2000 )
+
+SpawnCH53ERight = SPAWN
+  :New( 'US CH-53E Infantry Right' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 2, 1, 3000 )
+
+SpawnCH53EWest = SPAWN
+  :New( 'US CH-53E Infantry West' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 1, 3, 2000 )
+
+SpawnMI26 = SPAWN
+  :New( 'RU MI-26 Infantry' )
+  :RandomizeTemplate( { 'RU IFV BMP-2', 'RU IFV BMD-1',  'RU IFV BMP-3' } )
+  :RandomizeRoute( 2, 1, 3000 )
+
+
+SEAD_SA10_Defenses = SEAD
+  :New( { 'Russia SA-10 Battery Array #001' } )
+
+SEAD_SA11_Defenses_Anapa = SEAD
+  :New( { 'RU SA-11 BUK Air Defense #001' } )
+
+SEAD_SA8_Defenses = SEAD
+  :New( { 'RU SA-8 Airbase Defense' } )
+
+SEAD_SAM_Defenses_South = SEAD
+  :New( { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' } )
+
+
+--- NATO SEAD Defenses
+SEAD_Hawk_Defenses = SEAD
+  :New( { 'US Hawk Battery' } )
+
+SEAD_Roland_Defenses = SEAD
+  :New( { 'DE SAM Roland ADS' } )
+
+SEAD_Ship_Defenses = SEAD
+  :New( { 'US Ship North', 'US Ship West' } )
+
+
+MOVEMENT_CH53E = MOVEMENT
+  :New( { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right', 'US CH-53E Infantry West' }, 20 )
+
+MOVEMENT_MI26 = MOVEMENT
+  :New( { 'RU MI-26 Infantry' }, 10 )
+
+
 --- NATO
 
 do -- USA destroy air defenses
 
-	local Mission = MISSION:New( 'Destroy SA-10', 'Primary', 'Destroy the enemy SA-10 batteries at Anapa airport. Once the SA-10 batteries are out, USA infantry forces can progress to Anapa from the north, and the airbase can be finally captured', 'NATO'  )
+  local Mission = MISSION:New( 'Destroy SA-10', 'Primary', 'Destroy the enemy SA-10 batteries at Anapa airport. Once the SA-10 batteries are out, USA infantry forces can progress to Anapa from the north, and the airbase can be finally captured', 'NATO'  )
 
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 1' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 2' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 3' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 4' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 5' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 6' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 1' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 2' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 3' ) )
-	Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 1' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 2' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 3' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 5' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 6' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 1' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 2' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 3' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 4' ) )
 
-	local DestroyGroupsTask = DESTROYRADARSTASK:New( { 'Russia SA-10 Battery Array' } ) 
-	DestroyGroupsTask:SetGoalTotal( 2 )
-	Mission:AddTask( DestroyGroupsTask, 1 )
+  local DestroyGroupsTask = DESTROYRADARSTASK:New( { 'Russia SA-10 Battery Array' } )
+  DestroyGroupsTask:SetGoalTotal( 2 )
+  Mission:AddTask( DestroyGroupsTask, 1 )
 
-	MISSIONSCHEDULER.AddMission( Mission )
+  MISSIONSCHEDULER.AddMission( Mission )
 
 end
 
@@ -288,66 +517,6 @@ end
 --MusicRegister( 'REC1', 'The Wall Street Shuffle.ogg', 3 * 60 + 51 )
 --MusicRegister( 'REC1', 'Heroes.ogg', 3 * 60 + 37 )
 
-
--- RU Su-30
-SpawnRU_SU30 = SPAWN:New( 'RU SU-30@AI Patrol SAM Area' ):Limit( 3, 30 ):Schedule( 900, 0.4 ):RandomizeRoute( 1, 1, 6000 )
-
--- FR Mirage
-SpawnFR_MIRAGE = SPAWN:New( 'TF3 FR MIRAGE 2000-5@AI CAP' ):Limit( 2, 30 ):Schedule( 900, 0.4 ):RandomizeRoute( 3, 1, 3000 )
-
--- RU KA-50 Defense 1 AI #
-SpawnRU_KA50 = SPAWN:New( 'TF3 RU KA-50@AI Ground Defense' ):Limit( 1, 10 ):Schedule( 600, 0.4 ):RandomizeRoute( 1, 1, 3000 )
-
--- RU MI-28N Defense 2 AI #
-SpawnRU_MI28N = SPAWN:New( 'TF3 RU MI-28N@AI Ground Defense' ):Limit( 1, 20 ):Schedule( 900, 0.4 ):RandomizeRoute( 1, 1, 3000 )
-
--- RU Su-25T - AI Ground Defense
-SpawnRU_SU25T = SPAWN:New( 'TF3 RU SU-25T@AI Ground Defense' ):Limit( 1, 5 ):Schedule( 450, 0.4 ):RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
-
--- US F-15C
-SpawnUS_F117A = SPAWN:New( 'TF2 US F-117A@AI PINPOINT' ):Limit( 1, 5 ):Schedule( 1200, 0.7 ):RandomizeRoute( 1, 1, 4000 )
-
--- US FA-18C SEAD
-SpawnUS_FA18C_SEAD = SPAWN:New( 'TF1 US FA-18C@AI Destroy SA-10' ):Limit( 1, 6 ):Schedule( 900, 0.2 ):RandomizeRoute( 2, 1, 3000 )
-
--- US FA-18C Air Defenses
-SpawnUS_FA18C_CAP = SPAWN:New( 'TF1 US FA-18C@AI Helicopter Escort' ):Limit( 3, 16 ):Schedule( 350, 0.2 ):RandomizeRoute( 2, 1, 3000 )
-
--- US A-10A
-SpawnUS_A10A = SPAWN:New( 'TF3 US A-10A@AI Destroy SA-6/11' ):Limit( 2, 20 ):Schedule( 600, 0.5 ):RandomizeRoute( 3, 1, 3000 )
-
--- GE SU-25T
-SpawnGE_SU25T = SPAWN:New( 'TF3 GE SU-25T@AI Destroy SA-6/11' ):Limit( 1, 8 ):Schedule( 30, 0.5 ):RandomizeRoute( 1, 1, 10000 )
-
--- US AH-1W
-SpawnUS_AH1W = SPAWN:New( 'TF1 US AH-1W Farp AI - Attack Anapa' ):Limit( 2, 20 ):Schedule( 750, 0.3 ):RandomizeRoute( 2, 1, 6000 )
-
--- BE KA-50
-SpawnBE_KA50 = SPAWN:New( 'TF1 BE KA-50@AI Attack AA' ):Limit( 2, 20 ):Schedule( 900, 0.6 ):RandomizeRoute( 3, 1, 3000 )
-
--- RU Su-34 - AI Ship Attack
-SpawnRU_SU34 = SPAWN:New( 'TF1 RU Su-34 Krymsk@AI - Attack Ships' ):Limit( 2, 3 ):Schedule( 1800, 0.4 ):SpawnUncontrolled():RandomizeRoute( 1, 1, 3000 ):RepeatOnEngineShutDown()
-
---- Infantry forces spawned from a Carrier
-SpawnCH53ELeft  = SPAWN:New( 'US CH-53E Infantry Left' ):RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } ):RandomizeRoute( 1, 3, 2000 )
-SpawnCH53ERight = SPAWN:New( 'US CH-53E Infantry Right' ):RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } ):RandomizeRoute( 2, 1, 3000 )
-SpawnCH53EWest = SPAWN:New( 'US CH-53E Infantry West' ):RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } ):RandomizeRoute( 1, 3, 2000 )
-SpawnMI26 = SPAWN:New( 'RU MI-26 Infantry' ):RandomizeTemplate( { 'RU IFV BMP-2', 'RU IFV BMD-1',  'RU IFV BMP-3' } ):RandomizeRoute( 2, 1, 3000 )
-
---- CCCP SEAD Defenses
-SEAD_SA10_Defenses = SEAD:New( { 'Russia SA-10 Battery Array #001' } )
-SEAD_SA11_Defenses_Anapa = SEAD:New( { 'RU SA-11 BUK Air Defense #001' } )
-SEAD_SA8_Defenses = SEAD:New( { 'RU SA-8 Airbase Defense' } )
-SEAD_SAM_Defenses_South = SEAD:New( { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' } )
-
-
---- NATO SEAD Defenses
-SEAD_Hawk_Defenses = SEAD:New( { 'US Hawk Battery' } )
-SEAD_Roland_Defenses = SEAD:New( { 'DE SAM Roland ADS' } )
-SEAD_Ship_Defenses = SEAD:New( { 'US Ship North', 'US Ship West' } )
-
-MOVEMENT_CH53E = MOVEMENT:New( { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right', 'US CH-53E Infantry West' }, 20 )
-MOVEMENT_MI26 = MOVEMENT:New( { 'RU MI-26 Infantry' }, 10 )
 
 -- MISSION SCHEDULER STARTUP
 MISSIONSCHEDULER.Start()
