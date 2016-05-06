@@ -40,14 +40,23 @@ function Transport_TakeOff( HeliGroup, CountryPrefix )
   end
 end
 
-function Transport_Reload( HeliGroup, CountryPrefix )
-
+--- @param Group#GROUP HeliGroup
+function Transport_Reload( HeliGroup, CountryPrefix, CargoShip )
+  HeliGroup:F( { CountryPrefix, CargoShip } )
 
   if CountryPrefix == 'RU' then
     HeliGroup:MessageToRed( "Reloading infantry.", 15 )
   else
     HeliGroup:MessageToBlue( "Reloading infantry.", 15 )
   end
+  
+  local CargoShipGroup = GROUP:NewFromName( CargoShip )
+  
+  local OrbitTask  = HeliGroup:TaskOrbitCircleAtVec2( CargoShipGroup:GetPointVec2(), 10, 5 )
+  local ControlledOrbitTask = HeliGroup:TaskControlled( OrbitTask, HeliGroup:TaskCondition( nil, nil, nil, nil, 30, nil ) )
+  
+  HeliGroup:PushTask( ControlledOrbitTask, 1 )
+  
 end
 
 function Transport_Reloaded( HeliGroup, CountryPrefix )
@@ -181,7 +190,7 @@ Spawn_CH53E_Left = SPAWN
       SpawnGroup
         :WayPointInitialize()
         :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
-        :WayPointFunction( 4, 1, "Transport_Reload", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Left'" )
         :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
         :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Zone ' .. math.random( 1, 3 )" )
         :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "Spawn_CH53E_Left_Troops" )
@@ -193,8 +202,8 @@ Spawn_CH53E_Left = SPAWN
 
 Spawn_CH53E_Left_Troops  = SPAWN
   :New( 'US CH-53E Infantry Left' )
-  :RandomizeRoute( 1, 3, 2000 )
   :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 1, 3, 2000 )
 
 SpawnCH53ERight = SPAWN
   :New( 'US CH-53E Infantry Right' )
