@@ -173,7 +173,7 @@ SpawnRU_SU34 = SPAWN
 
 Spawn_CH53E_Left = SPAWN
   :New( "US Troops Deployment Left@AIR/CH-53E" )
-  :Limit( 3, 3 )
+  :Limit( 1, 3 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -193,23 +193,23 @@ Spawn_CH53E_Left = SPAWN
 
 Spawn_CH53E_Left_Troops  = SPAWN
   :New( 'US CH-53E Infantry Left' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
   :RandomizeRoute( 1, 3, 2000 )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
 
 SpawnCH53ERight = SPAWN
   :New( 'US CH-53E Infantry Right' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
   :RandomizeRoute( 2, 1, 3000 )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
 
 SpawnCH53EWest = SPAWN
   :New( 'US CH-53E Infantry West' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
   :RandomizeRoute( 1, 3, 2000 )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
 
 SpawnMI26 = SPAWN
   :New( 'RU MI-26 Infantry' )
-  :RandomizeTemplate( { 'RU IFV BMP-2', 'RU IFV BMD-1',  'RU IFV BMP-3' } )
   :RandomizeRoute( 2, 1, 3000 )
+  :RandomizeTemplate( { 'RU IFV BMP-2', 'RU IFV BMD-1',  'RU IFV BMP-3' } )
 
 
 SEAD_SA10_Defenses = SEAD
