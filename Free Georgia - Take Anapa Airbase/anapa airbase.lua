@@ -17,6 +17,9 @@
 --  @author FlightControl
 --
 Include.File( "Mission" )
+Include.File( "Zone" )
+Include.File( "Unit" )
+Include.File( "Group" )
 Include.File( "Client" )
 Include.File( "DeployTask" )
 Include.File( "PickupTask" )
@@ -29,6 +32,7 @@ Include.File( "Movement" )
 Include.File( "Sead" )
 Include.File( "CleanUp" )
 Include.File( "Scheduler" )
+Include.File( "Scoring" )
 
 
 --- TODO: Need to fix problem with CountryPrefix
@@ -672,71 +676,84 @@ do -- USA Deploy troops to battle zone
     { "Georgian SA-11 Defense System", false }
   }
 
-function ActivateDefenses( Mission, Client )
-
-  -- Check if the cargo is all deployed for mission success.
-  for CargoID, CargoData in pairs( Mission._Cargos ) do
-    if Group.getByName( CargoData.CargoGroupName ) then
-      local CargoGroup = Group.getByName( CargoData.CargoGroupName )
-      if CargoGroup then
-        -- Check if the cargo is ready to activate the nearby units.
-        CurrentLandingZoneID = _TransportValidateUnitInZone( CargoGroup:getUnits()[1], Mission:GetTask( 2 ).LandingZones ) -- The second task is the Deploytask to measure mission success upon
-        if CurrentLandingZoneID then
-          env.info( "CurrentLandingZoneID = " .. CurrentLandingZoneID )
-          if DefenseActivation[CurrentLandingZoneID][2] == false then
-            trigger.action.setGroupAIOn( Group.getByName( DefenseActivation[CurrentLandingZoneID][1] ) )
-            DefenseActivation[CurrentLandingZoneID][2] = true
-            MessageToBlue( "Mission Command: Message to all airborne units! The " .. DefenseActivation[CurrentLandingZoneID][1] .. " is armed. Our air defenses are now stronger.", 60, "BLUE/Defense" )
-            MessageToRed( "Mission Command: Our satellite systems are detecting additional NATO air defenses. To all airborne units: Take care!!!", 60, "RED/Defense" )
+  function ActivateDefenses( Mission, Client )
+  
+    -- Check if the cargo is all deployed for mission success.
+    for CargoID, CargoData in pairs( CARGOS ) do
+      if CargoData.CargoGroupName then 
+        local CargoGroup = Group.getByName( CargoData.CargoGroupName )
+        if CargoGroup then
+          -- Check if the cargo is ready to activate the nearby units.
+          local CurrentLandingZoneID = routines.IsPartOfGroupInZones( CargoGroup, Mission:GetTask( 2 ).LandingZones.LandingZoneNames ) -- The second task is the Deploytask to measure mission success upon
+          if CurrentLandingZoneID then
+            env.info( "CurrentLandingZoneID = " .. CurrentLandingZoneID )
+            if DefenseActivation[CurrentLandingZoneID][2] == false then
+              trigger.action.setGroupAIOn( Group.getByName( DefenseActivation[CurrentLandingZoneID][1] ) )
+              DefenseActivation[CurrentLandingZoneID][2] = true
+              MessageToBlue( "Mission Command: Message to all airborne units! The " .. DefenseActivation[CurrentLandingZoneID][1] .. " is armed. Our air defenses are now stronger.", 60, "BLUE/Defense" )
+              MessageToRed( "Mission Command: Our satellite systems are detecting additional NATO air defenses. To all airborne units: Take care!!!", 60, "RED/Defense" )
+            end
           end
         end
       end
     end
   end
-end
+  
+  local Mission = MISSION:New( 'Activate Air Defenses', 'Operational', 'Transport troops from the "Gamma" control center to the battle zone.', 'NATO' )
+  Mission:AddGoalFunction( ActivateDefenses )
+  
+  local Client
+  
+  Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 1' )
+  Client:Transport()
+  Mission:AddClient( Client )
+  
+  Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 2' )
+  Client:Transport()
+  Mission:AddClient( Client )
+  
+  Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 3' )
+  Client:Transport()
+  Mission:AddClient( Client )
+  
+  Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 4' )
+  Client:Transport()
+  Mission:AddClient( Client )
+  
+  local EngineerNames = { "Charlie", "Fred", "Sven", "Prosper", "Godfried", "Adam", "Freddy", "Saskia", "Karolina", "Levente", "Urbanus", "Helena", "Teodora", "Timea", "John", "Ibrahim", "Christine", "Carl", "Monika" }
+  
+  local US_Engineers_Pickup_Zone = CARGO_ZONE:New( 'US Engineers Pickup Zone', 'US Engineers Barracks' ):BlueSmoke()
+  
+  local CargoTable = {}
+  for CargoItem = 1, 8 do
+  CargoTable[CargoItem] = CARGO_GROUP:New( 'Engineers', 'Engineer ' .. EngineerNames[CargoItem],
+    math.random( 70, 100 ) * 1,
+    'US Engineer',
+    US_Engineers_Pickup_Zone )
+  end
+  
+  -- Assign the Pickup Task
+  local PickupTask = PICKUPTASK:New( 'Engineers', CLIENT.ONBOARDSIDE.RIGHT )
+  PickupTask:FromZone( US_Engineers_Pickup_Zone )
+  PickupTask:InitCargo( CargoTable )
+  Mission:AddTask( PickupTask, 1 )
+  
+  local US_Deployment_Alpha = CARGO_ZONE:New( "US Deployment Zone Alpha", "US Deployment Zone Alpha Transport" )
+  local US_Deployment_Beta = CARGO_ZONE:New( "US Deployment Zone Beta", "US Deployment Zone Beta Transport" )
+  local US_Deployment_Gamma = CARGO_ZONE:New( "US Deployment Zone Gamma", "US Deployment Zone Gamma Transport" )
+  
+  local DeployZones = { "US Deployment Zone Alpha", "US Deployment Zone Beta", "US Deployment Zone Gamma" }
+  local DeployZonesSmokeUnits = { "US Deployment Zone Alpha Transport", "US Deployment Zone Beta Transport", "US Deployment Zone Gamma Transport" }
 
-local Mission = MISSION:New( 'Activate Air Defenses', 'Operational', 'Transport troops from the "Gamma" control center to the battle zone.', 'NATO' )
-Mission:AddGoalFunction( ActivateDefenses )
-
-local Client
-
-Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 1' )
-Client:Transport()
-Mission:AddClient( Client )
-
-Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 2' )
-Client:Transport()
-Mission:AddClient( Client )
-
-Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 3' )
-Client:Transport()
-Mission:AddClient( Client )
-
-Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 4' )
-Client:Transport()
-Mission:AddClient( Client )
-
-local EngineerNames = { "Charlie", "Fred", "Sven", "Prosper", "Godfried", "Adam", "Freddy", "Saskia", "Karolina", "Levente", "Urbanus", "Helena", "Teodora", "Timea", "John", "Ibrahim", "Christine", "Carl", "Monika" }
-
-local CargoTable = {}
-for CargoItem = 1, 8 do
-  Mission:AddCargo( "Team " .. CargoItem .. ": " .. EngineerNames[math.random(1, #EngineerNames)] .. ' and ' .. EngineerNames[math.random(1, #EngineerNames)], CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 2, 'US Troop Barracks Gamma', 'US Invasion Infantry', 'US Troops Gamma' )
-end
-
--- Assign the Pickup Task
-local PickupTask = PICKUPTASK:New( 'USA Troops Gamma pickup zone', CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.RIGHT )
-PickupTask:AddSmokeRed( 'US Troop Barracks Gamma' )
-Mission:AddTask( PickupTask, 1 )
-
-local DeployZones = { "US Deployment Zone Alpha", "US Deployment Zone Beta", "US Deployment Zone Gamma" }
-local DeployZonesSmokeUnits = { "US Deployment Zone Alpha Transport", "US Deployment Zone Beta Transport", "US Deployment Zone Gamma Transport" }
--- Assign the Deploy Task
-local DeployTask = DEPLOYTASK:New( DeployZones, CARGO_TYPE.ENGINEERS )
-DeployTask:AddSmokeRed( DeployZonesSmokeUnits )
-DeployTask:SetGoalTotal( 3 )
-Mission:AddTask( DeployTask, 2 )
-
-MISSIONSCHEDULER.AddMission( Mission )
+  -- Assign the Deploy Task
+  local DeployTask = DEPLOYTASK:New( 'Engineers' )
+  DeployTask:ToZone( US_Deployment_Alpha )
+  DeployTask:ToZone( US_Deployment_Beta )
+  DeployTask:ToZone( US_Deployment_Gamma )
+  DeployTask:SetGoalTotal( 3 )
+  Mission:AddTask( DeployTask, 2 )
+  
+  MISSIONSCHEDULER.AddMission( Mission )
 
 end
 
@@ -834,18 +851,29 @@ do -- Russia Rescue workers from oil platforms
   Mission:AddClient( Client )
 
   local CargoTable = {}
-  for CargoItem = 1, 2 do
-    Mission:AddCargo( 'Oil workers ' .. CargoItem, CARGO_TYPE.ENGINEERS, math.random( 70, 120 ) * 2, nil, 'RU Oil Rig Workers', 'Oil Rig Workers Deployment #011' )
+  
+  local WorkerNames = { "Александр", "Михаил", "Ростислав", "Иммануил" }
+
+  local Cargo_Pickup_Zone = CARGO_ZONE:New( 'Oil Rescue Pickup Zone', 'Oil Rig #003' ):BlueSmoke()
+
+  for CargoItem = 1, 4 do
+  CargoTable[CargoItem] = CARGO_GROUP:New( 'Oil workers', 'Worker ' .. WorkerNames[CargoItem],
+    math.random( 70, 100 ) * 2,
+    'RU Oil Rig Workers',
+    Cargo_Pickup_Zone )
   end
 
-  -- Assign the Pickup Task
-  local PickupTask = PICKUPTASK:New( 'Oil Rig #011', CARGO_TYPE.ENGINEERS, CLIENT.ONBOARDSIDE.FRONT )
-  PickupTask:AddSmokeRed( 'RU Oil Rig #011', 50 )
+  local PickupTask = PICKUPTASK:New( 'Oil workers', CLIENT.ONBOARDSIDE.LEFT )
+  PickupTask:FromZone( Cargo_Pickup_Zone )
+  PickupTask:InitCargo( CargoTable )
   Mission:AddTask( PickupTask, 1 )
 
+
   -- Assign the Deploy Task
-  local DeployTask = DEPLOYTASK:New( 'RU Anapa Rescue Workers', CARGO_TYPE.ENGINEERS )
-  DeployTask:AddSmokeRed( 'RU Workers Rescue Vehicle' )
+  local Cargo_Deploy_Zone = CARGO_ZONE:New( "Oil Rescue Deployment Zone", "RU Workers Rescue Vehicle" ):RedFlare()
+  
+  local DeployTask = DEPLOYTASK:New( 'Oil workers' )
+  DeployTask:ToZone( Cargo_Deploy_Zone )
   DeployTask:SetGoalTotal( 1 )
   Mission:AddTask( DeployTask, 2 )
 
@@ -864,8 +892,10 @@ end
 
 
 -- MISSION SCHEDULER STARTUP
+MISSIONSCHEDULER:Scoring( SCORING:New( "Anapa Airbase" ):OpenCSV( "Anapa Airbase Player Scores" ) )
 MISSIONSCHEDULER.Start()
 MISSIONSCHEDULER.ReportMenu()
 MISSIONSCHEDULER.ReportMissionsFlash( 120 )
+MISSIONSCHEDULER.ReportMissionsHide()
 
 env.info( "Anapa Airbase.lua loaded." )
