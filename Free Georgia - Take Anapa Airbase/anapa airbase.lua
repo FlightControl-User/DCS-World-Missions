@@ -28,7 +28,7 @@ Include.File( "Spawn" )
 Include.File( "Movement" )
 Include.File( "Sead" )
 Include.File( "CleanUp" )
-Include.File( "TimeTrigger" )
+Include.File( "Scheduler" )
 
 
 --- TODO: Need to fix problem with CountryPrefix
@@ -47,18 +47,21 @@ function Transport_Reload( HeliGroup, CountryPrefix, CargoShip )
 
   if CountryPrefix == 'RU' then
     HeliGroup:MessageToRed( "Reloading infantry.", 15 )
+    local LandingZone = ZONE:New( "RU Reload")
+    local DCSTaskLand = HeliGroup:TaskLandAtZone( LandingZone, 30, true )
+     HeliGroup:PushTask( DCSTaskLand )
   else
     HeliGroup:MessageToBlue( "Reloading infantry.", 15 )
+    local CargoShipGroup = GROUP:NewFromName( CargoShip )
+  
+    if CargoShipGroup:IsAlive() then
+      local OrbitTask  = HeliGroup:TaskOrbitCircleAtVec2( CargoShipGroup:GetPointVec2(), 10, 0 )
+      local ControlledOrbitTask = HeliGroup:TaskControlled( OrbitTask, HeliGroup:TaskCondition( nil, nil, nil, nil, 90, nil ) )
+  
+      HeliGroup:PushTask( ControlledOrbitTask, 1 )
+    end
   end
 
-  local CargoShipGroup = GROUP:NewFromName( CargoShip )
-
-  if CargoShipGroup:IsAlive() then
-    local OrbitTask  = HeliGroup:TaskOrbitCircleAtVec2( CargoShipGroup:GetPointVec2(), 10, 0 )
-    local ControlledOrbitTask = HeliGroup:TaskControlled( OrbitTask, HeliGroup:TaskCondition( nil, nil, nil, nil, 90, nil ) )
-
-    HeliGroup:PushTask( ControlledOrbitTask, 1 )
-  end
 
 end
 
@@ -102,24 +105,122 @@ function Transport_Deploy( HeliGroup, CountryPrefix, SpawnInfantry )
 end
 
 --- @param Group#GROUP HeliGroup
-function Transport_Switch( HeliGroup, CountryPrefix, CargoShip )
-  HeliGroup:F( { CountryPrefix, CargoShip } )
+function Transport_Switch( HeliGroup, CountryPrefix, FromWayPoint, ToWayPoint, CargoShip )
+  HeliGroup:F( { CountryPrefix, FromWayPoint, ToWayPoint, CargoShip } )
 
-  local CargoShipGroup = GROUP:NewFromName( CargoShip )
 
-  if CargoShipGroup:IsAlive() then
-    local SwitchTask  = HeliGroup:CommandSwitchWayPoint( 7, 2, 1 )
-    HeliGroup:SetCommand( SwitchTask )
-    if CountryPrefix == 'US' then
+  if CountryPrefix == 'US' then
+    local CargoShipGroup = GROUP:NewFromName( CargoShip )
+    if CargoShipGroup:IsAlive() then
+      local SwitchTask  = HeliGroup:CommandSwitchWayPoint( FromWayPoint, ToWayPoint, 1 )
+      HeliGroup:SetCommand( SwitchTask )
       HeliGroup:MessageToBlue( "Flying back to cargo ship to reload infantry.", 15 )
-    end
-  else
-    if CountryPrefix == 'US' then
+    else
       HeliGroup:MessageToBlue( "Our cargo ship has been destroyed, flying to Vinson.", 15 )
     end
+  else
+    local SwitchTask  = HeliGroup:CommandSwitchWayPoint( FromWayPoint, ToWayPoint, 1 )
+    HeliGroup:SetCommand( SwitchTask )
   end
 
 end
+
+US_Troops_Deployment_Left = SPAWN
+  :New( "US Troops Deployment Left@AIR/CH-53E" )
+  :Limit( 3, 3 )
+  :RandomizeRoute( 6, 1, 3000 )
+  :CleanUp( 180 )
+  :SpawnFunction(
+    function( SpawnGroup )
+      SpawnGroup
+        :WayPointInitialize()
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Left'" )
+        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Left ' .. math.random( 1, 3 )" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Left_Path" )
+        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", 7, 2, "'GE Cargo Ship Left'" )
+        :WayPointExecute( 1, 2 )
+    end
+  )
+  :SpawnScheduled( 60, 0.6 )
+
+US_Northern_Infantry_Left_Path  = SPAWN
+  :New( 'US_Northern_Infantry_Left_Path' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 1, 3, 2000 )
+
+US_Troops_Deployment_Middle = SPAWN
+  :New( "US Troops Deployment Middle@AIR/CH-53E" )
+  :Limit( 3, 3 )
+  :RandomizeRoute( 6, 1, 3000 )
+  :CleanUp( 180 )
+  :SpawnFunction(
+    function( SpawnGroup )
+      SpawnGroup
+        :WayPointInitialize()
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Middle'" )
+        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Right ' .. math.random( 1, 3 )" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Right_Path" )
+        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", 7, 2, "'GE Cargo Ship Right'" )
+        :WayPointExecute( 1, 2 )
+    end
+  )
+  :SpawnScheduled( 60, 0.6 )
+
+US_Troops_Deployment_Right = SPAWN
+  :New( "US Troops Deployment Right@AIR/CH-53E" )
+  :Limit( 3, 3 )
+  :RandomizeRoute( 6, 1, 3000 )
+  :CleanUp( 180 )
+  :SpawnFunction(
+    function( SpawnGroup )
+      SpawnGroup
+        :WayPointInitialize()
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Right'" )
+        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Right ' .. math.random( 1, 3 )" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Right_Path" )
+        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", 7, 2, "'GE Cargo Ship Right'" )
+        :WayPointExecute( 1, 2 )
+    end
+  )
+  :SpawnScheduled( 60, 0.6 )
+
+
+US_Northern_Infantry_Right_Path = SPAWN
+  :New( 'US_Northern_Infantry_Right_Path' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 2, 1, 3000 )
+
+US_Troops_Deployment_West = SPAWN
+  :New( "US Troops Deployment West@AIR/CH-53E" )
+  :Limit( 3, 3 )
+  :RandomizeRoute( 6, 1, 3000 )
+  :CleanUp( 180 )
+  :SpawnFunction(
+    function( SpawnGroup )
+      SpawnGroup
+        :WayPointInitialize()
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
+        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship West'" )
+        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
+        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment West ' .. math.random( 1, 3 )" )
+        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Western_Infantry" )
+        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", 7, 2, "'GE Cargo Ship West'" )
+        :WayPointExecute( 1, 2 )
+    end
+  )
+  :SpawnScheduled( 60, 0.6 )
+
+
+US_Western_Infantry = SPAWN
+  :New( 'US_Western_Infantry' )
+  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
+  :RandomizeRoute( 1, 3, 2000 )
 
 --- SU34 logic to control ships attacks
 
@@ -129,9 +230,9 @@ end
 
 SU34Info = {}
 
-function Su34AttackCarlVinson( SU34GroupName )
-
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34AttackCarlVinson( SU34Group )
+  env.info("Su34AttackCarlVinson")
+  local SU34GroupName = SU34Group:GetName()
 
   SU34Group:OptionROEOpenFire()
   SU34Group:OptionROTEvadeFire()
@@ -145,9 +246,9 @@ function Su34AttackCarlVinson( SU34GroupName )
   SU34Info[SU34GroupName].Status = 1
 end
 
-function Su34AttackWest( SU34GroupName )
-  --trace.f("","Su34AttackWest")
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34AttackWest( SU34Group )
+  env.info("Su34AttackWest")
+  local SU34GroupName = SU34Group:GetName()
 
   SU34Group:OptionROEOpenFire()
   SU34Group:OptionROTEvadeFire()
@@ -167,9 +268,9 @@ function Su34AttackWest( SU34GroupName )
   SU34Info[SU34GroupName].Status = 2
 end
 
-function Su34AttackNorth( SU34GroupName )
-  --trace.menu("","Su34AttackNorth")
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34AttackNorth( SU34Group )
+  env.info("Su34AttackNorth")
+  local SU34GroupName = SU34Group:GetName()
 
   SU34Group:OptionROEOpenFire()
   SU34Group:OptionROTEvadeFire()
@@ -193,8 +294,9 @@ function Su34AttackNorth( SU34GroupName )
   SU34Info[SU34GroupName].Status = 3
 end
 
-function Su34Orbit( SU34GroupName )
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34Orbit( SU34Group )
+  env.info("Su34Orbit")
+  local SU34GroupName = SU34Group:GetName()
   SU34Group:OptionROEHoldFire()
   SU34Group:OptionROTVertical()
   SU34Group:PushTask( SU34Group:TaskControlled( SU34Group:TaskOrbitCircle( 120, 600 ), SU34Group:TaskCondition( nil, nil, nil, nil, 600, nil) ), 1 )
@@ -202,41 +304,41 @@ function Su34Orbit( SU34GroupName )
   SU34Info[SU34GroupName].Status = 4
 end
 
-function Su34TakeOff( GroupName )
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34TakeOff( SU34Group )
+  env.info("Su34TakeOff")
+  local SU34GroupName = SU34Group:GetName()
+  
   SU34Group:OptionROEHoldFire()
   SU34Group:OptionROTVertical()
-  SU34Group:MessageToRed( string.format('%s: ',GroupName) .. 'Take-Off. ', 10 )
-  SU34Info[GroupName].Status = 8
+  SU34Group:MessageToRed( string.format('%s: ',SU34GroupName) .. 'Take-Off. ', 10 )
+  SU34Info[SU34GroupName].Status = 8
 end
 
-function Su34Hold( SU34GroupName )
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34Hold( SU34Group )
+  env.info("Su34Hold")
+  local SU34GroupName = SU34Group:GetName()
   SU34Group:OptionROEHoldFire()
   SU34Group:OptionROTVertical()
   SU34Group:MessageToRed( string.format('%s: ',SU34GroupName) .. 'Holding Weapons. ', 10 )
   SU34Info[SU34GroupName].Status = 5
 end
 
-function Su34RTB( SU34GroupName )
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34RTB( SU34Group )
+  env.info("Su34RTB")
+  local SU34GroupName = SU34Group:GetName()
   SU34Info[SU34GroupName].Status = 6
   SU34Group:MessageToRed( string.format('%s: ',SU34GroupName) .. 'Return to Krasnodar. ', 10 )
 end
 
-function Su34Destroyed( SU34GroupName )
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
+function Su34Destroyed( SU34Group )
+  env.info("Su34Destroyed")
+  local SU34GroupName = SU34Group:GetName()
   SU34Info[SU34GroupName].Status = 7
   SU34Group:MessageToRed( string.format('%s: ',SU34GroupName) .. 'Destroyed. ', 30 )
 end
 
-function Su34IsDead()
-  local SU34Group = SU34Info[SU34GroupName].Group -- Group#GROUP
-
-end
 
 function Su34OverviewStatus()
-  BASE:F( 'Su34OverviewStatus' )
   local msg = ""
 
   for SU34GroupName, SU34Data in pairs( SU34Info ) do
@@ -285,17 +387,20 @@ function Su34OverviewStatus()
 end
 
 function SU34Menu()
+
   for SU34GroupName, SU34Data in pairs( SU34Info ) do
-    if SU34Data.Group:IsAlive() and SU34Data.Status <= 1 and SU34Data.Status >= 5 then
-      if SU34Menu == nil then
-        SU34Menu = MENU_COALITION:New( coalition.side.RED, "SU-34 anti-ship flights", nil )
+    BASE:E( { SU34GroupName, SU34Data } )
+    
+    if SU34Data.Group:IsAlive() and SU34Data.Status >= 1 and SU34Data.Status <= 5 then
+      if SU34MainMenu == nil then
+        SU34MainMenu = MENU_COALITION:New( coalition.side.RED, "SU-34 anti-ship flights", nil )
       end
       if not SU34Data.Menu then
-        SU34Data.Menu = MENU_COALITION:New( coalition.side.RED, "Flight " .. SU34GroupName, SU34Menu )
-        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack carrier Carl Vinson",           SU34Data.Menu, Su34AttackCarlVinson, SU34GroupName )
-        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack ships in the west",             SU34Data.Menu, Su34AttackWest,       SU34GroupName )
-        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack ships in the north",            SU34Data.Menu, Su34AttackNorth,      SU34GroupName )
-        MENU_COALITION_COMMAND:New( coalition.side.RED , "Hold position and await instructions", SU34Data.Menu, Su34Orbit,            SU34GroupName )
+        SU34Data.Menu = MENU_COALITION:New( coalition.side.RED, "Flight " .. SU34GroupName, SU34MainMenu )
+        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack carrier Carl Vinson",           SU34Data.Menu, Su34AttackCarlVinson, SU34Data.Group )
+        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack ships in the west",             SU34Data.Menu, Su34AttackWest,       SU34Data.Group )
+        MENU_COALITION_COMMAND:New( coalition.side.RED , "Attack ships in the north",            SU34Data.Menu, Su34AttackNorth,      SU34Data.Group )
+        MENU_COALITION_COMMAND:New( coalition.side.RED , "Hold position and await instructions", SU34Data.Menu, Su34Orbit,            SU34Data.Group )
         MENU_COALITION_COMMAND:New( coalition.side.RED , "Report status",                        SU34Data.Menu, Su34OverviewStatus )
       end
     else
@@ -310,8 +415,21 @@ end
 
 
 
-SU34MenuScan = TIMETRIGGER:New( nil, SU34Menu, {}, 5, 10, 0 )
-SU34Status = TIMETRIGGER:New( nil, Su34OverviewStatus, {}, 5, 300, 0 )
+SU34MenuScan = SCHEDULER:New( nil, SU34Menu, {}, 5, 10, 0 )
+SU34Status = SCHEDULER:New( nil, Su34OverviewStatus, {}, 5, 300, 0 )
+
+--- @param Group#GROUP SU34Group
+function Su34Alive( SU34Group )
+
+  local SU34GroupName = SU34Group:GetName()
+  BASE:E({SU34GroupName})
+
+  if not SU34Info[SU34GroupName] then
+    SU34Info[SU34GroupName] = {}
+    SU34Info[SU34GroupName].Status = 9
+    SU34Info[SU34GroupName].Group = GROUP:NewFromName(SU34GroupName)
+  end
+end
 
 
 Spawn_RU_Attack_Ships = SPAWN
@@ -324,9 +442,10 @@ Spawn_RU_Attack_Ships = SPAWN
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 2, 1, "Su34TakeOff", "...:getName()" )
-        :WayPointFunction( 3, 1, "Su34Orbit", "...:getName()" )
-        :WayPointFunction( 5, 1, "Su34RTB", "...:getName()" )
+        :WayPointFunction( 1, 1, "Su34Alive" )
+        :WayPointFunction( 2, 1, "Su34TakeOff" )
+        :WayPointFunction( 3, 1, "Su34Orbit" )
+        :WayPointFunction( 5, 1, "Su34RTB" )
         :WayPointExecute( 1, 2 )
     end
   )
@@ -408,107 +527,34 @@ SpawnBE_KA50 = SPAWN
   :RandomizeRoute( 3, 1, 3000 )
   :SpawnScheduled( 900, 0.6 )
 
-US_Troops_Deployment_Left = SPAWN
-  :New( "US Troops Deployment Left@AIR/CH-53E" )
-  :Limit( 3, 3 )
-  :RandomizeRoute( 6, 1, 3000 )
+
+RU_Infantry_Deployment = SPAWN
+  :New( "RU Infantry Deployment@AIR/MIL-26" )
+  :Limit( 4, 3 )
+  :RandomizeRoute( 3, 2, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
     function( SpawnGroup )
       SpawnGroup
         :WayPointInitialize()
-        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
-        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Left'" )
-        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
-        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Left ' .. math.random( 1, 3 )" )
-        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Left_Path" )
-        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", "'GE Cargo Ship Left'" )
-        :WayPointExecute( 1, 2 )
-    end
-  )
-  :SpawnScheduled( 60, 0.6 )
-
-US_Northern_Infantry_Left_Path  = SPAWN
-  :New( 'US_Northern_Infantry_Left_Path' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
-  :RandomizeRoute( 1, 3, 2000 )
-
-US_Troops_Deployment_Middle = SPAWN
-  :New( "US Troops Deployment Middle@AIR/CH-53E" )
-  :Limit( 3, 3 )
-  :RandomizeRoute( 6, 1, 3000 )
-  :CleanUp( 180 )
-  :SpawnFunction(
-    function( SpawnGroup )
-      SpawnGroup
-        :WayPointInitialize()
-        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
-        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Middle'" )
-        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
-        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Right ' .. math.random( 1, 3 )" )
-        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Right_Path" )
-        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", "'GE Cargo Ship Right'" )
-        :WayPointExecute( 1, 2 )
-    end
-  )
-  :SpawnScheduled( 60, 0.6 )
-
-US_Troops_Deployment_Right = SPAWN
-  :New( "US Troops Deployment Right@AIR/CH-53E" )
-  :Limit( 3, 3 )
-  :RandomizeRoute( 6, 1, 3000 )
-  :CleanUp( 180 )
-  :SpawnFunction(
-    function( SpawnGroup )
-      SpawnGroup
-        :WayPointInitialize()
-        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
-        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship Right'" )
-        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
-        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment Right ' .. math.random( 1, 3 )" )
-        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Northern_Infantry_Right_Path" )
-        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", "'GE Cargo Ship Right'" )
+        :WayPointFunction( 1, 1, "Transport_TakeOff", "'RU'" )
+        :WayPointFunction( 2, 1, "Transport_Reload", "'RU'", "''" )
+        :WayPointFunction( 3, 1, "Transport_Reloaded", "'RU'" )
+        :WayPointFunction( 4, 1, "Transport_Land", "'RU'", "'Deployment Defenses ' .. math.random( 1, 4 )" )
+        :WayPointFunction( 4, 2, "Transport_Deploy", "'RU'", "RU_Infantry_Defenses" )
+        :WayPointFunction( 6, 1, "Transport_Switch", "'RU'", 6, 2, "''" )
         :WayPointExecute( 1, 2 )
     end
   )
   :SpawnScheduled( 60, 0.6 )
 
 
-US_Northern_Infantry_Right_Path = SPAWN
-  :New( 'US_Northern_Infantry_Right_Path' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
-  :RandomizeRoute( 2, 1, 3000 )
-
-US_Troops_Deployment_West = SPAWN
-  :New( "US Troops Deployment West@AIR/CH-53E" )
-  :Limit( 3, 3 )
-  :RandomizeRoute( 6, 1, 3000 )
-  :CleanUp( 180 )
-  :SpawnFunction(
-    function( SpawnGroup )
-      SpawnGroup
-        :WayPointInitialize()
-        :WayPointFunction( 1, 1, "Transport_TakeOff", "'US'" )
-        :WayPointFunction( 4, 1, "Transport_Reload", "'US'", "'GE Cargo Ship West'" )
-        :WayPointFunction( 5, 1, "Transport_Reloaded", "'US'" )
-        :WayPointFunction( 6, 1, "Transport_Land", "'US'", "'Deployment West ' .. math.random( 1, 3 )" )
-        :WayPointFunction( 6, 2, "Transport_Deploy", "'US'", "US_Western_Infantry" )
-        :WayPointFunction( 7, 1, "Transport_Switch", "'US'", "'GE Cargo Ship West'" )
-        :WayPointExecute( 1, 2 )
-    end
-  )
-  :SpawnScheduled( 60, 0.6 )
-
-
-US_Western_Infantry = SPAWN
-  :New( 'US_Western_Infantry' )
-  :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
-  :RandomizeRoute( 1, 3, 2000 )
-
-SpawnMI26 = SPAWN
-  :New( 'RU MI-26 Infantry' )
-  :RandomizeRoute( 2, 1, 3000 )
-  :RandomizeTemplate( { 'RU IFV BMP-2', 'RU IFV BMD-1',  'RU IFV BMP-3' } )
+RU_Infantry_Defenses = SPAWN
+  :New( 'RU Infantry Defenses' )
+  :Limit( 20, 120 )
+  :RandomizeTemplate( { 'RU Infantry Defenses A', 'RU Infantry Defenses B',  'RU Infantry Defenses C', 'RU Infantry Defenses D' } )
+  :Array( 90, 10, 30, 30 )
+  :RandomizeRoute( 2, 1, 4000 )
 
 
 SEAD_SA10_Defenses = SEAD
