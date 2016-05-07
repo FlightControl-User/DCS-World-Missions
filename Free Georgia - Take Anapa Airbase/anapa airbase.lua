@@ -553,7 +553,7 @@ RU_Infantry_Defenses = SPAWN
   :New( 'RU Infantry Defenses' )
   :Limit( 20, 120 )
   :RandomizeTemplate( { 'RU Infantry Defenses A', 'RU Infantry Defenses B',  'RU Infantry Defenses C', 'RU Infantry Defenses D' } )
-  :Array( 90, 10, 30, 30 )
+  --:Array( 90, 10, 30, 30 )
   :RandomizeRoute( 2, 1, 4000 )
 
 
