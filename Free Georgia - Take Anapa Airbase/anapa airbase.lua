@@ -850,13 +850,17 @@ do -- Russia Rescue workers from oil platforms
   Client:Transport()
   Mission:AddClient( Client )
 
+  Client = CLIENT:New( 'TF4 Test' )
+  Client:Transport()
+  Mission:AddClient( Client )
+
   local CargoTable = {}
   
   local WorkerNames = { "Александр", "Михаил", "Ростислав", "Иммануил" }
 
-  local Cargo_Pickup_Zone = CARGO_ZONE:New( 'Oil Rescue Pickup Zone', 'Oil Rig #003' ):BlueSmoke()
+  local Cargo_Pickup_Zone = CARGO_ZONE:New( 'Oil Rescue Pickup Zone' ):SignalHeight( 30 ):RedSmoke()
 
-  for CargoItem = 1, 4 do
+  for CargoItem = 1, 1 do
   CargoTable[CargoItem] = CARGO_GROUP:New( 'Oil workers', 'Worker ' .. WorkerNames[CargoItem],
     math.random( 70, 100 ) * 2,
     'RU Oil Rig Workers',
