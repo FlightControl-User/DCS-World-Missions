@@ -129,9 +129,9 @@ function Transport_Switch( HeliGroup, CountryPrefix, FromWayPoint, ToWayPoint, C
 
 end
 
-US_Troops_Deployment_Left = SPAWN
+US_Troops_Deployment_Left_CH53E = SPAWN
   :New( "US Troops Deployment Left@AIR/CH-53E" )
-  :Limit( 3, 3 )
+  :Limit( 1, 5 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -147,16 +147,16 @@ US_Troops_Deployment_Left = SPAWN
         :WayPointExecute( 1, 2 )
     end
   )
-  :SpawnScheduled( 60, 0.6 )
+  :SpawnScheduled( 600, 0.6 )
 
 US_Northern_Infantry_Left_Path  = SPAWN
   :New( 'US_Northern_Infantry_Left_Path' )
   :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
   :RandomizeRoute( 1, 3, 2000 )
 
-US_Troops_Deployment_Middle = SPAWN
+US_Troops_Deployment_Middle_CH53E = SPAWN
   :New( "US Troops Deployment Middle@AIR/CH-53E" )
-  :Limit( 3, 3 )
+  :Limit( 1, 5 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -172,11 +172,11 @@ US_Troops_Deployment_Middle = SPAWN
         :WayPointExecute( 1, 2 )
     end
   )
-  :SpawnScheduled( 60, 0.6 )
+  :SpawnScheduled( 600, 0.6 )
 
-US_Troops_Deployment_Right = SPAWN
+US_Troops_Deployment_Right_CH53E = SPAWN
   :New( "US Troops Deployment Right@AIR/CH-53E" )
-  :Limit( 3, 3 )
+  :Limit( 1, 5 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -192,7 +192,7 @@ US_Troops_Deployment_Right = SPAWN
         :WayPointExecute( 1, 2 )
     end
   )
-  :SpawnScheduled( 60, 0.6 )
+  :SpawnScheduled( 600, 0.6 )
 
 
 US_Northern_Infantry_Right_Path = SPAWN
@@ -200,9 +200,9 @@ US_Northern_Infantry_Right_Path = SPAWN
   :RandomizeTemplate( { 'US IFV M2A2 Bradley', 'US APC M1126 Stryker ICV', 'US MBT M1A2 Abrams', 'US APC LVTP-7', 'US IFV LAV-25' } )
   :RandomizeRoute( 2, 1, 3000 )
 
-US_Troops_Deployment_West = SPAWN
+US_Troops_Deployment_West_CH53E = SPAWN
   :New( "US Troops Deployment West@AIR/CH-53E" )
-  :Limit( 3, 3 )
+  :Limit( 1, 5 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -218,7 +218,7 @@ US_Troops_Deployment_West = SPAWN
         :WayPointExecute( 1, 2 )
     end
   )
-  :SpawnScheduled( 60, 0.6 )
+  :SpawnScheduled( 600, 0.6 )
 
 
 US_Western_Infantry = SPAWN
@@ -532,9 +532,9 @@ SpawnBE_KA50 = SPAWN
   :SpawnScheduled( 900, 0.6 )
 
 
-RU_Infantry_Deployment = SPAWN
+RU_Infantry_Deployment_MIL26 = SPAWN
   :New( "RU Infantry Deployment@AIR/MIL-26" )
-  :Limit( 4, 3 )
+  :Limit( 2, 6 )
   :RandomizeRoute( 3, 2, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -550,7 +550,7 @@ RU_Infantry_Deployment = SPAWN
         :WayPointExecute( 1, 2 )
     end
   )
-  :SpawnScheduled( 60, 0.6 )
+  :SpawnScheduled( 600, 0.6 )
 
 
 RU_Infantry_Defenses = SPAWN
@@ -599,16 +599,16 @@ do -- USA destroy air defenses
 
   local Mission = MISSION:New( 'Destroy SA-10', 'Primary', 'Destroy the enemy SA-10 batteries at Anapa airport. Once the SA-10 batteries are out, USA infantry forces can progress to Anapa from the north, and the airbase can be finally captured', 'NATO'  )
 
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@AIR Destroy SA-10 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@HOT Destroy SA-10 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 5' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 US A-10C@RAMP Destroy SA-10 6' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@HOT Destroy SA-10 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 BE KA-50@RAMP Destroy SA-10 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 01 @AIR*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 02 @AIR*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 03 @HOT*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 04 @HOT*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 05 @RAMP*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 06 @RAMP*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 07 @HOT*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 08 @HOT*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 09 @RAMP*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy SA-10 10 @RAMP*KA-50' ) )
 
   local DestroyGroupsTask = DESTROYRADARSTASK:New( { 'Russia SA-10 Battery Array' } )
   DestroyGroupsTask:SetGoalTotal( 2 )
