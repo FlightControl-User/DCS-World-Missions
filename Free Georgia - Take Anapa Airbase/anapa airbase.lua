@@ -575,6 +575,7 @@ SEAD_SAM_Defenses_South = SEAD
 
 
 --- NATO SEAD Defenses
+
 SEAD_Hawk_Defenses = SEAD
   :New( { 'US Hawk Battery' } )
 
@@ -585,11 +586,11 @@ SEAD_Ship_Defenses = SEAD
   :New( { 'US Ship North', 'US Ship West' } )
 
 
-MOVEMENT_CH53E = MOVEMENT
-  :New( { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right', 'US CH-53E Infantry West' }, 20 )
+--MOVEMENT_CH53E = MOVEMENT
+--  :New( { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right', 'US CH-53E Infantry West' }, 20 )
 
-MOVEMENT_MI26 = MOVEMENT
-  :New( { 'RU MI-26 Infantry' }, 10 )
+--MOVEMENT_MI26 = MOVEMENT
+--  :New( { 'RU MI-26 Infantry' }, 10 )
 
 
 --- NATO
@@ -829,28 +830,24 @@ do -- Stop the upcoming infantry
 end
 
 do -- Russia Rescue workers from oil platforms
-  local Mission = MISSION:New( 'Rescue oil rig workers', 'Operational', 'Russian workers are still on the Oil Rigs in the sea. Fly to the west and rescue them. They will use a red smoke signal when you approach the oil rigs. Note that we are not sure in which oil rig exactly the workers are. Search for the red smoke, fly to the oil rig, and rescue the workers by landing on the oil rig. Fly back to Gelend and land in the zone indicated by a red smoke signal. Good luck!', 'Russia' )
+  local Mission = MISSION:New( 'Rescue oil rig workers', 'Operational', 'Russian workers are still on the Oil Rigs in the sea. Fly to the west and rescue them. They will use a red smoke signal when you approach the oil rigs. Note that we are not sure in which oil rig exactly the workers are. Search for the red smoke, fly to the oil rig, and rescue the workers by landing on the oil rig. Fly back to Novorossiysk and land in the zone indicated by a red smoke signal near the truck. Good luck!', 'Russia' )
   --	Mission:AddGoal( MissionGoal )
 
   local Client
 
-  Client = CLIENT:New( 'TF4 RU MI-8@HOT Rescue Oil Workers 1' )
+  Client = CLIENT:New( 'TF4 Rescue Oil Workers 1@HOT/MI-8MTV2' )
   Client:Transport()
   Mission:AddClient( Client )
 
-  Client = CLIENT:New( 'TF4 RU MI-8@HOT Rescue Oil Workers 2' )
+  Client = CLIENT:New( 'TF4 Rescue Oil Workers 2@HOT/MI-8MTV2' )
   Client:Transport()
   Mission:AddClient( Client )
 
-  Client = CLIENT:New( 'TF4 RU MI-8@RAMP Rescue Oil Workers 3' )
+  Client = CLIENT:New( 'TF4 Rescue Oil Workers 3@RAMP/MI-8MTV2' )
   Client:Transport()
   Mission:AddClient( Client )
 
-  Client = CLIENT:New( 'TF4 RU MI-8@RAMP Rescue Oil Workers 4' )
-  Client:Transport()
-  Mission:AddClient( Client )
-
-  Client = CLIENT:New( 'TF4 Test' )
+  Client = CLIENT:New( 'TF4 Rescue Oil Workers 4@RAMP/MI-8MTV2' )
   Client:Transport()
   Mission:AddClient( Client )
 
@@ -858,7 +855,7 @@ do -- Russia Rescue workers from oil platforms
   
   local WorkerNames = { "Александр", "Михаил", "Ростислав", "Иммануил" }
 
-  local Cargo_Pickup_Zone = CARGO_ZONE:New( 'Oil Rescue Pickup Zone' ):SignalHeight( 30 ):RedSmoke()
+  local Cargo_Pickup_Zone = CARGO_ZONE:New( 'Oil Rescue Pickup Zone' ):RedSmoke( 40 )
 
   for CargoItem = 1, 1 do
   CargoTable[CargoItem] = CARGO_GROUP:New( 'Oil workers', 'Worker ' .. WorkerNames[CargoItem],
@@ -874,7 +871,7 @@ do -- Russia Rescue workers from oil platforms
 
 
   -- Assign the Deploy Task
-  local Cargo_Deploy_Zone = CARGO_ZONE:New( "Oil Rescue Deployment Zone", "RU Workers Rescue Vehicle" ):RedFlare()
+  local Cargo_Deploy_Zone = CARGO_ZONE:New( "Oil Rescue Deployment Zone", "RU Workers Rescue Vehicle" ):RedSmoke()
   
   local DeployTask = DEPLOYTASK:New( 'Oil workers' )
   DeployTask:ToZone( Cargo_Deploy_Zone )
