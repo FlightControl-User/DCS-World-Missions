@@ -385,7 +385,9 @@ function Su34OverviewStatus()
     end
   end
   
-  MESSAGE:New( msg, "Status", 15, "Status" ):ToRed()
+  if msg ~= "" then
+    MESSAGE:New( msg, "Status", 15, "Status" ):ToRed()
+  end
   
   return true
 end
@@ -410,6 +412,7 @@ function SU34Menu()
     else
       if SU34Data.Menu then
         SU34Data.Menu:Remove()
+        SU34Data.Menu = nil
       end
     end
   end
@@ -488,12 +491,6 @@ SpawnRU_SU25T = SPAWN
   :RandomizeRoute( 1, 1, 3000 )
   :InitRepeatOnEngineShutDown()
   :SpawnScheduled( 450, 0.4 )
-
-SpawnUS_F117A = SPAWN
-  :New( 'TF2 US F-117A@AI PINPOINT' )
-  :Limit( 1, 5 )
-  :RandomizeRoute( 1, 1, 4000 )
-  :SpawnScheduled( 1200, 0.7 )
 
 SpawnUS_FA18C_SEAD = SPAWN
   :New( 'TF1 US FA-18C@AI Destroy SA-10' )
@@ -622,16 +619,30 @@ end
 
 do -- USA destroy Su-34 ship attack forces
 
-  local Mission = MISSION:New( 'Destroy Su-34 Ship Attack', 'Secondary', 'Su-34 planes are approaching from the east. They pose an enormous threat to our fleet. Destroy them before they engage anti-radar weapons to destroy our carrier and ships!', 'NATO'  )
+  local Mission = MISSION:New( 
+    'Destroy Su-34 Ship Attack', 
+    'Secondary', 
+    'Your mission is to destroy the latest Russian Su-34 planes before they engage our carrier Vinson in the west and our destroyers in the north of Anapa! ' ..
+    'You are taking off from Gudauta airbase. ' ..
+    'The Russian Su-34 anti-ship planes are taking off from Krasnodar in the north-east. ' ..
+    'They pose an enormous threat to our destroyer fleet, as they carry Russian KH-41A anti-ship missiles. ' ..
+    'Our intelligence informed us that the Russians also have the latest KH-41P anti-ship missiles, which pose even a greater danger to our fleet. ' ..
+    'Fly through the mountain range towards the North from Guduata. We expect heavy SAM defenses in the mountains, so stay low in the mountains and evade any enemy fire! ' ..
+    'Once you passed the mountain range, the Su-34 planes are expected to be orbiting near Krasnodar airbase. Destroy the Su-34 airplanes!' ..
+    '\nGood Luck!', 
+    'NATO'  
+  )
 
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@HOT Destroy SU-34 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@AIR Destroy SU-34 5' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 US F-15C@AIR Destroy SU-34 6' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 01 @HOT*F-15' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 02 @HOT*F-15' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 03 @RAMP*F-15' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 04 @RAMP*F-15' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 05 @HOT*MIRAGE-2000C' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 06 @HOT*MIRAGE-2000C' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 07 @RAMP*MIRAGE-2000C' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy SU-34 08 @RAMP*MIRAGE-2000C' ) )
 
-  local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'anti ship air defenses', 'Su-34 squadrons', {
+  local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'anti-ship planes', 'Su-34 squadrons', {
     'TF1 RU Su-34 Krymsk@AI - Attack Ships' }
   )
 
@@ -643,24 +654,35 @@ do -- USA destroy Su-34 ship attack forces
 end
 
 do -- NATO destroy SA-6 / SA-11 DEFENSES TO ANAPA
-  local Mission = MISSION:New( 'Destroy SAMs', 'Operational', 'Destroy the Russian mobile SAM sites between Gudauata and Anapa. Their elimination will ease our F-15C, A-10A and A-10C airstrikes and air attack from Gudauata.', 'NATO'  )
+  local Mission = MISSION:New( 
+    'Destroy SAMs', 
+    'Operational', 
+    'Your mission is to destroy the Russian mobile SAM sites between Gudauta and Anapa, which are hiding in the mountains. ' ..
+    'The elimination of the SAM sites will ease our airstrikes coordinated from Gudauata.', 
+    'NATO'  
+  )
 
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10A@HOT Destroy SA-6/11 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10A@HOT Destroy SA-6/11 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10A@RAMP Destroy SA-6/11 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10A@RAMP Destroy SA-6/11 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10C@HOT Destroy SA-6/11 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10C@HOT Destroy SA-6/11 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10C@RAMP Destroy SA-6/11 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 US A-10C@RAMP Destroy SA-6/11 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@HOT Destroy SA-6/11 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@HOT Destroy SA-6/11 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@RAMP Destroy SA-6/11 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@RAMP Destroy SA-6/11 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@AIR Destroy SA-6/11 5' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 GE SU-25T@AIR Destroy SA-6/11 6' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 01 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 02 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 03 @RAMP*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 04 @RAMP*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 05 @AIR*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 06 @AIR*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 07 @HOT*A-10A' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 08 @HOT*A-10A' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 09 @RAMP*A-10A' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 10 @RAMP*A-10A' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 11 @HOT*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 12 @HOT*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 13 @RAMP*A-10C' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Destroy SAM defenses 14 @RAMP*A-10C' ) )
 
-  local DestroyGroupRadarsTask = DESTROYUNITTYPESTASK:New( 'SAM sites', 'Kub 1S91 and Buk SR 9S18M1 search radars', { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' }, { 'Kub 1S91 str', 'SA-11 Buk SR 9S18M1' } )
+  local DestroyGroupRadarsTask = DESTROYUNITTYPESTASK
+    :New( 'SAM sites', 
+      'Kub 1S91 and Buk SR 9S18M1 search radars', 
+      { 'RU SA-6 - Middle Defenses', 'RU SA-11 - South Defenses' }, 
+      { 'Kub 1S91 str', 'SA-11 Buk SR 9S18M1' } 
+    )
 
   DestroyGroupRadarsTask:SetGoalTotal( 18 )
   Mission:AddTask( DestroyGroupRadarsTask, 1 )
@@ -672,9 +694,9 @@ end
 do -- USA Deploy troops to battle zone
 
   DefenseActivation = {
-    { "Georgian SA-3 Defense System", false },
-    { "Georgian Early Warning Radar (EWR) Callsign Warrior", false },
-    { "Georgian SA-11 Defense System", false }
+    ["US Deployment Zone Alpha"] = { "Georgian SA-3 Defense System", false },
+    ["US Deployment Zone Beta"] = { "Georgian Early Warning Radar (EWR) Callsign Warrior", false },
+    ["US Deployment Zone Gamma"] = { "Georgian SA-11 Defense System", false }
   }
 
   function ActivateDefenses( Mission, Client )
@@ -700,24 +722,35 @@ do -- USA Deploy troops to battle zone
     end
   end
   
-  local Mission = MISSION:New( 'Activate Air Defenses', 'Operational', 'Transport troops from the "Gamma" control center to the battle zone.', 'NATO' )
+  local Mission = MISSION
+    :New( 'Activate Air Defenses', 
+      'Operational', 
+      'USA engineers are awaiting for redeployment to capture 3 Russian radar defenses. ' .. 
+      'Fly the UH-1H helicopters from the northern farps to load our USA engineers at the pickup zone. ' .. 
+      'Fly to one of the 3 Russian radar defense installations in the north of Anapa to capture them. ' .. 
+      'Expect light armed Russian defenses near the radars. ' .. 
+      'Deploy the USA engineers and they will capture the radar installations. ' .. 
+      'Your co-pilot will provide you with directions during flight.',
+      'NATO' 
+    )
+    
   Mission:AddGoalFunction( ActivateDefenses )
   
   local Client
   
-  Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 1' )
+  Client = CLIENT:New( 'TF4 Capture Russian Radars 01 @HOT*UH-1H' )
   Client:Transport()
   Mission:AddClient( Client )
   
-  Client = CLIENT:New( 'TF4 BE UH-1H@HOT Deploy Infantry 2' )
+  Client = CLIENT:New( 'TF4 Capture Russian Radars 02 @HOT*UH-1H' )
   Client:Transport()
   Mission:AddClient( Client )
   
-  Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 3' )
+  Client = CLIENT:New( 'TF4 Capture Russian Radars 03 @RAMP*UH-1H' )
   Client:Transport()
   Mission:AddClient( Client )
   
-  Client = CLIENT:New( 'TF4 BE UH-1H@RAMP Deploy Infantry 4' )
+  Client = CLIENT:New( 'TF4 Capture Russian Radars 04 @RAMP*UH-1H' )
   Client:Transport()
   Mission:AddClient( Client )
   
@@ -769,10 +802,10 @@ end
 do -- Russia destroy northern USA ship
   local Mission = MISSION:New( 'Destroy Ships', 'Primary', 'A large infantry invasion is progressing to Anapa from the North. USA infantry is being deployed by USA Navy helicopters unloading the ships. Destroy the ships further to the North. Beware of mobile SAMs and the ship defenses. Fly low and slow!', 'Russia'  )
 
-  Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@HOT Northern Ships 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@HOT Northern Ships 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@RAMP Northern Ships 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF1 RU SU-25T@RAMP Northern Ships 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy Northern Ships 01 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy Northern Ships 02 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy Northern Ships 03 @RAMP*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF1 Destroy Northern Ships 04 @RAMP*SU-25T' ) )
 
   local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'infantry deploying ships', 'destroyers', { 'US Ship North' } )
   DestroyGroupsTask:SetGoalTotal( 3 )
@@ -785,18 +818,18 @@ end
 do -- Russia destroy USA helicopter infantry landing forces
   local Mission = MISSION:New( 'Destroy CH-53E helicopters', 'Tactical', 'The USA is deploying infantry forces with CH-53E helicopters. Destroy the helicoptes to prevent further unloading of USA infantry forces from the ships.', 'Russia'  )
 
-  Mission:AddClient( CLIENT:New( 'TF2 RU MIG-29S@HOT Helicopters 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU MIG-29S@HOT Helicopters 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU MIG-29S@RAMP Helicopters 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU MUG-29S@RAMP Helicopters 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-27@HOT Helicopters 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-27@HOT Helicopters 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-27@RAMP Helicopters 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-27@RAMP Helicopters 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@HOT Helicopters 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@HOT Helicopters 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@RAMP Helicopters 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF2 RU SU-33@RAMP Helicopters 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 01 @HOT*MIG-29S' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 02 @HOT*MIG-29S' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 03 @RAMP*MIG-29S' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 04 @RAMP*MIG-29S' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 05 @HOT*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 06 @HOT*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 07 @RAMP*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 08 @RAMP*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 09 @HOT*SU-33' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 10 @HOT*SU-33' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 11 @RAMP*SU-33' ) )
+  Mission:AddClient( CLIENT:New( 'TF2 Destroy CH-53E Helicopters 12 @RAMP*SU-33' ) )
 
   local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'USA transport helicopters', 'helicopters', { 'US CH-53E Air AI - Infantry Transport' } )
   DestroyGroupsTask:SetGoalTotal( 9 )
@@ -808,18 +841,18 @@ end
 do -- Stop the upcoming infantry
   local Mission = MISSION:New( 'Destroy Infantry', 'Operational', 'The USA is deploying infantry forces with CH-53E helicopters, which are progressing to Anapa. Defend our airbase from the upcoming USA infantry!', 'Russia'  )
 
-  Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@HOT Infantry 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@HOT Infantry 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@RAMP Infantry 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU KA-50@RAMP Infantry 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-25T@HOT Infantry 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-25T@HOT Infantry 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-25T@RAMP Infantry 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-25T@RAMP Infantry 4' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@HOT Infantry 1' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@HOT Infantry 2' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@RAMP Infantry 3' ) )
-  Mission:AddClient( CLIENT:New( 'TF3 RU SU-27@RAMP Infantry 4' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 01 @HOT*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 02 @HOT*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 03 @RAMP*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 04 @RAMP*KA-50' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 05 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 06 @HOT*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 07 @RAMP*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 08 @RAMP*SU-25T' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 09 @HOT*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 10 @HOT*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 11 @RAMP*SU-27' ) )
+  Mission:AddClient( CLIENT:New( 'TF3 Stop USA Infantry 12 @RAMP*SU-27' ) )
 
   local DestroyGroupsTask = DESTROYGROUPSTASK:New( 'USA Infantry', 'infantry vehicles', { 'US CH-53E Infantry Left', 'US CH-53E Infantry Right' } )
   DestroyGroupsTask:SetGoalTotal( 30 )
