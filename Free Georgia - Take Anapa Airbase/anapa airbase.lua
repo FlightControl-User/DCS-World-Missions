@@ -131,7 +131,7 @@ end
 
 US_Troops_Deployment_Left_CH53E = SPAWN
   :New( "US Troops Deployment Left@AIR/CH-53E" )
-  :Limit( 1, 5 )
+  :Limit( 3, 6 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -176,7 +176,7 @@ US_Troops_Deployment_Middle_CH53E = SPAWN
 
 US_Troops_Deployment_Right_CH53E = SPAWN
   :New( "US Troops Deployment Right@AIR/CH-53E" )
-  :Limit( 1, 5 )
+  :Limit( 3, 6 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -202,7 +202,7 @@ US_Northern_Infantry_Right_Path = SPAWN
 
 US_Troops_Deployment_West_CH53E = SPAWN
   :New( "US Troops Deployment West@AIR/CH-53E" )
-  :Limit( 1, 5 )
+  :Limit( 3, 6 )
   :RandomizeRoute( 6, 1, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
@@ -531,7 +531,7 @@ SpawnBE_KA50 = SPAWN
 
 RU_Infantry_Deployment_MIL26 = SPAWN
   :New( "RU Infantry Deployment@AIR/MIL-26" )
-  :Limit( 2, 6 )
+  :Limit( 3, 6 )
   :RandomizeRoute( 3, 2, 3000 )
   :CleanUp( 180 )
   :SpawnFunction(
