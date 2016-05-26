@@ -622,10 +622,10 @@ end
 local Mission_Red_SA6 = MISSION:New( 'Russia Transport Troops SA-6', 'Operational', 'Transport troops from the control center to one of the SA-6 SAM sites to activate their operation.', 'CCCP' )
 Mission_Red_SA6:AddGoalFunction( DeploySA6TroopsGoal )
 
-Mission_Red_SA6:AddClient( CLIENT:New( 'Operational: Deploy Troops to SA-6 (RU MI-8MTV2-1@HOT)' ):Transport() )
-Mission_Red_SA6:AddClient( CLIENT:New( 'Operational: Deploy Troops to SA-6 (RU MI-8MTV2-2@HOT)' ):Transport() )
-Mission_Red_SA6:AddClient( CLIENT:New( 'Operational: Deploy Troops to SA-6 (RU MI-8MTV2-3@RAMP)' ):Transport() )
-Mission_Red_SA6:AddClient( CLIENT:New( 'Operational: Deploy Troops to SA-6 (RU MI-8MTV2-4@RAMP)' ):Transport() )
+Mission_Red_SA6:AddClient( CLIENT:FindByName( 'TF4 Activate SA-6 01 @MI-8MTV2' ):Transport() )
+Mission_Red_SA6:AddClient( CLIENT:FindByName( 'TF4 Activate SA-6 02 @MI-8MTV2' ):Transport() )
+Mission_Red_SA6:AddClient( CLIENT:FindByName( 'TF4 Activate SA-6 03 @MI-8MTV2' ):Transport() )
+Mission_Red_SA6:AddClient( CLIENT:FindByName( 'TF4 Activate SA-6 04 @MI-8MTV2' ):Transport() )
 
 local CargoTable = {}
 local EngineerNames = { "Александр", "Михаил", "Ростислав", "Иммануил" }
@@ -685,41 +685,41 @@ do -- CCCP - Destroy Patriots
       :Menus()
   end
 
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU KA-50-1@HOT)', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging." ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU KA-50-2@HOT)', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging.") )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU KA-50-3@RAMP)', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging." ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU KA-50-4@RAMP)', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging.") )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 01 @KA-50', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 02 @KA-50', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging.") )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 03 @KA-50', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 04 @KA-50', "Execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Fly low and slow, and scan the area before engaging.") )
 
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU SU-25T-1@HOT)', "Fly to the south and execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 05 @SU-25T', "Fly to the south and execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_SU25T_Beslan, 1 ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU SU-25T-2@HOT)', "Fly to the south and execute a SEAD attack in Gori Valley, eliminating the Patriot radars and other ground air defenses. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 06 @SU-25T', "Fly to the south and execute a SEAD attack in Gori Valley, eliminating the Patriot radars and other ground air defenses. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_SU25T_Beslan, 2 ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU SU-25T-3@RAMP)', "Fly to the south and execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 07 @SU-25T', "Fly to the south and execute a CAS in Gori Valley, eliminating the Patriot launchers and other ground vehicles. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_SU25T_Beslan, 3 ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Patriot Attack (RU SU-25T-4@RAMP)', "Fly to the south and execute a SEAD attack in Gori Valley, eliminating the Patriot radars and other ground air defenses. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Patriot Attack 08 @SU-25T', "Fly to the south and execute a SEAD attack in Gori Valley, eliminating the Patriot radars and other ground air defenses. Patriot batteries are at waypoint 2 to 4. Beware approaching NATO air support from the east and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_SU25T_Beslan, 4 ) )
 
-  Mission:AddClient( CLIENT:New( 'Support: Air Defense West (RU MIG-29S-1@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Defense West 01 @MIG-29S', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Defense West (RU MIG-29S-2@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Defense West 02 @MIG-29S', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Defense West (RU MIG-29S-3@RAMP)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Defense West 03 @MIG-29S', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Defense West (RU MIG-29S-4@RAMP)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
-    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-
-  Mission:AddClient( CLIENT:New( 'Support: Air Support East (RU SU-27-1@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
-    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Support East (RU SU-27-2@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
-    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Support East (RU SU-27-3@RAMP)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
-    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Support East (RU SU-27-4@RAMP)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Defense West 04 @MIG-29S', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
 
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (RU MIG-21-1@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Support East 01 @SU-27', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (RU MIG-21-2@HOT)', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Support East 02 @SU-27', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Support East 03 @SU-27', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Support East 04 @SU-27', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @MIG-21BIS', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
+    "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 02 @MIG-21BIS', "Provide CAP support by flying to the south over the mountains and engage with any unidentified aircraft. Protect our Su-25T planes from any unexpected air threats." ..
     "NATO airbases are in red alert. NATO air defenses are on their way to Gori Valley." ) )
 
   local DESTROYGROUPSTASK = DESTROYGROUPSTASK:New( 'Patriots', 'Patriot Batteries', { 'US SAM Patriot' }, 75  ) -- 75% of a patriot battery needs to be destroyed to achieve mission success...
@@ -740,7 +740,7 @@ do -- CCCP - The Rescue of the Russian General
 
   local Mission = MISSION:New( 'Rescue General', 'Tactical', 'Our intelligence has received a remote signal. We believe it is a very important Russian General that was captured by Georgia. Go out there and rescue him! Ensure you stay out of the battle zone, keep south. Waypoint 4 is the location of our Russian General.', 'CCCP'  )
 
-  Russia_Rescue_General_1 = CLIENT:New( 'Tactical: Rescue General (RU MI-8MTV2-1@HOT)',
+  Russia_Rescue_General_1 = CLIENT:FindByName( 'TF2 Rescue General 01 @MI-8MTV2',
     "Two MI-28N helicopters (Callsign 206) will lead the best route to the rescue place and are available for Air Support. " ..
     "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " ..
     "Beyond waypoint 3 they will scan and attack any NATO air defenses on the route, to ensure a safe rescue behind enemy lines. " ..
@@ -748,7 +748,7 @@ do -- CCCP - The Rescue of the Russian General
     :Transport()
     :Alive( EventAliveEscort, 1 )
 
-  Russia_Rescue_General_2 = CLIENT:New( 'Tactical: Rescue General (RU MI-8MTV2-2@HOT)',
+  Russia_Rescue_General_2 = CLIENT:FindByName( 'TF2 Rescue General 02 @MI-8MTV2',
     "Two MI-28N helicopters (Callsign 206) will lead the best route to the rescue place. " ..
     "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " ..
     "Beyond waypoint 3 they will scan and attack any NATO air defenses on the route, to ensure a safe rescue behind enemy lines. " ..
@@ -787,10 +787,10 @@ end
 do -- CCCP - Deliver packages to secret agent
   local Mission = MISSION:New( 'Package Delivery', 'Operational', 'In order to be in full control of the situation, we need you to deliver a very important package at a secret location. Fly undetected through the NATO defenses and deliver the secret package. The secret agent is located at waypoint 4.', 'CCCP'  )
 
-  local KA50Client1 = CLIENT:New( 'Operational: Package Delivery (RU KA-50-1@HOT)' ):Transport()
-  local KA50Client2 = CLIENT:New( 'Operational: Package Delivery (RU KA-50-2@HOT)' ):Transport()
-  local KA50Client3 = CLIENT:New( 'Operational: Package Delivery (RU KA-50-3@RAMP)' ):Transport()
-  local KA50Client4 = CLIENT:New( 'Operational: Package Delivery (RU KA-50-4@RAMP)' ):Transport()
+  local KA50Client1 = CLIENT:FindByName( 'TF3 Package Delivery 01 @KA-50' ):Transport()
+  local KA50Client2 = CLIENT:FindByName( 'TF3 Package Delivery 02 @KA-50' ):Transport()
+  local KA50Client3 = CLIENT:FindByName( 'TF3 Package Delivery 03 @KA-50' ):Transport()
+  local KA50Client4 = CLIENT:FindByName( 'TF3 Package Delivery 04 @KA-50' ):Transport()
 
   Mission:AddClient( KA50Client1 )
   Mission:AddClient( KA50Client2 )
@@ -854,10 +854,10 @@ end
 local Mission = MISSION:New( 'NATO Transport Troops', 'Operational', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.', 'NATO' )
 Mission:AddGoalFunction( DeployPatriotTroopsGoal )
 
-Mission:AddClient( CLIENT:New( 'Operational: Deploy Troops (US UH-1H-1@HOT)', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
-Mission:AddClient( CLIENT:New( 'Operational: Deploy Troops (US UH-1H-2@HOT)', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
-Mission:AddClient( CLIENT:New( 'Operational: Deploy Troops (US UH-1H-3@RAMP)', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
-Mission:AddClient( CLIENT:New( 'Operational: Deploy Troops (US UH-1H-4@RAMP)', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
+Mission:AddClient( CLIENT:FindByName( 'TF4 Activate Patriots 01 @UH-1H', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
+Mission:AddClient( CLIENT:FindByName( 'TF4 Activate Patriots 02 @UH-1H', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
+Mission:AddClient( CLIENT:FindByName( 'TF4 Activate Patriots 03 @UH-1H', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
+Mission:AddClient( CLIENT:FindByName( 'TF4 Activate Patriots 04 @UH-1H', 'Transport 3 groups of air defense engineers from our barracks "Gold" and "Titan" to each patriot battery control center to activate our air defenses.' ):Transport() )
 
 local CargoTable = {}
 local EngineerNames = { "Controller", "Expert", "Radar", "Electrician" }
@@ -918,61 +918,61 @@ do -- NATO Destroy Mission SA-6 Batteries
   end
 
 
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (BE KA-50-1@HOT)', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (BE KA-50-2@HOT)', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (BE KA-50-3@RAMP)', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (BE KA-50-4@RAMP)', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 01 @KA-50', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 02 @KA-50', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 03 @KA-50', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 04 @KA-50', "Execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Fly low and slow, and scan the area before engaging. Good luck!" ) )
 
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10A-1@HOT)', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10A-2@HOT)', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10A-3@RAMP)', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
-  Mission:AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10A-4@RAMP)', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 01 @A-10A', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 02 @A-10A', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 03 @A-10A', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 04 @A-10A', "Fly to the west and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
 
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (GE SU-25T-1@HOT)', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 01 @SU-25T', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
     :Alive( Escort_SU25T_Tbilisi, 1 )
   
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (GE SU-25T-2@HOT)', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 02 @SU-25T', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
     :Alive( Escort_SU25T_Tbilisi, 2 )
   
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (GE SU-25T-3@RAMP)', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 03 @SU-25T', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
     :Alive( Escort_SU25T_Tbilisi, 3 )
   
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (GE SU-25T-4@RAMP)', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 04 @SU-25T', "Fly to the west and execute a SEAD attack in Gori Valley, eliminating the SA-6 radars. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." ) )
     :Alive( Escort_SU25T_Tbilisi, 4 )
 
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10C-1@HOT)', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 01 @A-10C', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_A10C_Kutaisi, 1 ) )
   
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10C-2@HOT)', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 02 @A-10C', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_A10C_Kutaisi, 2 ) )
   
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10C-3@RAMP)', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 03 @A-10C', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_A10C_Kutaisi, 3 ) )
     
   Mission
-    :AddClient( CLIENT:New( 'Primary: Attack Air Defenses (US A-10C-4@RAMP)', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
+    :AddClient( CLIENT:FindByName( 'TF1 Destroy Air Defenses 04 @A-10C', "Fly to the east and execute a CAS in Gori Valley, eliminating the SA-6 launchers and other ground vehicles. Waypoint 2 to 4 are your primary targets. Beware approaching CCCP air support from the north and the west. Expect heavy AAA and air defense ground units within Gori Valley." )
     :Alive( Escort_A10C_Kutaisi, 4 ) )
 
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (US F-15C-1@HOT)', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (US F-15C-2@HOT)', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (US F-15C-3@RAMP)', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (US F-15C-4@RAMP)', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @F-15C', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 02 @F-15C', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @F-15C', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @F-15C', "Fly to the east and provide CAP of supporting A-10A and A-10C planes. Waypoint 1 follows direction Gori Valley. Waypoint 2 to 4 is your CAP area in the mountains in the North. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
 
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR MIRAGE-2000-1@HOT)', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR MIRAGE-2000-2@HOT)', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR MIRAGE-2000-3@RAMP)', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR MIRAGE-2000-4@RAMP)', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @MIRAGE-2000', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 02 @MIRAGE-2000', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 03 @MIRAGE-2000', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 04 @MIRAGE-2000', "Fly to the east and provide CAP while defending our A-10A and A-10C planes moving towards Gori Valley. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
 
 
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR C-101CC-1@HOT)', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
-  Mission:AddClient( CLIENT:New( 'Support: Air Patrol (FR C-101CC-2@HOT)', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Tbilisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 01 @C-101CC', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Kutaisi." ) )
+  Mission:AddClient( CLIENT:FindByName( 'SUP Air Patrol 02 @C-101CC', "Fly to Gori Valley and attack ground defenses, while defending our A-10A and A-10C planes. Beware of approaching CCCP air support from the north and the west. Expect heavy AAA and air defenses within Gori Valley. Land at Tbilisi." ) )
 
   local DESTROYGROUPSTASK = DESTROYGROUPSTASK:New( 'SA-6 SAMs', 'SA-6 SAM Batteries', { 'RU SA-6 Kub' } )
   DESTROYGROUPSTASK:SetGoalTotal( 3 )
@@ -992,10 +992,10 @@ do -- NATO "Fury" Sling Load Mission
   local Mission = MISSION:New( 'NATO Sling Load', 'Operational', 'Fly to the cargo pickup zone at Dzegvi or Kaspi, and sling the cargo to Soganlug airbase.', 'NATO' )
   Mission:AddGoalFunction( DeployCargoGoal )
 
-  Mission:AddClient( CLIENT:New( 'Operational: Transport Cargo (BE UH-1H-1*HOT)', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
-  Mission:AddClient( CLIENT:New( 'Operational: Transport Cargo (BE UH-1H-2*HOT)', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
-  Mission:AddClient( CLIENT:New( 'Operational: Transport Cargo (BE UH-1H-3*RAMP)', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
-  Mission:AddClient( CLIENT:New( 'Operational: Transport Cargo (BE UH-1H-4*RAMP)', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF3 Sling Load Cargo 01 @UH-1H', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF3 Sling Load Cargo 02 @UH-1H', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF3 Sling Load Cargo 03 @UH-1H', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
+  Mission:AddClient( CLIENT:FindByName( 'TF3 Sling Load Cargo 04 @UH-1H', 'Fly to Dzegvi or Kaspi and hook-up cargo, sling the cargo to Soganlug airbase. Smoke signals will be given upon arrival. Important note: Due to a bug in DCS World since version 1.2.12, this sling load mission cannot be correctly governed. The Cargo arrival and position cannot be measured anymore, thus, only your helicopter will be measured for the moment. Mission success will only be dependent on the position of your helicopter until this bug is fixed by Eagle Dynamics.' ) )
 
   NATO_Sling_Load_Pickup_Zone = CARGO_ZONE:New( 'NATO Sling Load Pickup Zone', 'Georgia Cargo Pickup Guard' ):BlueSmoke()
   NATO_Sling_Load = CARGO_SLINGLOAD:New( 'Ammunition', 'Ammunition Boxes', 400, 'NATO Sling Load Pickup Zone', 'Georgia Cargo Guard', country.id.GEORGIA )
@@ -1032,7 +1032,7 @@ do -- NATO - Rescue secret agent from the woods
     "Avoid the Russian defenses and rescue the agent. Keep south until Khasuri, and keep your eyes open for any SAM presence. " ..
     "The agent is located at waypoint 4 on your kneeboard.", 'NATO'  )
 
-  NATO_Rescue_Secret_Agent_1 = CLIENT:New( 'Tactical: Rescue Secret Agent (DE MI-8MTV2-1@HOT)',
+  NATO_Rescue_Secret_Agent_1 = CLIENT:FindByName( 'TF2 Rescue Secret Agent 01 @MI-8MTV2',
     "Two AH-64A helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place and are available for Air Support. " ..
     "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " ..
     "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
@@ -1040,7 +1040,7 @@ do -- NATO - Rescue secret agent from the woods
     :Transport()
     :Alive( EventAliveEscort, 1 )
 
-  NATO_Rescue_Secret_Agent_2 = CLIENT:New( 'Tactical: Rescue Secret Agent (DE MI-8MTV2-2@HOT)',
+  NATO_Rescue_Secret_Agent_2 = CLIENT:FindByName( 'TF2 Rescue Secret Agent 02 @MI-8MTV2',
     "Two KA-50 helicopters (Callsign Pontiac 9-1) will lead the best route to the rescue place and are available for Air Support. " ..
     "Use the radio menu (F10) Escort options to take control of the MI-28N Air Support helicopters actions! " ..
     "Beyond waypoint 3 they will attack any Russian air defenses to ensure a safe rescue behind enemy lines. " ..
