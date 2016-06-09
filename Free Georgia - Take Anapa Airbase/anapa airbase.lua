@@ -16,23 +16,23 @@
 --  @module Gori_Valley
 --  @author FlightControl
 --
-Include.File( "Mission" )
-Include.File( "Zone" )
-Include.File( "Unit" )
-Include.File( "Group" )
-Include.File( "Client" )
-Include.File( "DeployTask" )
-Include.File( "PickupTask" )
-Include.File( "DestroyGroupsTask" )
-Include.File( "DestroyRadarsTask" )
-Include.File( "DestroyUnitTypesTask" )
-Include.File( "GoHomeTask" )
-Include.File( "Spawn" )
-Include.File( "Movement" )
-Include.File( "Sead" )
-Include.File( "CleanUp" )
-Include.File( "Scheduler" )
-Include.File( "Scoring" )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 --- TODO: Need to fix problem with CountryPrefix
@@ -386,7 +386,7 @@ function Su34OverviewStatus()
   end
   
   if msg ~= "" then
-    MESSAGE:New( msg, "Status", 15, "Status" ):ToRed()
+    MESSAGE:New( msg, 15, "Status" ):ToRed()
   end
   
   return true

@@ -19,23 +19,23 @@
 
 
 -- MOOSE include files.
-Include.File( "Mission" )
-Include.File( "Client" )
-Include.File( "DeployTask" )
-Include.File( "PickupTask" )
-Include.File( "DestroyGroupsTask" )
-Include.File( "DestroyRadarsTask" )
-Include.File( "DestroyUnitTypesTask" )
-Include.File( "GoHomeTask" )
-Include.File( "Spawn" )
-Include.File( "Movement" )
-Include.File( "Sead" )
-Include.File( "CleanUp" )
-Include.File( "Group" )
-Include.File( "Unit" )
-Include.File( "Zone" )
-Include.File( "Escort" )
-Include.File( "Scoring" )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- CCCP COALITION UNITS
@@ -608,9 +608,9 @@ function DeploySA6TroopsGoal( Mission, Client )
             trigger.action.setGroupAIOn( Group.getByName( SA6Activation[CurrentLandingZoneID][1] ) )
             SA6Activation[CurrentLandingZoneID][2] = true
             MESSAGE:New( "Message to all airborne units: we have another of our SA-6 air defense systems armed.",
-              "Mission Command:", 60, "RED/SA6Defense" ):ToRed()
+              60, "Mission Command" ):ToRed()
             MESSAGE:New( "Our satellite systems are detecting additional CCCP SA-6 air defense activities near Tskinvali. To all airborne units: Take care!!!",
-              "Mission Command:", 60, "BLUE/SA6Defense" ):ToBlue()
+              60, "Mission Command" ):ToBlue()
             Mission:GetTask( 2 ):AddGoalCompletion( "SA6 activated", SA6Activation[CurrentLandingZoneID][1], 1 ) -- Register SA6 activation as part of mission goal.
           end
         end
@@ -840,9 +840,9 @@ function DeployPatriotTroopsGoal( Mission, Client )
             trigger.action.setGroupAIOn( Group.getByName( PatriotActivation[CurrentLandingZoneID][1] ) )
             PatriotActivation[CurrentLandingZoneID][2] = true
             MESSAGE:New( "Message to all airborne units! The " .. PatriotActivation[CurrentLandingZoneID][1] .. " is armed. Our air defenses are now stronger.",
-              "Mission Command:", 60, "BLUE/PatriotDefense" ):ToBlue()
+              60, "Mission Command" ):ToBlue()
             MESSAGE:New( "Our satellite systems are detecting additional NATO air defenses. To all airborne units: Take care!!!",
-              "Mission Command:", 60, "RED/PatriotDefense" ):ToRed()
+              60, "Mission Command" ):ToRed()
             Mission:GetTask( 2 ):AddGoalCompletion( "Patriots activated", PatriotActivation[CurrentLandingZoneID][1], 1 ) -- Register Patriot activation as part of mission goal.
           end
         end

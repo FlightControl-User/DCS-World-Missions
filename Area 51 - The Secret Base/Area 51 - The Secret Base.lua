@@ -16,22 +16,22 @@ Notes:
 --]]
 
 -- MOOSE include files.
-Include.File( "Mission" )
-Include.File( "Client" )
-Include.File( "DeployTask" )
-Include.File( "PickupTask" )
-Include.File( "SlingLoadHookTask" )
-Include.File( "SlingLoadUnHookTask" )
-Include.File( "DestroyGroupsTask" )
-Include.File( "DestroyRadarsTask" )
-Include.File( "DestroyUnitTypesTask" )
-Include.File( "GoHomeTask" )
-Include.File( "Spawn" )
-Include.File( "Movement" )
-Include.File( "Sead" )
-Include.File( "CleanUp" )
-Include.File( "Group" )
-Include.File( "Zone" )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
