@@ -1,0 +1,107 @@
+***  NATO TASK FORCE 1 ***
+*
+*    Eliminate Russian SA-10 installation.
+*    Primary Target
+*    Goal: Destroy 2 SA-10 Search Radars
+*
+** Colt KA-50 Squadron (Human)
+*    Location: Colt 1-1: Ship West, Colt 1-2: Ship Carl Vinson West of Anapa, Colt 3-1 and Colt 4-1 FARPS North of Anapa.
+*    Payload: Ground Attack
+*    Startpoints: 2 x HOT (Ship) and 2 x RAMP
+*    SA-10 Targets: Waypoint 2.
+*    Notes: 
+*       - Fly low and evade RADAR detection. 
+*       - Beware of Russian air defenses.
+*       - Anapa is heavily guarded by SAMS, try to fly around them and to hide behind mountains where possible.
+*
+** Entfield KA-50 Squadron (AI)
+*    Location: Entfield 9-1: Ship West
+*    Payload: Ground Attack
+*
+** Boar A-10C squadron (Human)
+*    Location: Boar 1-1 and Boar 1-2: Air west of Anapa, Boar 3-1, 4-1, 5-1, 6-1: Gudauta
+*    Payload: Ground Attack
+*    Startpoints: 2 x AIR, 2 x HOT and 2 x RAMP
+*    SA-10 Targets: Waypoint 2.
+*    Notes:
+*       - Fly low and evade RADAR detection. 
+*       - Beware of Russian air defenses.
+*       - Anapa is heavily guarded by SAMS, try to fly around them and to hide behind mountains where possible.
+*
+** Springfield FA-18C squadron (AI)
+*    Location: Carl Vinson (Ship)
+*    Payload: SEAD
+*    Tasking: Destroy SA-10 radars near Anapa.
+*
+**   Colt AH-1W Squadron (AI)
+*    Location: FARPS North of Anapa
+*    Payload: CAP
+*    Target: Clear airspace to Anapa
+*
+**   Entfield FA-18C Squadron (AI)
+*    Location: Patrolling North of Anapa
+*    Payload: CAP
+*    Target: Clear airspace to Anapa
+
+
+*** NATO TASK FORCE 2 ***
+*
+*    Destroy Russian Su-34 planes.
+*    Secondary Target
+*    Goal: Destroy 6 Russian Su-34 planes.
+*
+**   Uzi F-15C Squadron (Human)
+*    Location: Gudauta and Sukhumi
+*    Payload: Air Defense
+*    Startpoints: 2 x AIR, 2 x HOT and 2 x RAMP
+*    SU-34 Targets: Near waypoint 2.
+*
+**   Uzi F-117A Squadron (AI)
+*    Location: Gudauta
+*    Payload: Pinpoint Strike with penetration laser guided bombs
+*    Target: Krymsk airplane shelters to attack Su-34 planes.
+
+*** NATO TASK FORCE 3 ***
+*
+*    Operational Mission: Destroy SA-6 and SA-11 SAM radars between Gudauata and Anapa.
+*    Operational Targets
+*    Goal: Destroy 18 SAM radars.
+*
+**   Pontiac SU-25T Squadron (Human and AI)
+*    Location: Gudauta
+*    Payload: SEAD
+*    Startpoints: 2 x AIR, 2 x HOT and 2 x RAMP
+*    Fly to the North West and destroy the targets till waypoint 2
+*
+**   Pig A-10A Squadron (Human and AI)
+*    Location: Gudauta
+*    Payload: Ground Attack
+*    Startpoints: 2 x HOT and 2 x RAMP
+*    Fly to the North West and destroy the targets till waypoint 2
+*
+**   Tusk A-10C Squadron (Human)
+*    Location: Gudauta
+*    Payload: Ground Attack
+*    Startpoints: 2 x HOT and 2 x RAMP
+*    Fly to the North West and destroy the targets till waypoint 2
+*
+**   Dodge MIRAGE 2000-5 Squadron (AI)
+*    Location: Gudauta
+*    Payload: CAP
+*    Target: Clear airspace to Krymsk
+
+*** TASK FORCE 4 ***
+*
+*    Activate Georgian radar air defenses.
+*    Operational Mission
+*    Goal: 3 Georgian air defense systems must be activated.
+*
+**   Ford UH-1H Squadron
+*    Location: FARPS North of Anapa
+*    Payload: Small arms
+*    Startpoints: 2 x HOT and 2 x RAMP
+*    
+*    Notes:
+*        - Read the briefing guide on the page 8 till the end for a transportation guide.
+
+    
