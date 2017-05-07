@@ -120,7 +120,7 @@ M1_RecceSpawn_US = SPAWN
 
 -- Define the detection method, we'll use here AREA detection.
 M1_DetectionAreas_US = DETECTION_AREAS:New( M1_RecceSet_US, 3000 )
-M1_DetectionAreas_US:BoundDetectedZones()
+--M1_DetectionAreas_US:BoundDetectedZones()
 
 M1_Attack_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "US M1 Attack" ):FilterStart()
 
@@ -136,12 +136,20 @@ HQGroup_RU = GROUP:FindByName( "Russia Command Center" )
 CC_RU = COMMANDCENTER:New( HQGroup_RU, "Tskinvali" )
 
 
-do -- RU Transport Task Engineers
+do -- CCCP Transport Task Engineers
 
-  local Mission = MISSION
-    :New( CC_RU, "Engineers SA-6", "Operational", "Transport 3 engineering teams to each SA-6 launch zone.", coalition.side.RED )
+  local CCCP_M4_SA6 = MISSION
+    :New( CC_RU, 
+          "Engineers SA-6", 
+          "Operational", 
+          "Transport 3 engineering teams to three strategical SA-6 launch sites. " ..
+            "The launch sites are not yet complete and need some special launch codes to be delivered. " ..
+            "The engineers have the knowledge to install these launch codes. " ..
+            "Pickup Engineers Alpha, Beta and Gamma from their current location, and drop them near the SA-6 launchers. " ..
+            "Deployment zones have been defined at each SA-6 location.", 
+          coalition.side.RED )
 
-  M4_HeloSetGroup = SET_GROUP:New():FilterPrefixes( "RU M4 Transport SA6" ):FilterStart()
+  M4_HeloSetGroup = SET_GROUP:New():FilterPrefixes( "RU SA6 Transport" ):FilterStart()
 
   SetCargo = SET_CARGO:New():FilterTypes( { "RU M4 Engineers" } ):FilterStart()
 
@@ -150,16 +158,74 @@ do -- RU Transport Task Engineers
   EngineersCargoGamma = CARGO_GROUP:New( GROUP:FindByName( "RU M4 Engineers Gamma" ), "RU M4 Engineers", "Team Gamma", 500 )
 
 
-  CargoTransportTask = TASK_CARGO_TRANSPORT:New( Mission, M4_HeloSetGroup, "Transport SA-6 Engineers", SetCargo )
+  CargoTransportTask = TASK_CARGO_TRANSPORT:New( CCCP_M4_SA6, M4_HeloSetGroup, "Transport SA-6 Engineers", SetCargo )
   
-  Zone_SA6_1 = ZONE_GROUP:New( "SA6_1", GROUP:FindByName( "RU SA-6 Kub Moskva" ), 500 ) 
-  Zone_SA6_2 = ZONE_GROUP:New( "SA6_1", GROUP:FindByName( "RU SA-6 Kub Niznij" ), 500 ) 
-  Zone_SA6_3 = ZONE_GROUP:New( "SA6_1", GROUP:FindByName( "RU SA-6 Transport Yaroslavl" ), 500 )  
+  -- These are the groups of the SA-6 batteries.
+  SA6_1 = GROUP:FindByName( "RU SA6 Kub Moskva" )
+  SA6_2 = GROUP:FindByName( "RU SA6 Kub Niznij" )
+  SA6_3 = GROUP:FindByName( "RU SA6 Kub Yaroslavl" )
   
+  -- Each SA-6 battery has a zone of type ZONE_GROUP. That makes these zone moveable as they drive around the battle field!
+  Zone_SA6_1 = ZONE_GROUP:New( "SA6 Moskva", SA6_1, 500 )
+  Zone_SA6_2 = ZONE_GROUP:New( "SA6 Niznij", SA6_2, 500 )
+  Zone_SA6_3 = ZONE_GROUP:New( "SA6 Yaroslavl", SA6_3, 500 ) 
+  
+  -- Add to the CargoTransportTask these SA-6 battery zones.
   CargoTransportTask:AddDeployZone( Zone_SA6_1 )
   CargoTransportTask:AddDeployZone( Zone_SA6_2 )
   CargoTransportTask:AddDeployZone( Zone_SA6_3 )
 
+
+  --- OnAfter Transition Handler for Event CargoDeployed.
+  -- This event will handle after deployment the activation of the SA-6 site.
+  -- @function [parent=#TASK_CARGO_TRANSPORT] OnAfterCargoDeployed
+  -- @param Tasking.Task_CARGO#TASK_CARGO_TRANSPORT self
+  -- @param #string From The From State string.
+  -- @param #string Event The Event string.
+  -- @param #string To The To State string.
+  -- @param Wrapper.Unit#UNIT TaskUnit The Unit (Client) that Deployed the cargo. You can use this to retrieve the PlayerName etc.
+  -- @param Core.Cargo#CARGO Cargo The Cargo that got PickedUp by the TaskUnit. You can use this to check Cargo Status.
+  -- @param Core.Zone#ZONE DeployZone The zone where the Cargo got Deployed or UnBoarded.
+  function CargoTransportTask:OnAfterCargoDeployed( From, Event, To, TaskUnit, Cargo, DeployZone )
+    self:E( { From, Event, To, TaskUnit, Cargo, DeployZone } )
+  
+    local DeployZoneName = DeployZone:GetName()
+    local CargoName = Cargo:GetName()
+  
+  
+    CC_RU:MessageToCoalition( 
+      string.format( "Engineers %s are successfully transported to SA-6 site %s.", 
+                     CargoName, 
+                     DeployZoneName 
+                   ) 
+    )
+    
+    if DeployZoneName == Zone_SA6_1:GetName() then
+      if SA6_1 and not SA6_1:IsAlive() then
+        SA6_1:Activate()
+      end
+    end
+
+    if DeployZoneName == Zone_SA6_2:GetName() then
+      if SA6_2 and not SA6_2:IsAlive() then
+        SA6_2:Activate()
+      end
+    end
+
+    if DeployZoneName == Zone_SA6_3:GetName() then
+      if SA6_3 and not SA6_3:IsAlive() then
+        SA6_3:Activate()
+      end
+    end
+    
+    if self:IsAllCargoTransported() then
+      self:Success()
+      CCCP_M4_SA6:Complete()
+    end
+  end
+
 end
+
+MissileTrainer = MISSILETRAINER:New( 100, "Helps with missile tracking" )
 
 
