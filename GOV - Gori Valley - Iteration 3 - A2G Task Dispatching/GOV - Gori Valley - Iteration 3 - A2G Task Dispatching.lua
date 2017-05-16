@@ -106,9 +106,9 @@ do -- BLUE automatic detection
   -- Define the Recce groups that will detect the upcoming ground forces.
   local NATO_M1_RecceSet_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 US Recce" ):FilterStart()
   
-  local NATO_M1_ReccePatrolArray = {}
-  local NATO_M1_RecceSpawn_US = SPAWN
-    :New( "M1 US Recce@RAMP" )
+  NATO_M1_ReccePatrolArray = {}
+  NATO_M1_RecceSpawn_US = SPAWN
+    :New( "M1 US Recce AH-64@HOT" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :InitCleanUp( 300 )
@@ -247,9 +247,9 @@ do -- CCCP
   -- Define the Recce groups that will detect the upcoming ground forces.
   local CCCP_M1_RecceSet_RU = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "M1 RU Recce" ):FilterStart()
   
-  local CCCP_M1_ReccePatrolArray = {}
-  local CCCP_M1_RecceSpawn = SPAWN
-    :New( "M1 RU Recce AH-64@HOT" )
+  CCCP_M1_ReccePatrolArray = {}
+  CCCP_M1_RecceSpawn = SPAWN
+    :New( "M1 RU Recce KA-50@HOT" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :OnSpawnGroup(
