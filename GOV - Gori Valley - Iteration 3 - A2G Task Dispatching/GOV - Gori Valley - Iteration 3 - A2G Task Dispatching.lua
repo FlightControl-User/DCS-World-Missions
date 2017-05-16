@@ -249,7 +249,7 @@ do -- CCCP
   
   local CCCP_M1_ReccePatrolArray = {}
   local CCCP_M1_RecceSpawn = SPAWN
-    :New( "M1 RU Recce" )
+    :New( "M1 RU Recce AH-64@HOT" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :OnSpawnGroup(
