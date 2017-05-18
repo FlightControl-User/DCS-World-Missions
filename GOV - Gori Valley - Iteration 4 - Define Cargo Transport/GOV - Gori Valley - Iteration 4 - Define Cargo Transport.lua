@@ -106,11 +106,12 @@ do -- BLUE automatic detection
   -- Define the Recce groups that will detect the upcoming ground forces.
   local NATO_M1_RecceSet_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 US Recce" ):FilterStart()
   
-  local NATO_M1_ReccePatrolArray = {}
-  local NATO_M1_RecceSpawn_US = SPAWN
-    :New( "M1 US Recce@RAMP" )
+  NATO_M1_ReccePatrolArray = {}
+  NATO_M1_RecceSpawn_US = SPAWN
+    :New( "M1 US Recce AH-64@HOT" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
+    :InitCleanUp( 300 )
     :OnSpawnGroup(
       function( SpawnGroup )
         local M1_ReccePatrolZoneWP = GROUP:FindByName( "M1 US Patrol Zone@ZONE" )
@@ -125,7 +126,7 @@ do -- BLUE automatic detection
   
   
   -- Define the detection method, we'll use here AREA detection.
-  local NATO_M1_DetectionAreas_US = DETECTION_AREAS:New( NATO_M1_RecceSet_US, 3000 )
+  local NATO_M1_DetectionAreas_US = DETECTION_AREAS:New( NATO_M1_RecceSet_US, 1500 )
   --M1_DetectionAreas_US:BoundDetectedZones()
   
   local NATO_M1_Attack_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 US Attack" ):FilterStart()
@@ -246,9 +247,9 @@ do -- CCCP
   -- Define the Recce groups that will detect the upcoming ground forces.
   local CCCP_M1_RecceSet_RU = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "M1 RU Recce" ):FilterStart()
   
-  local CCCP_M1_ReccePatrolArray = {}
-  local CCCP_M1_RecceSpawn = SPAWN
-    :New( "M1 RU Recce" )
+  CCCP_M1_ReccePatrolArray = {}
+  CCCP_M1_RecceSpawn = SPAWN
+    :New( "M1 RU Recce KA-50@HOT" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :OnSpawnGroup(
@@ -259,13 +260,13 @@ do -- CCCP
         CCCP_M1_ReccePatrolArray[#CCCP_M1_ReccePatrolArray+1] = M1_ReccePatrol
         
         M1_ReccePatrol:SetControllable( SpawnGroup )
-        M1_ReccePatrol:__Start( 10 ) -- It takes a bit of time for the Recce to start
+        M1_ReccePatrol:__Start( 20 ) -- It takes a bit of time for the Recce to start
       end
      )
   
   
   -- Define the detection method, we'll use here AREA detection.
-  local CCCP_M1_DetectionAreas_RU = DETECTION_AREAS:New( CCCP_M1_RecceSet_RU, 3000 )
+  local CCCP_M1_DetectionAreas_RU = DETECTION_AREAS:New( CCCP_M1_RecceSet_RU, 1500 )
   --M1_DetectionAreas_US:BoundDetectedZones()
   
   local CCCP_M1_Attack_RU = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "M1 RU Attack" ):FilterStart()
