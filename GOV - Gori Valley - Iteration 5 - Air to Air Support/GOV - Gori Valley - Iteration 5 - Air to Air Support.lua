@@ -31,24 +31,24 @@ Spawn_RU_Troops_Left = SPAWN
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_RU_Troops )
   :InitRandomizeRoute( 1, 1, 2000 )
-  :InitArray( 349, 30, 20, 30 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 349, 30, 20, 6 * 20 )
+  :SpawnScheduled( 120, 1 )
 
 Spawn_RU_Troops_Middle = SPAWN
   :New( "RU Attack Gori Middle" )
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_RU_Troops )
   :InitRandomizeRoute( 1, 1, 2000 )
-  :InitArray( 260, 50, 20, 25 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 260, 50, 20, 6 * 20 )
+  :SpawnScheduled( 120, 1 )
 
 Spawn_RU_Troops_Right = SPAWN
   :New( "RU Attack Gori Right" )
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_RU_Troops )
   :InitRandomizeRoute( 1, 1, 2000 )
-  :InitArray( 238, 50, 20, 25 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 238, 50, 20, 6 * 20 )
+  :SpawnScheduled( 120, 1 )
   
 
 -- NATO Tank Platoons invading Tskinvali
@@ -74,41 +74,98 @@ Spawn_US_Platoon_Left = SPAWN
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_US_Platoon )
   :InitRandomizeRoute( 3, 1, 2000 )
-  :InitArray( 76, 30, 15, 35 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 76, 20, 15, 15*6  )
+  :SpawnScheduled( 120, 1 )
 
 Spawn_US_Platoon_Middle = SPAWN
   :New( 'US Tank Platoon Middle' )
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_US_Platoon )
   :InitRandomizeRoute( 3, 1, 2000 )
-  :InitArray( 160, 30, 15, 35 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 160, 20, 15, 15*6  )
+  :SpawnScheduled( 120, 1 )
 
 Spawn_US_Platoon_Right = SPAWN
   :New( 'US Tank Platoon Right' )
   :InitLimit( 15, 40 )
   :InitRandomizeTemplate( Spawn_US_Platoon )
   :InitRandomizeRoute( 1, 1, 2000 )
-  :InitArray( 90, 50, 15, 35 )
-  :SpawnScheduled( 30, 1 )
+  --:InitArray( 90, 20, 15, 15*6 )
+  :SpawnScheduled( 120, 1 )
 
 -- Define a HeadQuarter that will be the Command Center.
 CC_US = COMMANDCENTER:New( GROUP:FindByName( "US HQ" ), "Gori" )
 
 
-do -- BLUE automatic detection 
+do -- NATO Air Patrol Support Mission
 
 
-  NATO_M1 = MISSION
+  local NATO_S1 = MISSION
+    :New( CC_US, "Intercept Intruders","Support","Intercept any intruders invading airspace from the North!", coalition.side.BLUE )
+
+  -- Define the Recce groups that will detect the upcoming ground forces.
+  local NATO_S1_EWR = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "AI NATO EWR A2A" ):FilterStart()
+  
+  -- Define the detection method, we'll use here AREA detection.
+  local NATO_S1_EWR_Areas = DETECTION_AREAS:New( NATO_S1_EWR, 20000 )
+  NATO_S1_EWR_Areas:SetFriendliesRange( 80000 )
+  NATO_S1_EWR_Areas:SetDetectionInterval( 30 )
+  
+  local NATO_S1_Task = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "S1 NATO Air Patrol" ):FilterStart()
+  
+  -- Define the Task dispatcher that will define the tasks based on the detected targets.
+  NATO_S1_A2A = TASK_A2A_DISPATCHER:New( NATO_S1, NATO_S1_Task, NATO_S1_EWR_Areas )
+
+
+  local NATO_AI_A2A_Support_East = { 
+    "AI NATO Air Support East F-16A A",
+    "AI NATO Air Support East F-16A B",
+    } 
+
+  local NATO_AI_A2A_Support_West = { 
+    "AI NATO Air Support West F-16A A",
+    "AI NATO Air Support West F-16A B",
+    }
+
+  NATO_AI_A2A = AI_A2A_DISPATCHER:New( NATO_S1_EWR_Areas )
+  
+  NATO_AI_A2A:SetTacticalDisplay( false )
+  
+  NATO_AI_A2A:SetEngageRadius( 80000 )
+  NATO_AI_A2A:SetGciRadius( 140000 )
+  
+  NATO_AI_A2A:SetSquadron( "Kutaisi", AIRBASE.Caucasus.Kutaisi, NATO_AI_A2A_Support_West, 20 )
+  NATO_AI_A2A:SetSquadronCap( "Kutaisi", ZONE_POLYGON:New( "NATO CAP EAST", GROUP:FindByName( "NATO CAP EAST") ), 4000, 8000, 450, 600, 800, 1200, "BARO" )
+  NATO_AI_A2A:SetSquadronCapInterval( "Kutaisi", 2, 180, 300 )
+  
+  NATO_AI_A2A:SetSquadronGci( "Kutaisi", 800, 1200 )
+
+  NATO_AI_A2A:SetSquadron( "Vaziani", AIRBASE.Caucasus.Vaziani, NATO_AI_A2A_Support_East, 20 )
+  NATO_AI_A2A:SetSquadronCap( "Vaziani", ZONE_POLYGON:New( "NATO CAP WEST", GROUP:FindByName( "NATO CAP WEST" ) ), 4000, 8000, 500, 700, 800, 1200, "BARO" )
+  NATO_AI_A2A:SetSquadronCapInterval( "Vaziani", 2, 180, 300 )
+  
+  NATO_AI_A2A:SetSquadronGci( "Vaziani", 800, 1200 )
+
+end
+
+do -- NATO Mission 1
+
+
+  local NATO_M1 = MISSION
     :New( CC_US, "Destroy SAM-6","Primary","Destroy SAM-6 batteries", coalition.side.BLUE )
 
   -- Define the Recce groups that will detect the upcoming ground forces.
-  local NATO_M1_RecceSet_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 US Recce" ):FilterStart()
+  local NATO_M1_RecceSet = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 NATO Recce" ):FilterStart()
+  
+  NATO_M1_Spawn_Reaper = SPAWN
+    :New( "M1 NATO Recce Reaper" )
+    :InitLimit( 1, 5 )
+    :SpawnScheduled( 300, 0 )
+
   
   NATO_M1_ReccePatrolArray = {}
   NATO_M1_RecceSpawn_US = SPAWN
-    :New( "M1 US Recce AH-64@HOT" )
+    :New( "M1 NATO Recce AH-64" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :InitCleanUp( 300 )
@@ -126,16 +183,15 @@ do -- BLUE automatic detection
   
   
   -- Define the detection method, we'll use here AREA detection.
-  local NATO_M1_DetectionAreas_US = DETECTION_AREAS:New( NATO_M1_RecceSet_US, 1500 )
-  --M1_DetectionAreas_US:BoundDetectedZones()
+  local NATO_M1_DetectionAreas = DETECTION_AREAS:New( NATO_M1_RecceSet, 4500 )
+  --M1_DetectionAreas:BoundDetectedZones()
   
-  local NATO_M1_Attack_US = SET_GROUP:New():FilterCoalitions("blue"):FilterPrefixes( "M1 US Attack" ):FilterStart()
+  local NATO_M1_Attack = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "M1 NATO Attack" ):FilterStart()
   
   -- Define the Task dispatcher that will define the tasks based on the detected targets.
-  NATO_M1_TaskA2GDispatcher = TASK_A2G_DISPATCHER:New( NATO_M1, NATO_M1_Attack_US, NATO_M1_DetectionAreas_US )
+  NATO_M1_TaskA2GDispatcher = TASK_A2G_DISPATCHER:New( NATO_M1, NATO_M1_Attack, NATO_M1_DetectionAreas )
 
 end
-
 
 do -- NATO Transport Task Engineers
 
@@ -229,12 +285,71 @@ end
 
 
 
+
+
 -- Define a HeadQuarter that will be the Command Center.
 CC_RU = COMMANDCENTER:New( GROUP:FindByName( "Russia Command Center" ), "Tskinvali" )
 
+do -- CCCP Air Patrol Support Functions
 
 
-do -- CCCP 
+  CCCP_S1 = MISSION
+    :New( CC_RU, "Provide Air Support","Support","Intercept any bogeys invading airspace from the South or East!", coalition.side.RED )
+
+  -- Define the Recce groups that will detect the upcoming A2A intruders.
+  local CCCP_S1_EWRGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "AI CCCP EWR" ):FilterStart()
+  
+  -- Define the detection method, we'll use here AREA detection.
+  local CCCP_S1_EWR = DETECTION_AREAS:New( CCCP_S1_EWRGroups, 30000 )
+  CCCP_S1_EWR:SetFriendliesRange( 80000 )
+  --M1_DetectionAreas_US:BoundDetectedZones()
+  
+  local CCCP_S1_SupportGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "S1 CCCP Air Defense" ):FilterStart()
+  
+  -- Define the Task dispatcher that will define the tasks based on the detected targets.
+  CCCP_S1_A2A_Support = TASK_A2A_DISPATCHER:New( CCCP_S1, CCCP_S1_SupportGroups, CCCP_S1_EWR )
+
+
+  CCCP_AI_A2A_Support_SU_27 = { 
+    "AI CCCP Air Support SU-27 A", 
+    "AI CCCP Air Support SU-27 B", 
+    "AI CCCP Air Support SU-27 C", 
+    "AI CCCP Air Support SU-27 D" 
+    } 
+
+  CCCP_AI_A2A_Support_MIG_29S = { 
+    "AI CCCP Air Support MIG-29S A",
+    "AI CCCP Air Support MIG-29S B",
+    "AI CCCP Air Support MIG-29S C",
+    "AI CCCP Air Support MIG-29S D"
+    }
+  
+
+  CCCP_AI_A2A_Support = AI_A2A_DISPATCHER:New( CCCP_S1_EWR )
+  
+  CCCP_AI_A2A_Support:SetTacticalDisplay( false )
+  
+  CCCP_AI_A2A_Support:SetEngageRadius( 80000 )
+  CCCP_AI_A2A_Support:SetGciRadius( 100000 )
+  
+  -- Beslan
+  CCCP_AI_A2A_Support:SetSquadron( "Beslan", AIRBASE.Caucasus.Beslan, CCCP_AI_A2A_Support_SU_27, 20 )
+  CCCP_AI_A2A_Support:SetSquadronCap( "Beslan", ZONE_POLYGON:New( "CCCP CAP EAST", GROUP:FindByName( "CCCP CAP EAST") ), 4000, 8000, 450, 600, 800, 1200, "BARO" )
+  CCCP_AI_A2A_Support:SetSquadronCapInterval( "Beslan", 2, 180, 300 )
+  CCCP_AI_A2A_Support:SetSquadronTakeoffInAir( "Beslan" )
+  
+  -- Mozdok
+  CCCP_AI_A2A_Support:SetSquadron( "Mozdok", AIRBASE.Caucasus.Mozdok, CCCP_AI_A2A_Support_SU_27, 20 )
+  CCCP_AI_A2A_Support:SetSquadronGci( "Mozdok", 800, 1200 )
+
+  CCCP_AI_A2A_Support:SetSquadron( "Nalchik", AIRBASE.Caucasus.Nalchik, CCCP_AI_A2A_Support_MIG_29S, 20 )
+  CCCP_AI_A2A_Support:SetSquadronCap( "Nalchik", ZONE_POLYGON:New( "CCCP CAP WEST", GROUP:FindByName( "CCCP CAP WEST" ) ), 4000, 8000, 500, 700, 800, 1200, "BARO" )
+  CCCP_AI_A2A_Support:SetSquadronCapInterval( "Nalchik", 2, 180, 300 )
+  CCCP_AI_A2A_Support:SetSquadronGci( "Nalchik", 800, 1200 )
+
+end
+
+do -- CCCP Destroy Patriots
 
   CCCP_M1 = MISSION
     :New( CC_RU, 
@@ -245,11 +360,17 @@ do -- CCCP
         )
 
   -- Define the Recce groups that will detect the upcoming ground forces.
-  local CCCP_M1_RecceSet_RU = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "M1 RU Recce" ):FilterStart()
+  local CCCP_M1_RecceSet = SET_GROUP:New():FilterCoalitions( "red" ):FilterPrefixes( "M1 CCCP Recce" ):FilterStart()
+
+  CCCP_M1_Spawn_SU25MR = SPAWN
+    :New( "M1 CCCP Recce SU-25MR" )
+    :InitLimit( 1, 5 )
+    :SpawnScheduled( 300, 0.5 )
+
   
   CCCP_M1_ReccePatrolArray = {}
   CCCP_M1_RecceSpawn = SPAWN
-    :New( "M1 RU Recce KA-50@HOT" )
+    :New( "M1 CCCP Recce MI-28N" )
     :InitLimit( 2, 10 )
     :SpawnScheduled( 60, 0.4 )
     :OnSpawnGroup(
@@ -266,15 +387,15 @@ do -- CCCP
   
   
   -- Define the detection method, we'll use here AREA detection.
-  local CCCP_M1_DetectionAreas_RU = DETECTION_AREAS:New( CCCP_M1_RecceSet_RU, 1500 )
+  local CCCP_M1_DetectionAreas = DETECTION_AREAS:New( CCCP_M1_RecceSet, 4500 )
   --M1_DetectionAreas_US:BoundDetectedZones()
   
-  local CCCP_M1_Attack_RU = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "M1 RU Attack" ):FilterStart()
-  CCCP_M1_Attack_RU:Flush()
+  local CCCP_M1_Attack = SET_GROUP:New():FilterCoalitions( "red" ):FilterPrefixes( "M1 CCCP Attack" ):FilterStart()
+  CCCP_M1_Attack:Flush()
   
   
   -- Define the Task dispatcher that will define the tasks based on the detected targets.
-  CCCP_M1_TaskA2GDispatcher = TASK_A2G_DISPATCHER:New( CCCP_M1, CCCP_M1_Attack_RU, CCCP_M1_DetectionAreas_RU )
+  CCCP_M1_Task_A2G_Dispatcher = TASK_A2G_DISPATCHER:New( CCCP_M1, CCCP_M1_Attack, CCCP_M1_DetectionAreas )
 
 end
 
