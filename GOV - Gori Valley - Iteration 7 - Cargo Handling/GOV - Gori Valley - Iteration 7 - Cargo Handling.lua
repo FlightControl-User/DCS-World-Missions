@@ -277,19 +277,31 @@ do -- NATO Transport Task Engineers
     
     if DeployZoneName == Zone_Patriots1:GetName() then
       if Patriots1 and not Patriots1:IsAlive() then
-        Patriots1:SetAIOn()
+        local Template = Patriots1:GetTemplate()
+        Template.lateActivation = false
+        Template.Visible = false
+        Patriots1:Respawn(Template)
+        --Patriots1:SetAIOn()
       end
     end
 
     if DeployZoneName == Zone_Patriots2:GetName() then
       if Patriots2 and not Patriots2:IsAlive() then
-        Patriots2:SetAIOn()
+        local Template = Patriots2:GetTemplate()
+        Template.lateActivation = false
+        Template.Visible = false
+        Patriots2:Respawn(Template)
+        --Patriots2:SetAIOn()
       end
     end
 
     if DeployZoneName == Zone_Patriots3:GetName() then
       if Patriots3 and not Patriots3:IsAlive() then
-        Patriots3:SetAIOn()
+        local Template = Patriots3:GetTemplate()
+        Template.lateActivation = false
+        Template.Visible = false
+        Patriots3:Respawn(Template)
+        --Patriots3:SetAIOn()
       end
     end
     
