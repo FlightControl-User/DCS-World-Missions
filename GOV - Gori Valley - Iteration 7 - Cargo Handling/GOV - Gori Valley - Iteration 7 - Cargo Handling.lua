@@ -127,6 +127,7 @@ do -- NATO Air Patrol Support Mission
   local NATO_S1_EWR_Areas = DETECTION_AREAS:New( NATO_S1_EWR, 20000 )
   NATO_S1_EWR_Areas:SetFriendliesRange( 80000 )
   NATO_S1_EWR_Areas:SetDetectionInterval( 30 )
+  NATO_S1_EWR_Areas:SetAcceptRange( 200000 )
   
   local NATO_S1_Task = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "S1 NATO Air Patrol" ):FilterStart()
   
@@ -331,7 +332,7 @@ do -- CCCP Air Patrol Support Functions
   -- Define the detection method, we'll use here AREA detection.
   local CCCP_S1_EWR = DETECTION_AREAS:New( CCCP_S1_EWRGroups, 30000 )
   CCCP_S1_EWR:SetFriendliesRange( 80000 )
-  --M1_DetectionAreas_US:BoundDetectedZones()
+  CCCP_S1_EWR:SetAcceptRange( 200000 )
   
   local CCCP_S1_SupportGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "S1 CCCP Air Defense" ):FilterStart()
   
