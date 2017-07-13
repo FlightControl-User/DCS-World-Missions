@@ -127,6 +127,7 @@ do -- NATO Air Patrol Support Mission
   local NATO_S1_EWR_Areas = DETECTION_AREAS:New( NATO_S1_EWR, 20000 )
   NATO_S1_EWR_Areas:SetFriendliesRange( 80000 )
   NATO_S1_EWR_Areas:SetDetectionInterval( 30 )
+  NATO_S1_EWR_Areas:SetAcceptRange( 250000 ) -- Only report targets within 250km.
   
   local NATO_S1_Task = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "S1 NATO Air Patrol" ):FilterStart()
   
@@ -326,17 +327,18 @@ do -- CCCP Air Patrol Support Functions
     :AddScoring( Score )
 
   -- Define the Recce groups that will detect the upcoming A2A intruders.
-  local CCCP_S1_EWRGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "AI CCCP EWR" ):FilterStart()
+  local CCCP_S1_EWR_Groups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "AI CCCP EWR" ):FilterStart()
   
   -- Define the detection method, we'll use here AREA detection.
-  local CCCP_S1_EWR = DETECTION_AREAS:New( CCCP_S1_EWRGroups, 30000 )
-  CCCP_S1_EWR:SetFriendliesRange( 80000 )
+  local CCCP_S1_EWR_Areas = DETECTION_AREAS:New( CCCP_S1_EWR_Groups, 30000 )
+  CCCP_S1_EWR_Areas:SetFriendliesRange( 80000 )
+  CCCP_S1_EWR_Areas:SetAcceptRange( 250000 ) -- Only report targets that are within 250km from detection.
   --M1_DetectionAreas_US:BoundDetectedZones()
   
   local CCCP_S1_SupportGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "S1 CCCP Air Defense" ):FilterStart()
   
   -- Define the Task dispatcher that will define the tasks based on the detected targets.
-  CCCP_S1_A2A_Support = TASK_A2A_DISPATCHER:New( CCCP_S1, CCCP_S1_SupportGroups, CCCP_S1_EWR )
+  CCCP_S1_A2A_Support = TASK_A2A_DISPATCHER:New( CCCP_S1, CCCP_S1_SupportGroups, CCCP_S1_EWR_Areas )
 
 
   CCCP_AI_A2A_Support_SU_27 = { 
@@ -354,7 +356,7 @@ do -- CCCP Air Patrol Support Functions
     }
   
 
-  CCCP_AI_A2A_Support = AI_A2A_DISPATCHER:New( CCCP_S1_EWR )
+  CCCP_AI_A2A_Support = AI_A2A_DISPATCHER:New( CCCP_S1_EWR_Areas )
   
   CCCP_AI_A2A_Support:SetTacticalDisplay( false )
   
