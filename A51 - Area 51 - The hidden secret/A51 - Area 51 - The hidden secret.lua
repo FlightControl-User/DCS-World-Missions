@@ -16,7 +16,7 @@ AG_Ground_001 = SPAWN
   :InitLimit( 20, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 290, 50, 30, 40 )
+  --:InitArray( 290, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
 AG_Ground_002 = SPAWN
@@ -24,7 +24,7 @@ AG_Ground_002 = SPAWN
   :InitLimit( 20, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 345, 50, 30, 40 )
+  --:InitArray( 345, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
 AG_Ground_003 = SPAWN
@@ -32,7 +32,7 @@ AG_Ground_003 = SPAWN
   :InitLimit( 20, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 15, 50, 30, 40 )
+  --:InitArray( 15, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
 AG_Ground_004 = SPAWN
@@ -40,7 +40,7 @@ AG_Ground_004 = SPAWN
   :InitLimit( 20, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 30, 50, 30, 40 )
+  --:InitArray( 30, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
 
 
@@ -57,7 +57,7 @@ US_Ground_001 = SPAWN
   :InitLimit( 10, 30 )
   :InitRandomizeTemplate( US_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 30, 50, 30, 40 )
+  --:InitArray( 30, 50, 30, 40 )
   :SpawnScheduled( 900, 1 )
   
 US_Ground_002 = SPAWN
@@ -65,7 +65,7 @@ US_Ground_002 = SPAWN
   :InitLimit( 10, 30 )
   :InitRandomizeTemplate( US_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
-  :InitArray( 345, 50, 30, 40 )
+  --:InitArray( 345, 50, 30, 40 )
   :SpawnScheduled( 900, 1 )
 
 -- Setup the Human Player Part
