@@ -11,33 +11,48 @@ AG_Templates =
     'AG-Ground TEMP #008'
   }
 
+
+SpawnZone = ZONE_POLYGON:New( "SpawnZone", GROUP:FindByName( "SPAWNZONE" ) )
+
+
+AG_Ground_Zone = SPAWN
+  :New( "AG-Ground Zone" )
+  :InitLimit( 10, 40 )
+  :InitRandomizeTemplate( AG_Templates )
+  :InitRandomizeZones( { SpawnZone } )
+  :SpawnScheduled( 600, 1 )
+  
+
 AG_Ground_001 = SPAWN
   :New( "AG-Ground #001" )
-  :InitLimit( 20, 60 )
+  :InitLimit( 12, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 290, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
+
 AG_Ground_002 = SPAWN
   :New( "AG-Ground #002" )
-  :InitLimit( 20, 60 )
+  :InitLimit( 12, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 345, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
+
 AG_Ground_003 = SPAWN
   :New( "AG-Ground #003" )
-  :InitLimit( 20, 60 )
+  :InitLimit( 12, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 15, 50, 30, 40 )
   :SpawnScheduled( 450, 1 )
   
+
 AG_Ground_004 = SPAWN
   :New( "AG-Ground #004" )
-  :InitLimit( 20, 60 )
+  :InitLimit( 12, 60 )
   :InitRandomizeTemplate( AG_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 30, 50, 30, 40 )
@@ -54,7 +69,7 @@ US_Templates =
 
 US_Ground_001 = SPAWN
   :New( "US-Ground #001" )
-  :InitLimit( 10, 30 )
+  :InitLimit( 4, 30 )
   :InitRandomizeTemplate( US_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 30, 50, 30, 40 )
@@ -62,7 +77,7 @@ US_Ground_001 = SPAWN
   
 US_Ground_002 = SPAWN
   :New( "US-Ground #002" )
-  :InitLimit( 10, 30 )
+  :InitLimit( 4, 30 )
   :InitRandomizeTemplate( US_Templates )
   :InitRandomizeRoute( 1, 0, 8000 )
   --:InitArray( 345, 50, 30, 40 )
@@ -82,7 +97,13 @@ US_M1 = MISSION
   :New( US_CC, "Uncover", "High", 
         "Ground forces are on their way towards the valleys Tonopah Test Range Airfield.\n" ..
         "Engage with the enemy and try to eliminate as much as possible the identified ground forces!\n" ..
-        "Expect some heavy resistance in the area!"
+        "Expect some heavy resistance in the area!\n" ..
+        "You'll see some SEAD, CAS and BAI taskings appear. Those are tasks defined by the command center 'Command'.\n" ..
+        "Just be aware that this is a dynamic environment, so, the FACs may report changes on the battlefield resulting in task changes.\n" ..
+        "Select a task using the radio menu (F10) to join one of these tasks and destroy the targets.\n" ..
+        "Use the Task Reports to get an overview of the different tasks.\n" ..
+        "A missile trainer is active to train your missile evading skills.\n" ..
+        "The FAC can designate targets for you through laser, to use laser guided rockets.\n"
       , coalition.side.BLUE )
   :AddScoring( Scoring )
 
@@ -94,5 +115,9 @@ US_Attack = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "US Attac
 
 TaskDispatcher = TASK_A2G_DISPATCHER:New( US_M1, US_Attack, US_Detection )
 
-
 MissileTrainer = MISSILETRAINER:New( 100, "Missiles will be destroyed for training when they reach your plane." )
+
+Designate = DESIGNATE:New( US_CC, US_Detection, US_Attack, US_M1 )
+Designate:GenerateLaserCodes()
+
+

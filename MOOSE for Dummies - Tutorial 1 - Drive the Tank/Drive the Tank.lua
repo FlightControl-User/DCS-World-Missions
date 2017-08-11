@@ -1,19 +1,23 @@
 
-Tank = SPAWN:New( "Tank" )
+PlaneGroup = GROUP:FindByName( "Plane" )
 
-Zones = { ZONE:New( "ZONE1" ), ZONE:New( "ZONE2" ), ZONE:New( "ZONE3" ) }
+ZoneTo = ZONE:New("ZONE")
 
-TankGroup = Tank:Spawn()
+--- @param Wrapper.Group#GROUP RoutedGroup
+function ReRoute( VehicleGroup )
 
-function RouteTank()
+  --local FromCoord = VehicleGroup:GetCoordinate() -- Core.Point#COORDINATE
+  --local FromWP = FromCoord:WaypointGround()
 
-  TankGroup:WayPointInitialize()
-  local ToZone = Zones[ math.random( 1, #Zones ) ]
-  local RouteTask = TankGroup:TaskRouteToZone( ToZone, false, 72, "Vee" )
-  local WayPointTask = TankGroup:WayPointFunction( 1, 1, "RouteTank" )
-  local CombinedTask = TankGroup:TaskCombo( { RouteTask, WayPointTask } )
-  TankGroup:SetTask( RouteTask, 1 )
+  local ZoneTo = ZoneTo -- Core.Zone#ZONE
+  local ToCoord = ZoneTo:GetCoordinate()
+  local ToWP = ToCoord:WaypointAir("BARO", POINT_VEC3.RoutePointType.TurningPoint,POINT_VEC3.RoutePointAction.TurningPoint,600,true)
+  
+  local TaskReRoute = VehicleGroup:TaskFunction( "ReRoute" )
+  VehicleGroup:SetTaskWaypoint( ToWP, TaskReRoute )
+  
+  VehicleGroup:Route( { ToWP }, 0.5 )
 
 end
 
-Test = AI_A2A_GCICAP:NewWithBorder(EWRPrefixes,TemplatePrefixes,BorderPrefix,CapPrefixes,CapLimit,GroupingRadius,EngageRadius,GciRadius,Resources)
+ReRoute( PlaneGroup )
