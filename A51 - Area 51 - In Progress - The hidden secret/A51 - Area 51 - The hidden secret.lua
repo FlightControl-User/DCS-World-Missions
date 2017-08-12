@@ -121,3 +121,15 @@ Designate = DESIGNATE:New( US_CC, US_Detection, US_Attack, US_M1 )
 Designate:GenerateLaserCodes()
 
 
+---- AI GCICAP for RED
+
+A2ADispatcher = AI_A2A_GCICAP:New( { "AG-Ewr" }, { "AG-Defenses" }, { "AG-Cap" }, 2, 6000, 30000, 70000 )
+
+A2ADispatcher:SetTacticalDisplay( false )
+
+A2ADispatcher:SetDefaultTakeoffFromParkingCold()
+A2ADispatcher:SetDefaultLandingAtRunway()
+A2ADispatcher:SetDefaultFuelThreshold( 0.30 )
+A2ADispatcher:SetIntercept( 300 )
+A2ADispatcher:SetDisengageRadius( 70000 )
+A2ADispatcher:SetDefaultTanker("AG-Tanker")
