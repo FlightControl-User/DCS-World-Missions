@@ -31,7 +31,7 @@ do -- SPAWN for RED, the attacking groups!
   -- With the group name "AG-Ground Zone", which is a late activated group.
   AG_Ground_Zone = SPAWN:New( "AG-Ground Zone" )
 
-  -- Maximum 10 units alive at the same time, 40 groups in stock.
+  -- Maximum 30 units alive at the same time, 40 groups in stock.
   AG_Ground_Zone:InitLimit( 30, 40 )
 
   -- Randomize from the list AG_Templates when spawning.
@@ -40,7 +40,7 @@ do -- SPAWN for RED, the attacking groups!
   -- Randomize the positions of the new spawned GROUP objects in SpawnZone.
   AG_Ground_Zone:InitRandomizeZones( { SpawnZone } )
 
-  -- Schedule every 600 seconds a new GROUP with a 50% variation, so between 90 and 810 seconds.
+  -- Schedule every 450 seconds a new GROUP with a 50% variation, so between 90 and 810 seconds.
   AG_Ground_Zone:SpawnScheduled( 450, 0.80 )
   
   
@@ -57,7 +57,7 @@ do -- SPAWN for RED, the attacking groups!
   -- Randomize the routes, starting from WP 1, till the last WP, within a radius of 8000 meters.
   AG_Ground_001:InitRandomizeRoute( 1, 0, 8000 )
   
-  -- Schedule every 800 seconds a new GROUP with a 50% variation, so between 0 and 450 seconds.
+  -- Schedule every 800 seconds a new GROUP with a 50% variation, so between 400 and 1200 seconds.
   AG_Ground_001:SpawnScheduled( 800, 0.5 )
   --:InitArray( 290, 50, 30, 40 ) -- disabled due to bug in DCS world MP.
   
