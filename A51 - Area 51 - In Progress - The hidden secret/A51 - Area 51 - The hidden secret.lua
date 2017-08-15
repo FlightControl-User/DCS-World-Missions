@@ -138,6 +138,23 @@ do -- SPAWN for BLUE.
 
 end
 
+
+
+
+
+do -- SPAWN Tanker for RED
+
+  US_AWACS_Spawn = SPAWN
+    :New( "AG A2A Tanker" )
+    :InitLimit( 1, 4 )
+    :InitRepeatOnLanding()
+    :SpawnScheduled( 120, 0.4)
+
+end
+
+
+
+
 do -- GROUP for BLUE of the COMMAND CENTER.
  
   -- A GROUP is a wrapper class of a group object in the sim.
@@ -206,7 +223,23 @@ do -- MISSION for blue, the main mission.
   -- Setup extra scores to be granted when mission goals (tasks) are met.  
   US_M1:AddScoring( Scoring )
   
+  US_M2 = MISSION
+    :New( US_CC, "Shield", "Tactical",
+      "Ground forces are on their way towards the valleys Tonopah Test Range Airfield.\n" ..
+      "A2A defenses are expected to depart from Tonapah!\n" ..
+      "Expect some heavy resistance in the area!\n" ..
+      "Provide air support and engage any airborne intruder."
+      , coalition.side.BLUE )
+    
+  
+  -- Setup extra scores to be granted when mission goals (tasks) are met.  
+  US_M2:AddScoring( Scoring )
+  
+  
 end
+
+
+
 
 
 do -- SET_GROUP for BLUE of the FACs.
@@ -231,30 +264,95 @@ do -- DETECTION_AREAS for blue.
 
   -- DETECTION_AREAS is a detection algorithm that detects targets using a SET_GROUP object 
   -- having group objects that have units with detection capabilities.
-  -- Detected units are grouped within AREAD using a specified radius in meters.
+  -- Detected units are grouped within AREAS using a specified radius in meters.
 
-  -- Define a new DETECTION_AREAS object US_Detection.
+  -- Define a new DETECTION_AREAS object US_A2G_Detection.
   -- With the SET_GROUP object collection US_Fac, that contains the FAC groups detecting the enemy units.
   -- With a grouping radius of 3000 meters.
-  US_Detection = DETECTION_AREAS:New( US_FAC, 3000 )
+  US_A2G_Detection = DETECTION_AREAS:New( US_FAC, 3000 )
+  --US_A2G_Detection:InitDetectVisual( true )
+  --US_A2G_Detection:InitDetectRWR( true )
+  --US_A2G_Detection:InitDetectOptical( true )
+  --US_A2G_Detection:InitDetectIRST( true )
+  --US_A2G_Detection:InitDetectDLINK( true )
+  --US_Detection:SetDistanceProbability( 0.9 )
 
 end
 
-do -- SET_GROUP for BLUE of the Attackers
+
+do -- SET_GROUP for BLUE of the FACs.
 
   -- SET_GROUP is a collection of GROUP objects, with dynamic filtering.
   -- So when GROUP objects are created, deleted, the collection will be automatically updated.
   
-  US_Attack = SET_GROUP:New()
-
+  US_Ewr = SET_GROUP:New()
+  
   -- Filter the blue coalition groups.
-  US_Attack:FilterCoalitions( "blue" )
+  US_Ewr:FilterCoalitions( "blue" )
 
   -- Filter only those groups that start with the name "US Attack".
-  US_Attack:FilterPrefixes( "US Attack" )
+  US_Ewr:FilterPrefixes( "US EWR" )
 
   -- Setup Dynamic filtering.
-  US_Attack:FilterStart()
+  US_Ewr:FilterStart()
+  
+end
+
+
+
+
+
+do -- DETECTION_AREAS for blue.
+
+  -- DETECTION_AREAS is a detection algorithm that detects targets using a SET_GROUP object 
+  -- having group objects that have units with detection capabilities.
+  -- Detected units are grouped within AREAS using a specified radius in meters.
+
+  -- Define a new DETECTION_AREAS object US_A2A_Detection.
+  -- With the SET_GROUP object collection US_Awacs, that contains the AWACS groups detecting the enemy units.
+  -- With a grouping radius of 15000 meters.
+  US_A2A_Detection = DETECTION_AREAS:New( US_Ewr, 15000 )
+  US_A2A_Detection:InitDetectRadar( true )
+
+end
+
+
+do -- SET_GROUP for BLUE of the Attackers
+
+  -- SET_GROUP is a collection of GROUP objects, with dynamic filtering.
+  -- We setup an A2G US_A2G_Attack object collection.
+  -- So when GROUP objects are created, deleted, the collection will be automatically updated.
+  
+  US_A2G_Attack = SET_GROUP:New()
+
+  -- Filter the blue coalition groups.
+  US_A2G_Attack:FilterCoalitions( "blue" )
+
+  -- Filter only those groups that start with the name "US Attack".
+  US_A2G_Attack:FilterPrefixes( "US A2G Attack" )
+
+  -- Setup Dynamic filtering.
+  US_A2G_Attack:FilterStart()
+
+end
+
+
+do -- SET_GROUP for BLUE of the Attackers
+
+  -- SET_GROUP is a collection of GROUP objects, with dynamic filtering.
+  -- We setup an A2A US_A2A_Attack object collection.
+  -- So when GROUP objects are created, deleted, the collection will be automatically updated.
+  
+  US_A2A_Attack = SET_GROUP:New()
+
+  -- Filter the blue coalition groups.
+  US_A2A_Attack:FilterCoalitions( "blue" )
+
+  -- Filter only those groups that start with the name "US Attack".
+  US_A2A_Attack:FilterPrefixes( "US A2A Attack" )
+
+  -- Setup Dynamic filtering.
+  US_A2A_Attack:FilterStart()
 
 end
 
@@ -266,10 +364,16 @@ do -- TASK_A2G_DISPATCHER for BLUE
   -- With the SET_GROUP object US_Attack, which contains a collection of the player planes and other attack units (like ground).
   -- With the DETECTION_AREAS object US_Detection, which contains the detections grouped per AREA with a defined radius.
 
-  TaskDispatcher = TASK_A2G_DISPATCHER:New( US_M1, US_Attack, US_Detection )
+  TaskA2GDispatcher = TASK_A2G_DISPATCHER:New( US_M1, US_A2G_Attack, US_A2G_Detection )
 
 end
 
+
+do -- TASK_A2A_DISPATCHER for BLUE
+
+  TaskA2ADispatcher = TASK_A2A_DISPATCHER:New( US_M2, US_A2A_Attack, US_A2A_Detection )
+
+end  
 
 
 do -- DESIGNATE for BLUE
@@ -284,23 +388,13 @@ do -- DESIGNATE for BLUE
   -- With the DETECTION_AREAS detection object US_Detection.
   -- With the SET_GROUP collection object US_Attack, which are the attacking blue planes.
   -- With the MISSION object US_M1, which is the main mission.
-  DesignateSu25T = DESIGNATE:New( US_CC, US_Detection, US_Attack, US_M1 )
+  DesignateSu25T = DESIGNATE:New( US_CC, US_A2G_Detection, US_A2G_Attack, US_M1 )
 
   -- For the SU-25T, setup laser code 1113.
   DesignateSu25T:SetLaserCodes(  1113 )
 
   -- This makes the DESIGNATE appear in the menu under the mission named "Designate for SU-25T".
   DesignateSu25T:SetDesignateName( "SU-25T" )
-  
-  -- Create a new Designate object from DESIGNATE. 
-  -- With the US COMMANDCENTER object US_CC.
-  -- With the DETECTION_AREAS detection object US_Detection.
-  -- With the SET_GROUP collection object US_Attack, which are the attacking blue planes.
-  -- With the MISSION object US_M1, which is the main mission.
-  Designate = DESIGNATE:New( US_CC, US_Detection, US_Attack, US_M1 )
-
-  -- This generates all possible laser codes to be selected for all other planes.
-  Designate:GenerateLaserCodes()
 
   -- DESIGNATE documentation can be found at:
   -- http://flightcontrol-master.github.io/MOOSE/Documentation/Designate.html
@@ -336,32 +430,59 @@ do -- GCICAP for RED
   --
   -- A GCI engage radius is set to 70km. So only GCI will commence for defense, when the intruder is within 70km.
   --
-  A2ADispatcher = AI_A2A_GCICAP:New( { "AG-Ewr" }, { "AG-Defenses" }, { "AG-Cap" }, 2, 6000, 30000, 70000 )
+  AG_AI_A2A_Dispatcher = AI_A2A_GCICAP:New( { "AG EWR" }, { "AG A2A AI" }, { "AG-Cap" }, 2, 6000, 30000, 70000 )
 
   -- Disable the tactical display. This is 
-  A2ADispatcher:SetTacticalDisplay( false )
+  AG_AI_A2A_Dispatcher:SetTacticalDisplay( false )
 
   -- Change the default takeoff methods.
-  A2ADispatcher:SetDefaultTakeoffFromParkingCold()
-  A2ADispatcher:SetDefaultLandingAtRunway()
+  AG_AI_A2A_Dispatcher:SetDefaultTakeoffFromParkingHot()
+  AG_AI_A2A_Dispatcher:SetDefaultLandingAtRunway()
   
   -- Set the fuel limit to 30%, when out of fuel the plane will fly home.
-  A2ADispatcher:SetDefaultFuelThreshold( 0.30 )
+  AG_AI_A2A_Dispatcher:SetDefaultFuelThreshold( 0.30 )
 
   -- When an airborne CAP plane is out of fuel (less than 30% left in the bank), it will refuel to the Tanker, if present.
   -- Otherwise it will return home.
-  A2ADispatcher:SetDefaultTanker("AG-Tanker")
+  AG_AI_A2A_Dispatcher:SetDefaultTanker( "AG A2A Tanker" )
   
   -- Take 300 seconds as a time it takes to get a new plane airborne, to calculate:
   --   - The intercept point.
   --   - The optimal airbase to GCI from.
-  A2ADispatcher:SetIntercept( 300 )
+  AG_AI_A2A_Dispatcher:SetIntercept( 300 )
   
   -- When planes are further away than 70km from the Home base, disengage.
-  A2ADispatcher:SetDisengageRadius( 70000 )
+  AG_AI_A2A_Dispatcher:SetDisengageRadius( 70000 )
 
   -- There is more in AI_A2A_GCICAP, which you can find here:
   -- http://flightcontrol-master.github.io/MOOSE/Documentation/AI_A2A_Dispatcher.html
+
+end
+
+
+do -- GCICAP for BLUE
+
+  -- Using the AI_A2A_GCICAP
+  
+  US_A2A_Dispatcher = AI_A2A_GCICAP:New( { "US EWR" }, { "US A2A Defense" }, nil, nil, 6000, 30000, 70000 )
+
+  -- Disable the tactical display. This is 
+  US_A2A_Dispatcher:SetTacticalDisplay( false )
+
+  -- Change the default takeoff methods.
+  US_A2A_Dispatcher:SetDefaultTakeoffFromParkingHot()
+  US_A2A_Dispatcher:SetDefaultLandingAtRunway()
+  
+  -- Set the fuel limit to 30%, when out of fuel the plane will fly home.
+  US_A2A_Dispatcher:SetDefaultFuelThreshold( 0.30 )
+
+  -- Take 300 seconds as a time it takes to get a new plane airborne, to calculate:
+  --   - The intercept point.
+  --   - The optimal airbase to GCI from.
+  US_A2A_Dispatcher:SetIntercept( 300 )
+  
+  -- When planes are further away than 70km from the Home base, disengage.
+  US_A2A_Dispatcher:SetDisengageRadius( 70000 )
 
 end
 
@@ -374,5 +495,22 @@ do -- MISSILETRAINER for BLUE
 
   -- MISSILETRAINER documentation can be found at:
   -- http://flightcontrol-master.github.io/MOOSE/Documentation/MissileTrainer.html
+
+end
+
+do -- SPAWN AWACS for BLUE
+
+  US_AWACS_Spawn = SPAWN
+    :New( "US EWR AWACS" )
+    :InitLimit( 1, 4 )
+    :InitRepeatOnLanding()
+    :OnSpawnGroup(
+      function( AwacsGroup )
+        US_AWACS_Zone = ZONE_GROUP:New( "Zone AWACS", AwacsGroup, 10000 )
+        US_A2A_Dispatcher:SetSquadronCap( "Creech AFB", US_AWACS_Zone, 4000, 7500, 600, 800, 1000, 1200, "BARO" )
+        US_A2A_Dispatcher:SetSquadronCapInterval( "Creech AFB", 1, 60, 120 )  
+      end
+    )
+    :SpawnScheduled( 120, 0.4)
 
 end
