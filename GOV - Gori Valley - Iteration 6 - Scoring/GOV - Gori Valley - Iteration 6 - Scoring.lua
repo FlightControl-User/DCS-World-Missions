@@ -126,7 +126,7 @@ do -- NATO Air Patrol Support Mission
   -- Define the detection method, we'll use here AREA detection.
   local NATO_S1_EWR_Areas = DETECTION_AREAS:New( NATO_S1_EWR, 20000 )
   NATO_S1_EWR_Areas:SetFriendliesRange( 80000 )
-  NATO_S1_EWR_Areas:SetDetectionInterval( 30 )
+  NATO_S1_EWR_Areas:SetRefreshTimeInterval( 30 )
   
   local NATO_S1_Task = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "S1 NATO Air Patrol" ):FilterStart()
   

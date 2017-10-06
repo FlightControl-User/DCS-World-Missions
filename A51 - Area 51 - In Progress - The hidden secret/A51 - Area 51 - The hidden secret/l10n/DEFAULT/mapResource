@@ -1,0 +1,17 @@
+mapResource = 
+{
+    ["ResKey_ImageBriefing_756"] = "Dia5.jpg",
+    ["ResKey_ImageBriefing_757"] = "Dia8.jpg",
+    ["ResKey_ImageBriefing_758"] = "Dia8.jpg",
+    ["ResKey_ImageBriefing_747"] = "Dia1.jpg",
+    ["ResKey_ImageBriefing_750"] = "Dia6.jpg",
+    ["ResKey_ImageBriefing_748"] = "Dia2.jpg",
+    ["ResKey_ImageBriefing_755"] = "Dia4.jpg",
+    ["ResKey_ImageBriefing_749"] = "Dia3.jpg",
+    ["ResKey_Action_129"] = "A51 - Area 51 - The hidden secret.lua",
+    ["ResKey_ImageBriefing_754"] = "Dia3.jpg",
+    ["ResKey_ImageBriefing_751"] = "Dia7.jpg",
+    ["ResKey_Action_128"] = "Moose.lua",
+    ["ResKey_ImageBriefing_752"] = "Dia1.jpg",
+    ["ResKey_ImageBriefing_753"] = "Dia2.jpg",
+} -- end of mapResource
