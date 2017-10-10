@@ -287,7 +287,7 @@ end
 
 -- Validate Blue Victory
 
-US_Attack = ZONE_POLYGON:NewFromGroupName( "US Attack", "US_Attack" )
+US_Attack = ZONE:New( "US_Attack" )
 
 BlueVictoryCheck = BASE:ScheduleRepeat( 30, 30, 0, nil,
   function()
