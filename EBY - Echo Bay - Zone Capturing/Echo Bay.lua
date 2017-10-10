@@ -66,7 +66,7 @@ end
 
 do -- Setup the designation of targets for US
 
-  local US_FAC = SET_GROUP:New():FilterPrefixes( "US_FAC" ):FilterStart()
+  local US_FAC = SET_GROUP:New():FilterPrefixes( "US_FAC" ):FilterOnce()
   local US_Detection = DETECTION_AREAS:New( US_FAC, 500 )
   US_Designate = DESIGNATE:New( US_CC, US_Detection, US_ZoneCaptureGroupSet, US_Mission_EchoBay )
 
@@ -75,25 +75,21 @@ end
 
 
 
--- These groups define the templates that will be used by the spawn objects to randomize the group templates.
-RU_A2G_CAS_Templates = SET_GROUP:New():FilterPrefixes( "RU_A2G_CAS_T" ):FilterOnce():GetSetNames()
-RU_G2G_ARM_Templates = SET_GROUP:New():FilterPrefixes( "RU_G2G_ARM_T" ):FilterOnce():GetSetNames()
-
 -- These Spawn objects will be used to randomly spawn a new A2G_CAS plane when a zone has been captured from the Russian side.
 RU_A2G_CAS_Spawn = {
-  SPAWN:New( "RU_A2G_CAS_S #001" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #002" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #003" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #004" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #005" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #006" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #001" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #002" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #003" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #004" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #005" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #006" ):InitRandomizeTemplatePrefixes( "RU_A2G_CAS_T" ):InitLimit( 2, 12 ),
   }
 
 -- These Spawn objects will be used to automatically ensure that there are enough defenses on the Russian side on the zones.
 RU_A2G_ARM_Spawn = {
-  SPAWN:New( "RU_G2G_ARM_S #001" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
-  SPAWN:New( "RU_G2G_ARM_S #002" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
-  SPAWN:New( "RU_G2G_ARM_S #003" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
+  SPAWN:New( "RU_G2G_ARM_S #001" ):InitRandomizeTemplatePrefixes( "RU_G2G_ARM_T" ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
+  SPAWN:New( "RU_G2G_ARM_S #002" ):InitRandomizeTemplatePrefixes( "RU_G2G_ARM_T" ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
+  SPAWN:New( "RU_G2G_ARM_S #003" ):InitRandomizeTemplatePrefixes( "RU_G2G_ARM_T" ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
 }
 
 local RU_ZoneCount = 13
@@ -113,13 +109,13 @@ for RU_ZoneID = 1, RU_ZoneCount do
 end
 
 
-local US_ZonesCapture = {}
-
-for US_ZoneID = 1, US_ZoneCount do
-  US_ZonesCapture[US_ZoneID] = ZONE:New( "US_CAPTURE_" .. US_ZoneID )
-  -- We keep the Zone ID for later reference to respawn the fuel tanks.
-  US_ZonesCapture[US_ZoneID].ZoneID = US_ZoneID
-end
+--local US_ZonesCapture = {}
+--
+--for US_ZoneID = 1, US_ZoneCount do
+--  US_ZonesCapture[US_ZoneID] = ZONE:New( "US_CAPTURE_" .. US_ZoneID )
+--  -- We keep the Zone ID for later reference to respawn the fuel tanks.
+--  US_ZonesCapture[US_ZoneID].ZoneID = US_ZoneID
+--end
 
 --- Model the MISSION for RED
 
@@ -252,30 +248,31 @@ for CaptureZoneID = 1, ZoneRandom do
       Scoring:AddGoalScorePlayer( PlayerName, "Zone " .. self.ZoneGoal:GetZoneName() .." captured", PlayerContribution * GoalScore / TotalContributions )
     end
 
-    local AllRedZonesGuarded = true
     local AllBlueZonesGuarded = true
+--    local AllRedZonesGuarded = true
     for ZoneID = 1, ZoneRandom do
       local ZoneCaptureCoalition = ZonesCaptureCoalition[ZoneID] -- Functional.ZoneCaptureCoalition#ZONE_CAPTURE_COALITION
       if not ZoneCaptureCoalition.Goal:IsAchieved() then
-        if ZoneCaptureCoalition:GetCoalition() == coalition.side.BLUE then
+        if ZoneCaptureCoalition:GetCoalition() ~= coalition.side.BLUE then
           AllBlueZonesGuarded = false
         end
-        if ZoneCaptureCoalition:GetCoalition() == coalition.side.RED then
-          AllRedZonesGuarded = false
-        end
+--        if ZoneCaptureCoalition:GetCoalition() ~= coalition.side.RED then
+--          AllRedZonesGuarded = false
+--        end
       end
     end
+
     if AllBlueZonesGuarded == true then
       US_Mission_EchoBay:Complete()
       FlagMissionEnd:Set( 1 )
       US_VictorySound:ToAll()
     end
 
-    if AllRedZonesGuarded == true then
-      RU_Mission_Rastov:Complete()
-      FlagMissionEnd:Set( 1 )
-      RU_VictorySound:ToAll()
-    end
+--    if AllRedZonesGuarded == true then
+--      RU_Mission_Rastov:Complete()
+--      FlagMissionEnd:Set( 1 )
+--      RU_VictorySound:ToAll()
+--    end
     
     self:__Guard( 30 )
   end
@@ -288,4 +285,17 @@ for CaptureZoneID = 1, ZoneRandom do
 end
 
 
+-- Validate Blue Victory
 
+US_Attack = ZONE_POLYGON:NewFromGroupName( "US Attack", "US_Attack" )
+
+BlueVictoryCheck = BASE:ScheduleRepeat( 30, 30, 0, nil,
+  function()
+    local AllBlueDestroyed = US_Attack:IsNoneInZoneOfCoalition( coalition.side.BLUE )
+    if AllBlueDestroyed == true then
+      RU_Mission_Rastov:Complete()
+      FlagMissionEnd:Set( 1 )
+      RU_VictorySound:ToAll()
+    end
+  end
+)
