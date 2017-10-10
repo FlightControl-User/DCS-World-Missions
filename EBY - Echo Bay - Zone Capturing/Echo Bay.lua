@@ -1,4 +1,13 @@
 
+GoalScore = 200
+
+FlagMissionEnd = USERFLAG:New( "66" )
+
+RU_VictorySound = USERSOUND:New( "MotherRussia.ogg" )
+US_VictorySound = USERSOUND:New( "outro.ogg" )
+
+-- When a zone is capture, 200 points are shared amoung contributors who captured the zone.
+
 do -- Setup the Command Centers
   
   RU_CC = COMMANDCENTER:New( GROUP:FindByName( "REDHQ" ), "Russia HQ" )
@@ -6,10 +15,21 @@ do -- Setup the Command Centers
 
 end
 
+
+do -- Setup the groups that can capture the zones
+
+  US_ZoneCaptureGroupSet = SET_GROUP:New():FilterCoalitions("blue"):FilterStart()
+  RU_ZoneCaptureGroupSet = SET_GROUP:New():FilterCoalitions("red"):FilterStart()
+
+end
+
+
 do -- Missions
 
+  -- Setup the Scoring system.
   Scoring = SCORING:New( "Area 51" )
   
+  -- The US mission.
   US_Mission_EchoBay = MISSION:New( US_CC, "Echo Bay", "Primary",
     "Welcome trainee. The airport Groom Lake in Echo Bay needs to be captured.\n" ..
     "There are five random capture zones located at the airbase.\n" ..
@@ -21,6 +41,7 @@ do -- Missions
     "Mission 'Echo Bay' is complete when all five capture zones are taken, and held for at least 5 minutes!"
     , coalition.side.RED)
     
+  -- Connect the scoring to the US mission.
   US_Mission_EchoBay:AddScoring( Scoring )
   
   US_Mission_EchoBay:Start()
@@ -43,38 +64,40 @@ do -- Missions
 end
 
 
+do -- Setup the designation of targets for US
+
+  local US_FAC = SET_GROUP:New():FilterPrefixes( "US_FAC" ):FilterStart()
+  local US_Detection = DETECTION_AREAS:New( US_FAC, 500 )
+  US_Designate = DESIGNATE:New( US_CC, US_Detection, US_ZoneCaptureGroupSet, US_Mission_EchoBay )
+
+end
 
 
 
-RU_A2G_CAS_Templates = { 
-  "RU_A2G_CAS #001",
-  "RU_A2G_CAS #002",
-  "RU_A2G_CAS #003",
-  "RU_A2G_CAS #004",
-  "RU_A2G_CAS #006",
-  "RU_A2G_CAS #007",
+
+-- These groups define the templates that will be used by the spawn objects to randomize the group templates.
+RU_A2G_CAS_Templates = SET_GROUP:New():FilterPrefixes( "RU_A2G_CAS_T" ):FilterOnce():GetSetNames()
+RU_G2G_ARM_Templates = SET_GROUP:New():FilterPrefixes( "RU_G2G_ARM_T" ):FilterOnce():GetSetNames()
+
+-- These Spawn objects will be used to randomly spawn a new A2G_CAS plane when a zone has been captured from the Russian side.
+RU_A2G_CAS_Spawn = {
+  SPAWN:New( "RU_A2G_CAS_S #001" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #002" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #003" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #004" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #005" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
+  SPAWN:New( "RU_A2G_CAS_S #006" ):InitRandomizeTemplate( RU_A2G_CAS_Templates ):InitLimit( 2, 12 ),
   }
-  
-RU_G2G_ARM_Templates = {
-  "RU_G2G_ARM_T #001",
-  "RU_G2G_ARM_T #002",
-  "RU_G2G_ARM_T #003"
+
+-- These Spawn objects will be used to automatically ensure that there are enough defenses on the Russian side on the zones.
+RU_A2G_ARM_Spawn = {
+  SPAWN:New( "RU_G2G_ARM_S #001" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
+  SPAWN:New( "RU_G2G_ARM_S #002" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
+  SPAWN:New( "RU_G2G_ARM_S #003" ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitLimit( 8, 12 ):InitRandomizeRoute( 3, 0, 1000 ):SpawnScheduled( 180, 0.5 ),
 }
 
-RU_Spawn = {
-  SPAWN:New( "RU_G2G_ARM_S #001" ):InitLimit( 6, 12 ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitArray( 0, 20, 10, 10 ),
-  SPAWN:New( "RU_G2G_ARM_S #002" ):InitLimit( 6, 12 ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitArray( 0, 20, 10, 10 ),
-  SPAWN:New( "RU_G2G_ARM_S #003" ):InitLimit( 6, 12 ):InitRandomizeTemplate( RU_G2G_ARM_Templates ):InitArray( 0, 20, 10, 10 ),
-  SPAWN:New( "RU_A2G_CAS_S #001" ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #002" ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #003" ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #004" ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #005" ):InitLimit( 2, 12 ),
-  SPAWN:New( "RU_A2G_CAS_S #006" ):InitLimit( 2, 12 ),
-  }
-
 local RU_ZoneCount = 13
-local US_ZoneCount = 6
+local US_ZoneCount = 0
 
 local ZoneRandom = 5
 
@@ -85,6 +108,8 @@ local RU_ZonesCapture = {}
 
 for RU_ZoneID = 1, RU_ZoneCount do
   RU_ZonesCapture[RU_ZoneID] = ZONE:New( "RU_CAPTURE_" .. RU_ZoneID )
+  -- We keep the Zone ID for later reference to respawn the fuel tanks.
+  RU_ZonesCapture[RU_ZoneID].ZoneID = RU_ZoneID
 end
 
 
@@ -92,46 +117,60 @@ local US_ZonesCapture = {}
 
 for US_ZoneID = 1, US_ZoneCount do
   US_ZonesCapture[US_ZoneID] = ZONE:New( "US_CAPTURE_" .. US_ZoneID )
+  -- We keep the Zone ID for later reference to respawn the fuel tanks.
+  US_ZonesCapture[US_ZoneID].ZoneID = US_ZoneID
 end
 
 --- Model the MISSION for RED
 
 ZonesCaptureCoalition = {}
+RU_FuelTanks = {}
+US_FuelTanks = {}
 
 for RU_ZoneID = 1, ZoneRandom do
 
   local RandomZoneID = math.random( 1, #RU_ZonesCapture )
   local RandomZoneNameID = math.random( 1, #RU_ZoneNames )
+  local ZoneID = RU_ZonesCapture[RandomZoneID].ZoneID
   
   local ZoneCaptureCoalition = ZONE_CAPTURE_COALITION:New( RU_ZonesCapture[RandomZoneID], coalition.side.RED ) 
   ZoneCaptureCoalition:GetZone():SetName( RU_ZoneNames[RandomZoneNameID] )
+  
+  RU_FuelTanks[ZoneID] = {}
+  RU_FuelTanks[ZoneID][1] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-A", ZoneID ), country.id.RUSSIA )
+  RU_FuelTanks[ZoneID][2] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-B", ZoneID ), country.id.RUSSIA )
+  RU_FuelTanks[ZoneID][3] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-C", ZoneID ), country.id.RUSSIA )
+
+  US_FuelTanks[ZoneID] = {}
+  US_FuelTanks[ZoneID][1] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-A", ZoneID ), country.id.USA )
+  US_FuelTanks[ZoneID][2] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-B", ZoneID ), country.id.USA )
+  US_FuelTanks[ZoneID][3] = SPAWNSTATIC:NewFromStatic( string.format( "FUEL_TANK #%03d-C", ZoneID ), country.id.USA )
+  
+  
   table.insert( ZonesCaptureCoalition, ZoneCaptureCoalition )
   
   table.remove( RU_ZonesCapture, RandomZoneID )
   table.remove( RU_ZoneNames, RandomZoneNameID )
 end
 
-for US_ZoneID = 1, ZoneRandom do
-
-  local RandomZoneID = math.random( 1, #US_ZonesCapture )
-  local RandomZoneNameID = math.random( 1, #US_ZoneNames )
-  
-  local ZoneCaptureCoalition = ZONE_CAPTURE_COALITION:New( US_ZonesCapture[RandomZoneID], coalition.side.BLUE )
-  ZoneCaptureCoalition:GetZone():SetName( US_ZoneNames[RandomZoneNameID] )
-  table.insert( ZonesCaptureCoalition, ZoneCaptureCoalition )
-  
-  table.remove( US_ZonesCapture, RandomZoneID )
-  table.remove( US_ZoneNames, RandomZoneNameID )
-end
-
-local US_ZoneCaptureGroupSet = SET_GROUP:New():FilterCoalitions("blue"):FilterStart()
-local RU_ZoneCaptureGroupSet = SET_GROUP:New():FilterCoalitions("red"):FilterStart()
+--for US_ZoneID = 1, ZoneRandom do
+--
+--  local RandomZoneID = math.random( 1, #US_ZonesCapture )
+--  local RandomZoneNameID = math.random( 1, #US_ZoneNames )
+--  
+--  local ZoneCaptureCoalition = ZONE_CAPTURE_COALITION:New( US_ZonesCapture[RandomZoneID], coalition.side.BLUE )
+--  ZoneCaptureCoalition:GetZone():SetName( US_ZoneNames[RandomZoneNameID] )
+--  table.insert( ZonesCaptureCoalition, ZoneCaptureCoalition )
+--  
+--  table.remove( US_ZonesCapture, RandomZoneID )
+--  table.remove( US_ZoneNames, RandomZoneNameID )
+--end
 
 TasksRed = {}
 TasksBlue = {}
 
 
-for CaptureZoneID = 1, ZoneRandom * 2 do
+for CaptureZoneID = 1, ZoneRandom do
 
   local ZoneCaptureCoalition = ZonesCaptureCoalition[CaptureZoneID] -- Functional.ZoneCaptureCoalition#ZONE_CAPTURE_COALITION
   
@@ -144,13 +183,13 @@ for CaptureZoneID = 1, ZoneRandom * 2 do
         ZoneCaptureCoalition:Smoke( SMOKECOLOR.Blue )
         US_CC:MessageTypeToCoalition( string.format( "%s is under protection of the USA", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
         RU_CC:MessageTypeToCoalition( string.format( "%s is under protection of the USA", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
-        TasksRed[ZoneCaptureCoalition] = TASK_ZONE_CAPTURE:New( RU_Mission_Rastov, RU_ZoneCaptureGroupSet, ZoneCaptureCoalition:GetZoneName(), ZoneCaptureCoalition )
+        --TasksRed[ZoneCaptureCoalition] = TASK_ZONE_CAPTURE:New( RU_Mission_Rastov, RU_ZoneCaptureGroupSet, ZoneCaptureCoalition:GetZoneName(), ZoneCaptureCoalition )
         RU_CC:SetMenu()
       else
         ZoneCaptureCoalition:Smoke( SMOKECOLOR.Red )
         RU_CC:MessageTypeToCoalition( string.format( "%s is under protection of Russia", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
         US_CC:MessageTypeToCoalition( string.format( "%s is under protection of Russia", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
-        TasksBlue[ZoneCaptureCoalition] = TASK_ZONE_CAPTURE:New( US_Mission_EchoBay, US_ZoneCaptureGroupSet, ZoneCaptureCoalition:GetZoneName(), ZoneCaptureCoalition )
+        --TasksBlue[ZoneCaptureCoalition] = TASK_ZONE_CAPTURE:New( US_Mission_EchoBay, US_ZoneCaptureGroupSet, ZoneCaptureCoalition:GetZoneName(), ZoneCaptureCoalition )
         US_CC:SetMenu()
       end
     end
@@ -185,18 +224,33 @@ for CaptureZoneID = 1, ZoneRandom * 2 do
     if Coalition == coalition.side.BLUE then
       RU_CC:MessageTypeToCoalition( string.format( "%s is captured by the USA, we lost it!", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
       US_CC:MessageTypeToCoalition( string.format( "We captured %s, Excellent job!", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
-      TasksBlue[ZoneCaptureCoalition]:Remove()
-      TasksBlue[ZoneCaptureCoalition] = nil
+      --TasksBlue[ZoneCaptureCoalition]:Remove()
+      --TasksBlue[ZoneCaptureCoalition] = nil
+      local ZoneID = ZoneCaptureCoalition:GetZone().ZoneID
+      US_FuelTanks[ZoneID][1]:Spawn( 0 ) 
+      US_FuelTanks[ZoneID][2]:Spawn( 0 )
+      US_FuelTanks[ZoneID][3]:Spawn( 0 )
     else
       US_CC:MessageTypeToCoalition( string.format( "%s is captured by Russia, we lost it!", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
       RU_CC:MessageTypeToCoalition( string.format( "We captured %s, Excellent job!", ZoneCaptureCoalition:GetZoneName() ), MESSAGE.Type.Information )
-      TasksRed[ZoneCaptureCoalition]:Remove()
-      TasksRed[ZoneCaptureCoalition] = nil
+      --TasksRed[ZoneCaptureCoalition]:Remove()
+      --TasksRed[ZoneCaptureCoalition] = nil
+      local ZoneID = ZoneCaptureCoalition:GetZone().ZoneID
+      RU_FuelTanks[ZoneID][1]:Spawn( 0 ) 
+      RU_FuelTanks[ZoneID][2]:Spawn( 0 )
+      RU_FuelTanks[ZoneID][3]:Spawn( 0 )
     end
     
-    RU_Spawn[math.random(#RU_Spawn)]:Spawn()
+    RU_A2G_CAS_Spawn[math.random(#RU_A2G_CAS_Spawn)]:Spawn()
 
-    self:AddScore( "Captured", "Zone captured: Extra points granted.", 200 )    
+    --self:AddScore( "Captured", "Zone captured: Extra points granted.", 200 )    
+
+    local TotalContributions = ZoneCaptureCoalition.Goal:GetTotalContributions()
+    local PlayerContributions = ZoneCaptureCoalition.Goal:GetPlayerContributions()
+    self:E( { TotalContributions = TotalContributions, PlayerContributions = PlayerContributions } )
+    for PlayerName, PlayerContribution in pairs( PlayerContributions ) do
+      Scoring:AddGoalScorePlayer( PlayerName, "Zone " .. self.ZoneGoal:GetZoneName() .." captured", PlayerContribution * GoalScore / TotalContributions )
+    end
 
     local AllRedZonesGuarded = true
     local AllBlueZonesGuarded = true
@@ -213,10 +267,14 @@ for CaptureZoneID = 1, ZoneRandom * 2 do
     end
     if AllBlueZonesGuarded == true then
       US_Mission_EchoBay:Complete()
+      FlagMissionEnd:Set( 1 )
+      US_VictorySound:ToAll()
     end
 
     if AllRedZonesGuarded == true then
       RU_Mission_Rastov:Complete()
+      FlagMissionEnd:Set( 1 )
+      RU_VictorySound:ToAll()
     end
     
     self:__Guard( 30 )
