@@ -209,6 +209,7 @@ for CaptureZoneID = 1, ZoneRandom do
   
   --- @param Functional.Protect#ZONE_CAPTURE_COALITION self
   function ZoneCaptureCoalition:OnEnterCaptured()
+  
     local Coalition = self:GetCoalition()
     self:E({Coalition = Coalition})
     if Coalition == coalition.side.BLUE then
@@ -300,3 +301,22 @@ BlueVictoryCheck = BASE:ScheduleRepeat( 30, 30, 0, nil,
 RU_GciCap = AI_A2A_GCICAP:New( "RU_G2A_EWR", "RU_A2A_GCI_CAP", "RU_ZONE_CAP", 2, 20000, 200000, 250000 )
 
 --RU_GciCap:SetTacticalDisplay( true )
+
+
+
+  local ZoneCaptureCoalitionBlue = ZONE_CAPTURE_COALITION:New( CaptureZone, coalition.side.BLUE ) 
+  local ZoneCaptureCoalitionRed = ZONE_CAPTURE_COALITION:New( CaptureZone, coalition.side.RED ) 
+
+  function ZoneCaptureCoalition:OnEnterGuarded()
+  end
+
+  function ZoneCaptureCoalition:OnEnterAttacked()
+  end
+
+  function ZoneCaptureCoalition:OnEnterEmpty()
+  end
+
+  function ZoneCaptureCoalition:OnEnterCaptured()
+  end
+
+  
