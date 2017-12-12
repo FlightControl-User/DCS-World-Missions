@@ -111,8 +111,6 @@ Spawn_US_Platoon_Right = SPAWN
   
 
 
-
-
 do -- NATO Air Patrol Support Mission
 
 
@@ -132,7 +130,7 @@ do -- NATO Air Patrol Support Mission
   local NATO_S1_Task = SET_GROUP:New():FilterCoalitions( "blue" ):FilterPrefixes( "S1 NATO Air Patrol" ):FilterStart()
   
   -- Define the Task dispatcher that will define the tasks based on the detected targets.
-  NATO_S1_A2A = TASK_A2A_DISPATCHER:New( NATO_S1, NATO_S1_Task, NATO_S1_EWR_Areas )
+  --NATO_S1_A2A = TASK_A2A_DISPATCHER:New( NATO_S1, NATO_S1_Task, NATO_S1_EWR_Areas )
 
 
   local NATO_AI_A2A_Support_East = { 
@@ -166,6 +164,7 @@ do -- NATO Air Patrol Support Mission
 
 end
 
+
 do -- NATO Mission 1
 
 
@@ -191,13 +190,14 @@ do -- NATO Mission 1
     :InitCleanUp( 300 )
     :OnSpawnGroup(
       function( SpawnGroup )
+        NATO_M1_RecceSpawn_US:E( SpawnGroup.ControllableName )
         local M1_ReccePatrolZoneWP = GROUP:FindByName( "M1 US Patrol Zone@ZONE" )
         local M1_ReccePatrolZone = ZONE_POLYGON:New( "PatrolZone", M1_ReccePatrolZoneWP )
         local M1_ReccePatrol = AI_PATROL_ZONE:New( M1_ReccePatrolZone, 30, 50, 50, 100 )
         NATO_M1_ReccePatrolArray[#NATO_M1_ReccePatrolArray+1] = M1_ReccePatrol
         
         M1_ReccePatrol:SetControllable( SpawnGroup )
-        M1_ReccePatrol:__Start( 10 ) -- It takes a bit of time for the Recce to start
+        M1_ReccePatrol:__Start( 30 ) -- It takes a bit of time for the Recce to start
       end
      )
   
@@ -215,6 +215,7 @@ do -- NATO Mission 1
 
 
 end
+
 
 do -- NATO Transport Task Engineers
 
@@ -342,7 +343,7 @@ do -- CCCP Air Patrol Support Functions
   local CCCP_S1_SupportGroups = SET_GROUP:New():FilterCoalitions("red"):FilterPrefixes( "S1 CCCP Air Defense" ):FilterStart()
   
   -- Define the Task dispatcher that will define the tasks based on the detected targets.
-  CCCP_S1_A2A_Support = TASK_A2A_DISPATCHER:New( CCCP_S1, CCCP_S1_SupportGroups, CCCP_S1_EWR_Areas )
+  --CCCP_S1_A2A_Support = TASK_A2A_DISPATCHER:New( CCCP_S1, CCCP_S1_SupportGroups, CCCP_S1_EWR_Areas )
 
 
   CCCP_AI_A2A_Support_SU_27 = { 
